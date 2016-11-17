@@ -1,0 +1,21 @@
+{
+  "name": "praetbot",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
+    "build:prod": "./node_modules/.bin/ts-node ./app.ts"
+  },
+  "dependencies": {
+    "slack": "^8.1.0",
+    "slackbots": "^0.5.3"
+  },
+  "devDependencies": {
+    "@types/core-js": "^0.9.34",
+    "@types/node": "^6.0.48",
+    "nodemon": "^1.11.0",
+    "ts-node": "^1.7.0",
+    "typescript": "^2.0.10"
+  }
+}
