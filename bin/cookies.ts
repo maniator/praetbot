@@ -1,0 +1,5 @@
+const cookies = {};
+
+export {
+    cookies
+};

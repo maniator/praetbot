@@ -1,3 +1,5 @@
+import { cookies } from './bin/cookies';
+
 var SlackBot = require('slackbots');
 
 require('./bin/www');
@@ -12,8 +14,6 @@ const bot = new SlackBot({
 const params = {
   as_user: true
 };
-
-const stars = {};
 
 const containsAUserRegex : RegExp = /\<\@([a-z0-9]*)\>/i;
 const giveUserStars : RegExp = /\<\@([a-z0-9]*)\>\s?\+\+/i;
@@ -31,33 +31,39 @@ const respondToUserMention = function (text : string, channel : string) {
   if (containsAUserRegex.test(text)) {
     const [, userId] = text.match(containsAUserRegex);
 
-    if (giveUserStars.test(text)) {
-      if (!stars[userId]) {
-        stars[userId] = 0;
-      }
+      bot.getUserById(userId).then(({name} : any) => {
+          if (giveUserStars.test(text)) {
+              if (!cookies[userId]) {
+                  cookies[userId] = {
+                      cookies: 0,
+                      name
+                  };
+              }
 
-      stars[userId]++;
+              cookies[userId].cookies++;
 
-      bot.postMessage(channel, `<@${userId}> has ${stars[userId]} :cookie:'s`, params);
-    }
+              bot.postMessage(channel, `<@${userId}> has ${cookies[userId].cookies} :cookie:'s`, params);
+          }
 
-    if (takeUserStars.test(text)) {
-      if (!stars[userId]) {
-        stars[userId] = 0;
-      }
+          if (takeUserStars.test(text)) {
+              cookies[userId] = {
+                  cookies: 0,
+                  name
+              };
 
-      stars[userId]--;
+              cookies[userId].cookies--;
 
-      bot.postMessage(channel, `<@${userId}> has ${stars[userId]} :cookie:'s`, params);
-    }
+              bot.postMessage(channel, `<@${userId}> has ${cookies[userId].cookies} :cookie:'s`, params);
+          }
 
-    const promises = [
-        bot.getUserById(userId),
-        bot.getChannelById(channel),
-      ];
-    Promise.all(promises).then(function([user, _channel] : any[]) {
-      bot.postMessageToUser(user.name, `You are being talked about in ${_channel.name ? `<#${channel}>` : 'a private channel'}.`, params);
-    });
+          const promises = [
+              bot.getChannelById(channel),
+          ];
+          Promise.all(promises).then(function([_channel] : any[]) {
+              bot.postMessageToUser(name, `You are being talked about in ${_channel.name ? `<#${channel}>` : 'a private channel'}.`, params);
+          });
+      });
+
   }
 };
 
