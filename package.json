@@ -9,9 +9,7 @@
   },
   "dependencies": {
     "slack": "^8.1.0",
-    "slackbots": "^0.5.3"
-  },
-  "devDependencies": {
+    "slackbots": "^0.5.3",
     "@types/core-js": "^0.9.34",
     "@types/node": "^6.0.48",
     "nodemon": "^1.11.0",
