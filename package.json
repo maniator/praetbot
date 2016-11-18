@@ -8,19 +8,20 @@
     "build:prod": "./node_modules/.bin/ts-node ./app.ts"
   },
   "dependencies": {
-    "slack": "^8.1.0",
-    "slackbots": "^0.5.3",
     "@types/core-js": "^0.9.34",
     "@types/node": "^6.0.48",
-    "nodemon": "^1.11.0",
-    "ts-node": "^1.7.0",
-    "typescript": "^2.0.10",
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "~4.14.0",
     "hbs": "~4.0.1",
+    "mongodb": "^2.2.11",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0"
+    "nodemon": "^1.11.0",
+    "serve-favicon": "~2.3.0",
+    "slack": "^8.1.0",
+    "slackbots": "^0.5.3",
+    "ts-node": "^1.7.0",
+    "typescript": "^2.0.10"
   }
 }
