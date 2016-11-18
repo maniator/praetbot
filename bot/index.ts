@@ -1,18 +1,12 @@
 import { getCookieByUserId, updateCookie, CookieUser } from '../bin/cookies';
+import { Message } from './message';
+import { CommandListener } from './command';
 
 var SlackBot = require('slackbots');
 
 interface MessageParams {
     as_user: boolean;
 }
-interface Message {
-    type: string;
-    text: string;
-    channel: string;
-    user: string;
-    group: any;
-}
-
 class Bot {
     private containsAUserRegex : RegExp = /\<\@([a-z0-9]*)\>/i;
     private giveUserStars : RegExp = /\<\@([a-z0-9]*)\>\s?\+\+/i;
@@ -24,12 +18,15 @@ class Bot {
 
     private botId : string;
     private botName : string;
+    private commandListener : CommandListener;
 
     constructor (apiKey : string) {
         this.bot = new SlackBot({
           token: apiKey, // Add a bot https://my.slack.com/services/new/bot and put the token
           name: 'The Bot'
         });
+
+        this.commandListener = new CommandListener(this.bot);
     }
 
     listenToBot () : void {
@@ -38,6 +35,7 @@ class Bot {
           this.botName = this.bot.self.name;
 
           this.listenForMessages();
+          this.commandListener.listen();
         });
         this.bot.on('error', function () {
           console.log('error', arguments)
