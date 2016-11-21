@@ -9,6 +9,9 @@
     "build:prod": "./node_modules/.bin/ts-node ./app.ts",
     "build:web": "./node_modules/.bin/ts-node ./bin/www"
   },
+  "engines": {
+    "node": "6.2.2"
+  },
   "dependencies": {
     "@types/core-js": "^0.9.34",
     "@types/node": "^6.0.48",
