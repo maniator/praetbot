@@ -18,7 +18,7 @@ class CommandListener {
 
                 db.collection('commands').save({
                     _id: command,
-                    value: `(function (bot, channel, user, ...args) { ${response} });`,
+                    value: response,
                 }).then((err: any, value: any) => {
                     this.botListener.bot.postMessage(message.channel, `<@${message.user}> ${command} added!`, {as_user: true});
                     db.close();
@@ -52,7 +52,7 @@ class CommandListener {
                         list.forEach((_command: Command) => {
                             try {
                                 if (_command.value) {
-                                    const value = eval(_command.value);
+                                    const value = new Function('bot', 'channel', 'user', '...args', _command.value);
                                     const response = value({
                                         postMessage: this.botListener.bot.postMessage.bind(this.botListener.bot),
                                         botId: this.botListener.botId,
