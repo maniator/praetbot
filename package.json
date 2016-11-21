@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run build:live",
+    "start": "npm run build:live & npm run build:webLive",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
-    "build:prod": "./node_modules/.bin/ts-node ./app.ts"
+    "build:webLive": "nodemon --exec ./node_modules/.bin/ts-node -- ./bin/www",
+    "build:prod": "./node_modules/.bin/ts-node ./app.ts",
+    "build:web": "./node_modules/.bin/ts-node ./bin/www"
   },
   "dependencies": {
     "@types/core-js": "^0.9.34",
