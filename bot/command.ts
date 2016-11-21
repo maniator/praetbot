@@ -18,7 +18,7 @@ class CommandListener {
 
                 db.collection('commands').save({
                     _id: command,
-                    value: `(function (bot, channel, user, argumentA, argumentB, argumentC) { ${response} });`,
+                    value: `(function (bot, channel, user, ...args) { ${response} });`,
                 }).then((err: any, value: any) => {
                     this.botListener.bot.postMessage(message.channel, `<@${message.user}> ${command} added!`, {as_user: true});
                     db.close();
