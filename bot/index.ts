@@ -26,7 +26,7 @@ class Bot {
           name: 'The Bot'
         });
 
-        this.commandListener = new CommandListener(this.bot);
+        this.commandListener = new CommandListener(this);
     }
 
     listenToBot () : void {
