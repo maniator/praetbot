@@ -49,8 +49,6 @@ class Bot {
             }
 
             if (type === 'message') {
-                console.log({ type, text, channel, user, group });
-
                 this.respondToUserMention(text, channel);
             }
         });
