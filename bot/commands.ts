@@ -99,17 +99,21 @@ const commands : Command[] = [
     {
         name: 'help',
         execute (bot: any, channel: string, user : User, commandName : string) : any {
-            lookupCommand(commandName).then(function (command : Command) {
-                let explain : string = command.description;
+            if (!commandName || commandName.length === 0) {
+                bot.postMessage(channel, `<@${user.name}> Please use as follows: \`!!help <commandName>\``, { as_user: true });
+            } else {
+                lookupCommand(commandName).then(function (command: Command) {
+                    let explain: string = command.description;
 
-                if (!explain) {
-                    explain = command.value ? '```' + command.value + '```' : 'No current description';
-                }
+                    if (!explain) {
+                        explain = command.value ? '```' + command.value + '```' : 'No current description';
+                    }
 
-                bot.postMessage(channel, `<@${user.name}> ${commandName}: ${explain}`, { as_user: true });
-            }).catch(function () {
-                bot.postMessage(channel, `<@${user.name}> That command does not exist`, { as_user: true });
-            })
+                    bot.postMessage(channel, `<@${user.name}> ${commandName}: ${explain}`, {as_user: true});
+                }).catch(function () {
+                    bot.postMessage(channel, `<@${user.name}> That command does not exist`, {as_user: true});
+                });
+            }
         }
     },
     {
