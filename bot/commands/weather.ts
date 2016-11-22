@@ -6,10 +6,10 @@ const weatherAPI = 'http://api.openweathermap.org/data/2.5/weather';
 
 const weather = {
     latlon: function (lat : string, lon : string) : Promise<string | void> {
-        var nlat = Number(lat),
+        const nlat = Number(lat),
             nlon = Number(lon);
+        const errs : any[] = [];
 
-        var errs = [];
         if (nlat < -180 || nlat > 180) {
             errs.push('Latitude must be between -180 and 180');
         }
@@ -17,7 +17,6 @@ const weather = {
             errs.push('Longitude must be between -180 and 180');
         }
 
-        console.log(nlon, nlat, 'lat lon');
 
         if (errs.length) {
             return Promise.reject(errs.join(', '));
