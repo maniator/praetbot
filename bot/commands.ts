@@ -1,18 +1,41 @@
-import { Command } from './command-interface';
+import { Command, User } from './command-interface';
 import { connect } from '../bin/dbConnect';
 
 const fetch = require('node-fetch');
-
-interface User {
-    name: string;
-    id: string;
-}
 
 // returns whether the command cannot be deleted or not
 const isCommandConstant = (commandName : string) => {
     return commands.filter((command : Command) => {
         return commandName === command.name;
     }).length > 0;
+};
+
+const lookupCommand = function (commandName : string) : Promise<Command> {
+    return new Promise((res, rej) => {
+        let resolved : boolean = false;
+
+        commands.filter((_command: Command) => _command.name === commandName)
+            .forEach((_command : Command) => {
+                resolved = true;
+                res(_command);
+            });
+
+        if (!resolved) {
+            connect((db: any) => {
+                db.collection('commands').find({
+                    _id: commandName
+                }).toArray((error: any, list: Command[] = []) => {
+                    if (list.length) {
+                        resolved = true;
+                        res(list[0]);
+                    } else {
+                        rej(null);
+                    }
+                    db.close();
+                });
+            });
+        }
+    })
 };
 
 const commands : Command[] = [
@@ -69,6 +92,24 @@ const commands : Command[] = [
                     db.close();
                 });
             });
+        },
+        description: 'Adds a command to the command list `!!addCommand <commandName> <command return function>` \n'+
+            'Command has access to the `channel, user <name, id>, ...args`'
+    },
+    {
+        name: 'help',
+        execute (bot: any, channel: string, user : User, commandName : string) : any {
+            lookupCommand(commandName).then(function (command : Command) {
+                let explain : string = command.description;
+
+                if (!explain) {
+                    explain = command.value ? '```' + command.value + '```' : 'No current description';
+                }
+
+                bot.postMessage(channel, `<@${user.name}> ${commandName}: ${explain}`, { as_user: true });
+            }).catch(function () {
+                bot.postMessage(channel, `<@${user.name}> That command does not exist`, { as_user: true });
+            })
         }
     },
     {
@@ -80,7 +121,13 @@ const commands : Command[] = [
                 }).then(function(json : any) {
                     bot.postMessage(channel, json.img, { as_user: true });
                 }).catch(console.log);
-        }
+        },
+        description: 'Gets xkcd comic by id `!!xkcd <id>`'
+    },
+    {
+        name: 'weather',
+        execute: require('./commands/weather'),
+        description: 'Gets current weather: `!!weather (lan, lon)` or `!!weather city`',
     },
 ];
 

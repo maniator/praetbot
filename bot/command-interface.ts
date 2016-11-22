@@ -4,6 +4,14 @@ interface Command {
     execute?: Function;
     value?: string;
     respond?: string;
+    description?: string;
 }
 
-export { Command };
+
+interface User {
+    name: string;
+    id: string;
+}
+
+
+export { Command, User };
