@@ -1,0 +1,27 @@
+//Inspired by
+//http://venturebeat.com/2016/11/07/how-our-dumb-bot-attracted-1-million-users-without-even-trying/
+
+import { User } from '../command-interface';
+
+const fetch = require('node-fetch');
+
+// const latlonRegex = /\((-?\d+\.?\d*),\s*(-?\d+\.?\d*)\)/;
+function rollCommand(bot: any, channel: any, args : string) : Promise<string> {
+    
+    //Get channel users
+    var randomIndex = Math.floor(Math.random() * channel.members.length);
+    var randomUserId = channel.members[randomIndex]; //TODO: more random
+    var userInfo = bot.getUserById(randomUserId);
+
+    //Insert witty response.
+    return userInfo.then((user : any) => `Survey says... <@${user.name}>`);
+}
+
+
+module.exports = function (bot: any, channel: any, user: User, ...args : any[]) {
+    rollCommand(bot, channel, args.join(' ')).then(function (response) {
+        bot.postMessage(channel, `@${user.name} ${response}`, { as_user: true });
+    }).catch(function (error) {
+        bot.postMessage(channel, `@${user.name} ${error}`, { as_user: true });
+    });
+};

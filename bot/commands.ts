@@ -133,6 +133,11 @@ const commands : Command[] = [
         execute: require('./commands/weather'),
         description: 'Gets current weather: `!!weather (lan, lon)` or `!!weather city`',
     },
+    {
+        name: 'roll',
+        execute: require('./commands/roll'),
+        description: 'Gets a random user in the channel.: `!!roll who should buy cookies?`',
+    },
 ];
 
 export {
