@@ -15,7 +15,11 @@ class CommandListener {
             db.collection('commands').find({
                 _id: command
             }).toArray((error: any, list: Command[] = []) => {
-                this.botListener.bot.getUserById(message.user).then((user: any) => {
+                const promises = [
+                    this.botListener.bot.getUserById(message.user),
+                    this.botListener.bot.getChannelById(message.channel),
+                ];
+                Promise.all(promises).then(([user, channel] : any) => {
                     list.forEach((_command: Command) => {
                         try {
                             if (_command.value) {
@@ -24,7 +28,7 @@ class CommandListener {
                                     postMessage: this.botListener.bot.postMessage.bind(this.botListener.bot),
                                     botId: this.botListener.botId,
                                     botName: this.botListener.botName,
-                                }, message.channel, user, ...args.split(' '));
+                                }, channel, user, ...args.split(' '));
 
                                 if (response) {
                                     this.botListener.bot.postMessage(message.channel, `${response}`, {as_user: true});
@@ -40,7 +44,7 @@ class CommandListener {
                     commands.filter((_command: Command) => _command.name === command)
                         .forEach((_command: Command) => {
                             if (_command.execute) {
-                                _command.execute(this.botListener.bot, message.channel, user, ...args.split(' '));
+                                _command.execute(this.botListener.bot, channel, user, ...args.split(' '));
                             } else if (_command.respond) {
                                 this.botListener.bot.postMessage(message.channel, `<@${message.user}> ${_command.respond}`, {as_user: true});
                             }

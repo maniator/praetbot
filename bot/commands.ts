@@ -98,7 +98,7 @@ const commands : Command[] = [
     },
     {
         name: 'help',
-        execute (bot: any, channel: string, user : User, commandName : string) : any {
+        execute (bot: any, channel: any, user : User, commandName : string) : any {
             if (!commandName || commandName.length === 0) {
                 bot.postMessage(channel, `<@${user.name}> Please use as follows: \`!!help <commandName>\``, { as_user: true });
             } else {
@@ -109,21 +109,21 @@ const commands : Command[] = [
                         explain = command.value ? '```' + command.value + '```' : 'No current description';
                     }
 
-                    bot.postMessage(channel, `<@${user.name}> ${commandName}: ${explain}`, {as_user: true});
+                    bot.postMessage(channel.id, `<@${user.name}> ${commandName}: ${explain}`, {as_user: true});
                 }).catch(function () {
-                    bot.postMessage(channel, `<@${user.name}> That command does not exist`, {as_user: true});
+                    bot.postMessage(channel.id, `<@${user.name}> That command does not exist`, {as_user: true});
                 });
             }
         }
     },
     {
         name: 'xkcd',
-        execute (bot: any, channel: string, user : User, id : number) : any {
+        execute (bot: any, channel: any, user : User, id : number) : any {
             return fetch(`http://xkcd.com/${id}/info.0.json`)
                 .then(function(res : any) {
                     return res.json();
                 }).then(function(json : any) {
-                    bot.postMessage(channel, json.img, { as_user: true });
+                    bot.postMessage(channel.id, json.img, { as_user: true });
                 }).catch(console.log);
         },
         description: 'Gets xkcd comic by id `!!xkcd <id>`'
