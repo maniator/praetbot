@@ -3,9 +3,6 @@
 
 import { User } from '../command-interface';
 
-const fetch = require('node-fetch');
-
-// const latlonRegex = /\((-?\d+\.?\d*),\s*(-?\d+\.?\d*)\)/;
 function rollCommand(bot: any, channel: any, args : string) : Promise<string> {
     
     //Get channel users
@@ -17,11 +14,10 @@ function rollCommand(bot: any, channel: any, args : string) : Promise<string> {
     return userInfo.then((user : any) => `Survey says... <@${user.name}>`);
 }
 
-
 module.exports = function (bot: any, channel: any, user: User, ...args : any[]) {
     rollCommand(bot, channel, args.join(' ')).then(function (response) {
-        bot.postMessage(channel, `@${user.name} ${response}`, { as_user: true });
+        bot.postMessage(channel.id, `@${user.name} ${response}`, { as_user: true });
     }).catch(function (error) {
-        bot.postMessage(channel, `@${user.name} ${error}`, { as_user: true });
+        bot.postMessage(channel.id, `@${user.name} ${error}`, { as_user: true });
     });
 };
