@@ -6,12 +6,12 @@ import { User } from '../command-interface';
 function rollCommand(bot: any, channel: any, args : string) : Promise<string> {
     
     //Get channel users
-    var randomIndex = Math.floor(Math.random() * channel.members.length);
-    var randomUserId = channel.members[randomIndex]; //TODO: more random
-    var userInfo = bot.getUserById(randomUserId);
-
+    const randomIndex = Math.floor(Math.random() * channel.members.length);
+    const randomUserId = channel.members[randomIndex]; //TODO: more random
+    const userInfo = bot.getUserById(randomUserId);
+    
     //Insert witty response.
-    return userInfo.then((user : any) => `Survey says... <@${user.name}>`);
+    return userInfo.then((user : any) => `Survey says... <@${user.name}> should ${args}`);
 }
 
 module.exports = function (bot: any, channel: any, user: User, ...args : any[]) {

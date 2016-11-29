@@ -11,7 +11,7 @@ class CommandListener {
     respondToCommand (message: Message) {
         connect((db: any) => {
             const [, command, args = ''] = message.text.match(this.commandRegex);
-
+            
             db.collection('commands').find({
                 _id: command
             }).toArray((error: any, list: Command[] = []) => {
