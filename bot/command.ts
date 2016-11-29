@@ -11,15 +11,18 @@ class CommandListener {
     respondToCommand (message: Message) {
         connect((db: any) => {
             const [, command, args = ''] = message.text.match(this.commandRegex);
-            
+
             db.collection('commands').find({
                 _id: command
             }).toArray((error: any, list: Command[] = []) => {
                 const promises = [
                     this.botListener.bot.getUserById(message.user),
                     this.botListener.bot.getChannelById(message.channel),
+                    this.botListener.bot.getGroupById(message.channel),
                 ];
-                Promise.all(promises).then(([user, channel] : any) => {
+                Promise.all(promises).then(([user, _channel, group] : any) => {
+                    const channel = _channel.id ? _channel : group;
+                    
                     list.forEach((_command: Command) => {
                         try {
                             if (_command.value) {
