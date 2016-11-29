@@ -41,14 +41,14 @@ const lookupCommand = function (commandName : string) : Promise<Command> {
 const commands : Command[] = [
     {
         name: 'listCommands',
-        execute (bot: any, channel: string, user : User) : any {
+        execute (bot: any, channel: any, user : User) : any {
             connect((db: any) => {
                 db.collection('commands').find({}).toArray((error: any, list: Command[] = []) => {
                     const commandList = list.map((item: any) => item._id);
 
                     commandList.push(...commands.map((_command: Command) => _command.name));
 
-                    bot.postMessage(channel, commandList.join(', '), {as_user: true});
+                    bot.postMessage(channel.id, commandList.join(', '), {as_user: true});
 
                     db.close();
                 });
@@ -57,9 +57,9 @@ const commands : Command[] = [
     },
     {
         name: 'removeCommand',
-        execute (bot: any, channel: string, user : User, command : string) : any {
+        execute (bot: any, channel: any, user : User, command : string) : any {
             if (isCommandConstant(command)) {
-                bot.postMessage(channel, `${command} cannot be changed. Sorry :-(`, {as_user: true});
+                bot.postMessage(channel.id, `${command} cannot be changed. Sorry :-(`, {as_user: true});
                 return;
             }
 
@@ -67,7 +67,7 @@ const commands : Command[] = [
                 db.collection('commands').remove({
                     _id: command,
                 }).then((err: any, value: any) => {
-                    bot.postMessage(channel, `<@${user.name}> ${command} removed!`, {as_user: true});
+                    bot.postMessage(channel.id, `<@${user.name}> ${command} removed!`, {as_user: true});
                     db.close();
                 });
             });
@@ -75,11 +75,11 @@ const commands : Command[] = [
     },
     {
         name: 'addCommand',
-        execute (bot: any, channel: string, user : User, command : string, ...args : any[]) : any {
+        execute (bot: any, channel: any, user : User, command : string, ...args : any[]) : any {
             const value = args.length ? args.join(' ') : '';
 
             if (isCommandConstant(command)) {
-                bot.postMessage(channel, `${command} cannot be changed. Sorry :-(`, {as_user: true});
+                bot.postMessage(channel.id, `${command} cannot be changed. Sorry :-(`, {as_user: true});
                 return;
             }
 
@@ -88,7 +88,7 @@ const commands : Command[] = [
                     _id: command,
                     value,
                 }).then((err: any, value: any) => {
-                    bot.postMessage(channel, `<@${user.name}> ${command} added!`, {as_user: true});
+                    bot.postMessage(channel.id, `<@${user.name}> ${command} added!`, {as_user: true});
                     db.close();
                 });
             });
@@ -100,7 +100,7 @@ const commands : Command[] = [
         name: 'help',
         execute (bot: any, channel: any, user : User, commandName : string) : any {
             if (!commandName || commandName.length === 0) {
-                bot.postMessage(channel, `<@${user.name}> Please use as follows: \`!!help <commandName>\``, { as_user: true });
+                bot.postMessage(channel.id, `<@${user.name}> Please use as follows: \`!!help <commandName>\``, { as_user: true });
             } else {
                 lookupCommand(commandName).then(function (command: Command) {
                     let explain: string = command.description;
@@ -132,6 +132,11 @@ const commands : Command[] = [
         name: 'weather',
         execute: require('./commands/weather'),
         description: 'Gets current weather: `!!weather (lan, lon)` or `!!weather city`',
+    },
+    {
+        name: 'roll',
+        execute: require('./commands/roll'),
+        description: 'Gets a random user in the channel.: `!!roll who should buy cookies?`',
     },
 ];
 
