@@ -77,10 +77,10 @@ function weatherCommand(args : string) : Promise<string> {
 }
 
 
-module.exports = function (bot: any, channel: string, user: User, ...args : any[]) {
+module.exports = function (bot: any, channel: any, user: User, ...args : any[]) {
     weatherCommand(args.join(' ')).then(function (response) {
-        bot.postMessage(channel, `@${user.name} ${response}`, { as_user: true });
+        bot.postMessage(channel.id, `@${user.name} ${response}`, { as_user: true });
     }).catch(function (error) {
-        bot.postMessage(channel, `@${user.name} ${error}`, { as_user: true });
+        bot.postMessage(channel.id, `@${user.name} ${error}`, { as_user: true });
     });
 };
