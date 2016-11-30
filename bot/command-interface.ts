@@ -1,4 +1,5 @@
 interface Command {
+    _id?: string;
     name: string;
     description?: string;
     execute?: Function;
