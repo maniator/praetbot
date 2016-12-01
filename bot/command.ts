@@ -58,7 +58,7 @@ class CommandListener {
                             name: c.name,
                             run: (args : string) => {
                                 // these commands are usually async
-                                this.runCommand(this.botListener.bot, c, channel, user, commandNames, args.split(' '));
+                                this.runCommand(this.botListener.bot, c, channel, user, commandNames, args);
                                 return '';
                             },
                         }
