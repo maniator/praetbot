@@ -4,7 +4,7 @@ import {commands} from './commands';
 import {connect} from '../bin/dbConnect';
 
 class CommandListener {
-    private commandRegex: RegExp = /^\!\!([a-zA-Z]*)\s?(.*)?/;
+    private commandRegex: RegExp = /^\?\?([a-zA-Z]*)\s?(.*)?/;
 
     constructor(private botListener: any) { }
 
