@@ -15,10 +15,10 @@ class CommandListener {
             bot.postMessage(channel.id, `<@${user.id}> ${command.respond}`, {as_user: true});
         } else if (command.value) {
             try {
-                const value = new Function('bot', 'channel', 'user', 'commands', '...args', command.value);
+                const value = new Function('bot', 'channel', 'user', 'commands', 'process', '...args', command.value);
                 const response = value({
                     postMessage: bot.postMessage.bind(bot),
-                }, channel, user, commandNames, ...args.split(' '));
+                }, channel, user, commandNames, null, ...args.split(' '));
 
                 if (response) {
                     return bot.postMessage(channel.id, `${response}`, {as_user: true});
