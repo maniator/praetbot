@@ -8,7 +8,7 @@ class CommandListener {
 
     constructor(private botListener: any) { }
 
-    runCommand (bot : any, command: Command, channel : any, user : User, commandNames : any, args : string) {
+    runCommand (bot : any, command: Command, channel : any, user : User, commandNames : any, args : string = '') {
         if (command.execute) {
             command.execute(bot, channel, user, ...args.split(' '));
         } else if (command.respond) {
