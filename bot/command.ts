@@ -47,7 +47,7 @@ class CommandListener {
                         commandNames[c._id] = {
                             name: c._id,
                             run: this.runCommand.bind(this, {
-                                postMessage (_, message) {
+                                postMessage (_ : string, message : string) {
                                     return message;
                                 }
                             }, c, channel, user, commandNames),
