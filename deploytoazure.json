@@ -21,6 +21,15 @@
       ],
       "defaultValue": "Free"
     },
+    "workerSize": {
+      "type": "string",
+      "allowedValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "defaultValue": "0"
+    },
     "MONGO_SERVER": {
       "type": "string",
       "minLength": 5
@@ -46,7 +55,7 @@
     },
     "branch": {
       "type": "string",
-      "defaultValue": "question-bot",
+      "defaultValue": "master",
       "metadata": {
         "description": "The branch of the GitHub repository to use."
       }
@@ -78,10 +87,10 @@
           ],
           "properties": {
             "appSettings": [
-			{
-			"name": "DATABASE_URI",
-			"value": "[parameters('MONGO_SERVER')]"
-			},
+              {
+                "name": "DATABASE_URI",
+                "value": "[parameters('MONGO_SERVER')]"
+              },
             {
             "name": "MONGO_USER",
             "value": "[parameters('MONGO_USER')]"
