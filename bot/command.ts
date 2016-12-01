@@ -8,25 +8,23 @@ class CommandListener {
 
     constructor(private botListener: any) { }
 
-    runCommand (command: Command, channel : any, user : User, commandNames : any, args : string) {
+    runCommand (bot : any, command: Command, channel : any, user : User, commandNames : any, args : string) {
         if (command.execute) {
-            command.execute(this.botListener.bot, channel, user, ...args.split(' '));
+            command.execute(bot, channel, user, ...args.split(' '));
         } else if (command.respond) {
-            this.botListener.bot.postMessage(channel.id, `<@${user.id}> ${command.respond}`, {as_user: true});
+            bot.postMessage(channel.id, `<@${user.id}> ${command.respond}`, {as_user: true});
         } else if (command.value) {
             try {
                 const value = new Function('bot', 'channel', 'user', 'commands', '...args', command.value);
                 const response = value({
-                    postMessage: this.botListener.bot.postMessage.bind(this.botListener.bot),
-                    botId: this.botListener.botId,
-                    botName: this.botListener.botName,
+                    postMessage: bot.postMessage.bind(bot),
                 }, channel, user, commandNames, ...args.split(' '));
 
                 if (response) {
-                    this.botListener.bot.postMessage(channel.id, `${response}`, {as_user: true});
+                    return bot.postMessage(channel.id, `${response}`, {as_user: true});
                 }
             } catch (e) {
-                this.botListener.bot.postMessage(channel.id, `<@${user.id}> there is some issue with that command. \`${e.message}\``, {as_user: true});
+                return bot.postMessage(channel.id, `<@${user.id}> there is some issue with that command. \`${e.message}\``, {as_user: true});
             }
         }
     }
@@ -48,20 +46,28 @@ class CommandListener {
                     commandList.forEach((c: Command) => {
                         commandNames[c._id] = {
                             name: c._id,
-                            run: this.runCommand.bind(this, c, channel, user, commandNames)
+                            run: this.runCommand.bind(this, {
+                                postMessage (_, message) {
+                                    return message;
+                                }
+                            }, c, channel, user, commandNames),
                         }
                     });
                     commands.forEach((c: Command) => {
                         commandNames[c.name] = {
                             name: c.name,
-                            run: this.runCommand.bind(this, c, channel, user, commandNames)
+                            run: () => {
+                                // these commands are usually async
+                                this.runCommand.bind(this, this.botListener.bot, c, channel, user, commandNames);
+                                return '';
+                            },
                         }
                     });
 
-                    list.forEach((_command: Command) => this.runCommand(_command, channel, user, commandNames, args));
+                    list.forEach((_command: Command) => this.runCommand(this.botListener.bot, _command, channel, user, commandNames, args));
 
                     commands.filter((_command: Command) => _command.name === command)
-                        .forEach((_command: Command) => this.runCommand(_command, channel, user, commandNames, args));
+                        .forEach((_command: Command) => this.runCommand(this.botListener.bot, _command, channel, user, commandNames, args));
 
                     db.close();
                 });
