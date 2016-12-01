@@ -56,9 +56,9 @@ class CommandListener {
                     commands.forEach((c: Command) => {
                         commandNames[c.name] = {
                             name: c.name,
-                            run: () => {
+                            run: (args) => {
                                 // these commands are usually async
-                                this.runCommand.bind(this, this.botListener.bot, c, channel, user, commandNames);
+                                this.runCommand(this.botListener.bot, c, channel, user, commandNames, args.split(' '));
                                 return '';
                             },
                         }
