@@ -64,7 +64,7 @@ class Bot {
               this.bot.getUserById(userId)
           ];
 
-          Promise.all(promises).then(([_cookie, user]) => {
+          Promise.all(promises).then(([_cookie, user]:any) => {
               const name = user.name;
               let cookie = _cookie;
 
@@ -101,7 +101,7 @@ class Bot {
             updateCookie(cookie),
         ];
         Promise.all(promises).then(([_channel] : any[]) => {
-            this.bot.postMessageToUser(name, `You are being talked about in ${_channel.name ? `<#${channel}>` : 'a private channel'}.`, params);
+            this.bot.postMessageToUser(cookie.name, `You are being talked about in ${_channel.name ? `<#${channel}>` : 'a private channel'}.`, params);
         });
     }
 }

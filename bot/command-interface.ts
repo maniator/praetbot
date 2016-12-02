@@ -5,7 +5,6 @@ interface Command {
     execute?: Function;
     value?: string;
     respond?: string;
-    description?: string;
 }
 
 
