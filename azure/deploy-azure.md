@@ -24,9 +24,9 @@
     + use https://{GITHUB_USER}:{ACCESS_TOKEN}@github.com/{GITHUB_USER}/{REPO_NAME}.git
       
       e.g.  `https://maniator:**********************@github.com/maniator/praetbot.git`
-
+    + find the deploy trigger webhook url under properties and add a webhook to the github repo to trigger on push
     **OR**
-    
+
     + [set up github repo continuous deployment after this deploy](https://github.com/blog/2056-automating-code-deployment-with-github-and-azure)
 
 - `azure group deployment create -f azure/deploytoazure.json -e azure/params.json {resourceName}`
