@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run build:live & npm run build:webLive",
+    "dev": "npm run build:live & npm run build:webLive",
+    "start": "node server.js",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
-    "build:webLive": "nodemon --exec ./node_modules/.bin/ts-node -- ./bin/www",
+    "build:webLive": "nodemon ./bin/www",
     "build:prod": "./node_modules/.bin/ts-node ./app.ts",
     "build:web": "./node_modules/.bin/ts-node ./bin/www"
   },
