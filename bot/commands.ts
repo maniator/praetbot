@@ -138,6 +138,11 @@ const commands : Command[] = [
         execute: require('./commands/roll'),
         description: 'Gets a random user in the channel.: `!!roll who should buy cookies?`',
     },
+    {
+        name: 'sefaria',
+        execute: require('./commands/sefaria'),
+        description: 'Displays text from Sefaria: `!!sefaria [REF]`\nFor help constructing a valid REF, see: https://github.com/Sefaria/Sefaria-Project/wiki/Text-References',
+    },
 ];
 
 export {
