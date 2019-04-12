@@ -10,7 +10,7 @@
     "build:web": "./node_modules/.bin/ts-node ./bin/www"
   },
   "engines": {
-    "node": "6.2.2"
+    "node": ">=10"
   },
   "dependencies": {
     "@types/core-js": "^0.9.34",
