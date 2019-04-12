@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 
+require('ts-node').register({ /* options */ })
 var app = require('../eApp');
 var debug = require('debug')('praetbot:server');
 var http = require('http');

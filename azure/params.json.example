@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "siteName": {
+            "value": "praetbot"
+        },
+        "hostingPlanName": {
+            "value": "praetbot"
+        },
+        "siteLocation": {
+            "value": "eastus"
+        },
+        "sku": {
+            "value": "Free"
+        },
+        "workerSize": {
+            "value": "0"
+        },
+        "mongoServer": {
+            "value": ""
+        },
+        "mongoUser": {
+            "value": ""
+        },
+        "mongoPassword": {
+            "value": ""
+        },
+        "botApiKey": {
+            "value": ""
+        },
+        "repoURL": {
+            "value": "https://github.com/maniator/praetbot.git"
+        },
+        "branch": {
+            "value": "master"
+        }
+   }
+}
