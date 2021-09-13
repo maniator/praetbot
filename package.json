@@ -27,7 +27,7 @@
     "serve-favicon": "~2.3.0",
     "slack": "^8.1.0",
     "slackbots": "^0.5.3",
-    "ts-node": "^1.7.0",
+    "ts-node": "^3.2.0",
     "typescript": "^2.0.10"
   }
 }
