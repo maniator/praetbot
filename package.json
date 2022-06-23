@@ -23,7 +23,7 @@
     "mongodb": "^2.2.11",
     "morgan": "~1.7.0",
     "node-fetch": "^1.6.3",
-    "nodemon": "^1.11.0",
+    "nodemon": "^2.0.17",
     "serve-favicon": "~2.3.0",
     "slack": "^8.1.0",
     "slackbots": "^0.5.3",
