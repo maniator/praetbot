@@ -22,7 +22,7 @@
     "hbs": "~4.0.1",
     "mongodb": "^2.2.11",
     "morgan": "~1.7.0",
-    "node-fetch": "^1.6.3",
+    "node-fetch": "^2.6.7",
     "nodemon": "^1.11.0",
     "serve-favicon": "~2.3.0",
     "slack": "^8.1.0",
