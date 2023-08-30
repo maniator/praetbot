@@ -7,7 +7,9 @@
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./app.ts",
     "build:webLive": "nodemon --exec ./node_modules/.bin/ts-node -- ./bin/www",
     "build:prod": "./node_modules/.bin/ts-node ./app.ts",
-    "build:web": "./node_modules/.bin/ts-node ./bin/www"
+    "build:web": "./node_modules/.bin/ts-node ./bin/www",
+    "prepare": "yarn run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "engines": {
     "node": "10.15.0"
@@ -19,7 +21,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "~4.14.0",
-    "hbs": "~4.0.1",
+    "hbs": "~4.0.2",
     "mongodb": "^2.2.11",
     "morgan": "~1.7.0",
     "node-fetch": "^1.6.3",
@@ -28,6 +30,8 @@
     "slack": "^8.1.0",
     "slackbots": "^0.5.3",
     "ts-node": "^1.7.0",
-    "typescript": "^2.0.10"
-  }
+    "typescript": "^2.0.10",
+    "@snyk/protect": "latest"
+  },
+  "snyk": true
 }
