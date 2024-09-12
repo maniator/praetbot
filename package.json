@@ -15,10 +15,10 @@
   "dependencies": {
     "@types/core-js": "^0.9.34",
     "@types/node": "^6.0.48",
-    "body-parser": "~1.15.2",
+    "body-parser": "~1.20.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
-    "express": "~4.14.0",
+    "express": "~4.21.0",
     "hbs": "~4.0.1",
     "mongodb": "^2.2.11",
     "morgan": "~1.7.0",
