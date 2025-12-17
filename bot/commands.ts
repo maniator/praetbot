@@ -1,141 +1,157 @@
-import { Command, User } from './command-interface';
-import { connect } from '../bin/dbConnect';
-
-const fetch = require('node-fetch');
+import { Command, User } from './command-interface.js';
+import { connect } from '../bin/dbConnect.js';
+import { Client, TextChannel, DMChannel, GuildMember } from 'discord.js';
 
 // returns whether the command cannot be deleted or not
-const isCommandConstant = (commandName : string) => {
-    return commands.filter((command : Command) => {
+const isCommandConstant = (commandName: string): boolean => {
+    return commands.filter((command: Command) => {
         return commandName === command.name;
     }).length > 0;
 };
 
-const lookupCommand = function (commandName : string) : Promise<Command> {
+const lookupCommand = function (commandName: string): Promise<Command> {
     return new Promise((res, rej) => {
-        let resolved : boolean = false;
+        let resolved: boolean = false;
 
         commands.filter((_command: Command) => _command.name === commandName)
-            .forEach((_command : Command) => {
+            .forEach((_command: Command) => {
                 resolved = true;
                 res(_command);
             });
 
         if (!resolved) {
-            connect((db: any) => {
-                db.collection('commands').find({
-                    _id: commandName
-                }).toArray((error: any, list: Command[] = []) => {
+            connect(async (db: any) => {
+                try {
+                    const list: Command[] = await db.collection('commands').find({
+                        _id: commandName
+                    }).toArray();
+                    
                     if (list.length) {
                         resolved = true;
                         res(list[0]);
                     } else {
                         rej(null);
                     }
-                    db.close();
-                });
+                } finally {
+                    await db.close();
+                }
             });
         }
-    })
+    });
 };
 
-const commands : Command[] = [
+const commands: Command[] = [
     {
         name: 'listCommands',
-        execute (bot: any, channel: any, user : User) : any {
-            connect((db: any) => {
-                db.collection('commands').find({}).toArray((error: any, list: Command[] = []) => {
+        async execute(bot: Client, channel: TextChannel | DMChannel, user: User): Promise<void> {
+            connect(async (db: any) => {
+                try {
+                    const list: Command[] = await db.collection('commands').find({}).toArray();
                     const commandList = list.map((item: any) => item._id);
 
                     commandList.push(...commands.map((_command: Command) => _command.name));
 
-                    bot.postMessage(channel.id, commandList.join(', '), {as_user: true});
-
-                    db.close();
-                });
+                    await channel.send(commandList.join(', '));
+                } finally {
+                    await db.close();
+                }
             });
         }
     },
     {
         name: 'removeCommand',
-        execute (bot: any, channel: any, user : User, command : string) : any {
+        async execute(bot: Client, channel: TextChannel | DMChannel, user: User, command: string): Promise<void> {
             if (isCommandConstant(command)) {
-                bot.postMessage(channel.id, `${command} cannot be changed. Sorry :-(`, {as_user: true});
+                await channel.send(`${command} cannot be changed. Sorry :-(`);
                 return;
             }
 
-            connect((db: any) => {
-                db.collection('commands').remove({
-                    _id: command,
-                }).then((err: any, value: any) => {
-                    bot.postMessage(channel.id, `<@${user.name}> ${command} removed!`, {as_user: true});
-                    db.close();
-                });
+            connect(async (db: any) => {
+                try {
+                    await db.collection('commands').deleteOne({
+                        _id: command,
+                    });
+                    await channel.send(`<@${user.name}> ${command} removed!`);
+                } finally {
+                    await db.close();
+                }
             });
         }
     },
     {
         name: 'addCommand',
-        execute (bot: any, channel: any, user : User, command : string, ...args : any[]) : any {
+        async execute(bot: Client, channel: TextChannel | DMChannel, user: User, command: string, ...args: any[]): Promise<void> {
             const value = args.length ? args.join(' ') : '';
 
             if (isCommandConstant(command)) {
-                bot.postMessage(channel.id, `${command} cannot be changed. Sorry :-(`, {as_user: true});
+                await channel.send(`${command} cannot be changed. Sorry :-(`);
                 return;
             }
 
-            connect((db: any) => {
-                db.collection('commands').save({
-                    _id: command,
-                    value,
-                }).then((err: any, value: any) => {
-                    bot.postMessage(channel.id, `<@${user.name}> ${command} added!`, {as_user: true});
-                    db.close();
-                });
+            connect(async (db: any) => {
+                try {
+                    await db.collection('commands').replaceOne(
+                        { _id: command },
+                        { _id: command, value },
+                        { upsert: true }
+                    );
+                    await channel.send(`<@${user.name}> ${command} added!`);
+                } finally {
+                    await db.close();
+                }
             });
         },
-        description: 'Adds a command to the command list `!!addCommand <commandName> <command return function>` \n'+
+        description: 'Adds a command to the command list `!!addCommand <commandName> <command return function>` \n' +
             'Command has access to the `channel, user <name, id>, ...args`'
     },
     {
         name: 'help',
-        execute (bot: any, channel: any, user : User, commandName : string) : any {
+        async execute(bot: Client, channel: TextChannel | DMChannel, user: User, commandName: string): Promise<void> {
             if (!commandName || commandName.length === 0) {
-                bot.postMessage(channel.id, `<@${user.name}> Please use as follows: \`!!help <commandName>\``, { as_user: true });
+                await channel.send(`<@${user.name}> Please use as follows: \`!!help <commandName>\``);
             } else {
-                lookupCommand(commandName).then(function (command: Command) {
-                    let explain: string = command.description;
+                try {
+                    const command = await lookupCommand(commandName);
+                    let explain: string = command.description || '';
 
                     if (!explain) {
                         explain = command.value ? '```' + command.value + '```' : 'No current description';
                     }
 
-                    bot.postMessage(channel.id, `<@${user.name}> ${commandName}: ${explain}`, {as_user: true});
-                }).catch(function () {
-                    bot.postMessage(channel.id, `<@${user.name}> That command does not exist`, {as_user: true});
-                });
+                    await channel.send(`<@${user.name}> ${commandName}: ${explain}`);
+                } catch (error) {
+                    await channel.send(`<@${user.name}> That command does not exist`);
+                }
             }
         }
     },
     {
         name: 'xkcd',
-        execute (bot: any, channel: any, user : User, id : number) : any {
-            return fetch(`http://xkcd.com/${id}/info.0.json`)
-                .then(function(res : any) {
-                    return res.json();
-                }).then(function(json : any) {
-                    bot.postMessage(channel.id, json.img, { as_user: true });
-                }).catch(console.log);
+        async execute(bot: Client, channel: TextChannel | DMChannel, user: User, id: string): Promise<void> {
+            try {
+                const res = await fetch(`http://xkcd.com/${id}/info.0.json`);
+                const json = await res.json();
+                await channel.send(json.img);
+            } catch (error) {
+                console.error('Error fetching xkcd:', error);
+            }
         },
         description: 'Gets xkcd comic by id `!!xkcd <id>`'
     },
     {
         name: 'weather',
-        execute: require('./commands/weather'),
-        description: 'Gets current weather: `!!weather (lan, lon)` or `!!weather city`',
+        execute: async (bot: Client, channel: TextChannel | DMChannel, user: User, ...args: string[]) => {
+            const weatherModule = await import('./commands/weather.js');
+            return weatherModule.default(bot, channel, user, ...args);
+        },
+        description: 'Gets current weather: `!!weather (lat, lon)` or `!!weather city`',
     },
     {
         name: 'roll',
-        execute: require('./commands/roll'),
+        execute: async (bot: Client, channel: TextChannel | DMChannel, user: User, ...args: string[]) => {
+            const rollModule = await import('./commands/roll.js');
+            return rollModule.default(bot, channel, user, ...args);
+        },
         description: 'Gets a random user in the channel.: `!!roll who should buy cookies?`',
     },
 ];

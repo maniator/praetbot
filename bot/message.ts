@@ -1,9 +1,8 @@
 interface Message {
     type: string;
-    text: string;
-    channel: string;
-    user: string;
-    group: any;
+    content: string;
+    channelId: string;
+    authorId: string;
 }
 
 export { Message };
