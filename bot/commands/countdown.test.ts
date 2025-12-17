@@ -18,7 +18,8 @@ describe('countdown command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('days until');
+    expect(response).toContain('Time until');
+    expect(response).toContain('days');
   });
 
   it('should handle past date', async () => {
@@ -32,7 +33,7 @@ describe('countdown command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('already passed');
+    expect(response).toContain('That date has passed');
   });
 
   it('should handle invalid date', async () => {
@@ -60,6 +61,6 @@ describe('countdown command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('provide a date');
+    expect(response).toContain('Provide a date');
   });
 });

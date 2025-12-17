@@ -11,8 +11,7 @@ export default async function (
 
   if (!targetDateStr) {
     await channel.send(
-      `<@${user.id}> ⏱️ Provide a date!\n` +
-        `Example: \`!!countdown 2025-12-25\``
+      `<@${user.id}> ⏱️ Provide a date!\n` + `Example: \`!!countdown 2025-12-25\``
     );
     return;
   }

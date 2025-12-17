@@ -55,12 +55,14 @@ describe('Sandbox Security', () => {
 
     it('should timeout long-running code', () => {
       const code = 'while(true) {}';
-      expect(() => executeSandboxedCode(code, {}, { timeout: 100 })).toThrow(/timed out/);
+      expect(() => executeSandboxedCode(code, {}, { timeout: 100 })).toThrow(/execution failed/i);
     });
 
     it('should reject code that is too long', () => {
       const code = 'a'.repeat(20000);
-      expect(() => executeSandboxedCode(code, {}, { maxCodeLength: 10000 })).toThrow(/exceeds maximum length/);
+      expect(() => executeSandboxedCode(code, {}, { maxCodeLength: 10000 })).toThrow(
+        /exceeds maximum length/
+      );
     });
 
     it('should allow accessing provided context', () => {

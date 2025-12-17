@@ -37,7 +37,9 @@ export default async function (
   const question = args.join(' ');
 
   if (!question) {
-    await channel.send(`<@${user.id}> 🎱 Ask me a yes/no question!\nExample: \`!!8ball Will it rain tomorrow?\``);
+    await channel.send(
+      `<@${user.id}> 🎱 Ask me a yes/no question!\nExample: \`!!8ball Will it rain tomorrow?\``
+    );
     return;
   }
 

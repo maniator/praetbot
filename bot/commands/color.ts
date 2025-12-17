@@ -6,6 +6,10 @@ export default async function (
   channel: TextChannel | DMChannel,
   user: User
 ): Promise<void> {
-  const color = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+  const color =
+    '#' +
+    Math.floor(Math.random() * 16777215)
+      .toString(16)
+      .padStart(6, '0');
   await channel.send(`<@${user.id}> 🎨 Your random color: **${color}**`);
 }

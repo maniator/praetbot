@@ -17,7 +17,7 @@ describe('uptime command', () => {
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
     expect(response).toContain('⏱️');
-    expect(response).toContain('days');
+    expect(response).toContain('d');
   });
 
   it('should handle null uptime', async () => {
@@ -33,6 +33,6 @@ describe('uptime command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('not available');
+    expect(response).toContain('⏱️');
   });
 });

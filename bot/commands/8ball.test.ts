@@ -7,6 +7,7 @@ describe('8ball command', () => {
     const mockBot = {} as Client;
     const mockChannel = {
       send: vi.fn(),
+      sendTyping: vi.fn(),
     } as unknown as TextChannel;
     const mockUser = { id: '123', name: 'testuser' };
 
@@ -21,6 +22,7 @@ describe('8ball command', () => {
     const mockBot = {} as Client;
     const mockChannel = {
       send: vi.fn(),
+      sendTyping: vi.fn(),
     } as unknown as TextChannel;
     const mockUser = { id: '123', name: 'testuser' };
 

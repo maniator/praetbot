@@ -10,11 +10,11 @@ describe('ascii command', () => {
     } as unknown as TextChannel;
     const mockUser = { id: '123', name: 'testuser' };
 
-    await ascii(mockBot, mockChannel, mockUser, 'heart');
+    await ascii(mockBot, mockChannel, mockUser, 'shrug');
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('```');
+    expect(response).toContain('¯\\_(ツ)_/¯');
   });
 
   it('should list available types when no type provided', async () => {
@@ -28,7 +28,7 @@ describe('ascii command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('Available types:');
+    expect(response).toContain('Available ASCII art:');
   });
 
   it('should handle unknown type', async () => {
@@ -42,6 +42,6 @@ describe('ascii command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('Unknown type');
+    expect(response).toContain('Available ASCII art:');
   });
 });

@@ -29,7 +29,7 @@ describe('choose command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('provide options');
+    expect(response).toContain('Provide some options');
   });
 
   it('should handle single option', async () => {

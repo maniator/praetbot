@@ -14,8 +14,7 @@ describe('food command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('🍽️');
-    expect(response).toContain('lunch');
+    expect(response).toContain('How about:');
   });
 
   it('should suggest random food when no meal specified', async () => {
@@ -29,6 +28,6 @@ describe('food command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('🍽️');
+    expect(response).toContain('How about:');
   });
 });

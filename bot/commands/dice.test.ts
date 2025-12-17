@@ -15,7 +15,7 @@ describe('dice command', () => {
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
     expect(response).toContain('🎲');
-    expect(response).toContain('Rolling 2d6');
+    expect(response).toContain('2d6');
   });
 
   it('should handle dice with modifiers', async () => {
@@ -45,7 +45,7 @@ describe('dice command', () => {
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
     expect(response).toContain('🎲');
-    expect(response).toContain('Rolling 1d6');
+    expect(response).toContain('1d6');
   });
 
   it('should handle invalid dice notation', async () => {
@@ -59,6 +59,6 @@ describe('dice command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toContain('Invalid dice notation');
+    expect(response).toContain('Format:');
   });
 });

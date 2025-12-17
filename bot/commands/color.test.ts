@@ -14,6 +14,6 @@ describe('color command', () => {
 
     expect(mockChannel.send).toHaveBeenCalledOnce();
     const response = (mockChannel.send as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
-    expect(response).toMatch(/🎨 Random color: #[0-9A-F]{6}/);
+    expect(response).toMatch(/🎨 Your random color: \*\*#[0-9a-f]{6}\*\*/);
   });
 });

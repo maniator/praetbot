@@ -13,7 +13,6 @@ export default async function (
   const seconds = Math.floor(uptime % 60);
 
   await channel.send(
-    `<@${user.id}> ⏱️ **Bot Uptime**\n` +
-      `${days}d ${hours}h ${minutes}m ${seconds}s`
+    `<@${user.id}> ⏱️ **Bot Uptime**\n` + `${days}d ${hours}h ${minutes}m ${seconds}s`
   );
 }
