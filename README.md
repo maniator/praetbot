@@ -76,6 +76,122 @@ npm run build
 # The built files will be in the dist/ directory
 ```
 
+## Web Interface
+
+Praetbot includes an Express web interface that runs alongside the Discord bot.
+
+![Web Interface Preview](docs/screenshots/home-page.png)
+*Web interface coming soon - contributions welcome!*
+
+### Starting the Web Server
+
+```bash
+# Start both bot and web interface
+npm start
+
+# Or start web interface only
+npm run dev:web
+
+# With auto-reload during development
+npm run dev:web:watch
+```
+
+The web interface will be available at `http://localhost:3000` (or your configured PORT).
+
+### Available Endpoints
+
+- **`GET /`** - Home page with bot information
+- **`GET /users`** - View all users and their cookie counts (JSON)
+
+### Accessing the Web Interface
+
+**Local Development:**
+
+```
+http://localhost:3000
+```
+
+**Production:**
+Replace `localhost:3000` with your deployment URL (e.g., `https://your-app.herokuapp.com`)
+
+### Example: Viewing Cookie Leaderboard
+
+```bash
+# Get all users and cookies as JSON
+curl http://localhost:3000/users
+
+# Example response:
+[
+  {
+    "id": "123456789",
+    "name": "Alice",
+    "cookies": 42
+  },
+  {
+    "id": "987654321",
+    "name": "Bob",
+    "cookies": 15
+  }
+]
+```
+
+### Customizing the Web Interface
+
+The web interface is built with Express and Handlebars templates:
+
+- **Templates:** `views/` directory
+- **Routes:** `routes/` directory
+- **Static files:** `public/` directory
+- **Main app:** `eApp.ts`
+
+See [WEB_INTERFACE.md](WEB_INTERFACE.md) for detailed customization guide.
+
+### 🎨 Help Wanted: Improve the Web Interface!
+
+The current web interface is functional but minimal (Express + Handlebars templates). 
+
+**We need your input on the frontend stack and design!**
+
+#### What should we use?
+- Keep it simple with vanilla HTML/CSS/JS?
+- Modern framework (React, Vue, Svelte)?
+- Static site generator (Next.js, Gatsby, Astro)?
+- Something else?
+
+#### What we want to build:
+- Modern, beautiful UI
+- Visual cookie leaderboard
+- Responsive design
+- Charts and statistics
+- Better overall UX
+
+**Join the discussion:**
+- Share your thoughts in [GitHub Discussions](https://github.com/maniator/praetbot/discussions)
+- See [docs/SCREENSHOTS.md](docs/SCREENSHOTS.md) for detailed framework options and design ideas
+- Submit a prototype with your preferred stack!
+
+All approaches welcome - we can maintain multiple frontend implementations!
+
+## Deployment
+
+See the comprehensive [DEPLOYMENT.md](DEPLOYMENT.md) guide for detailed instructions on deploying to:
+
+- AWS (EC2, Elastic Beanstalk, Lambda)
+- Azure (App Service, Container Instances)
+- Google Cloud Platform (Cloud Run, Compute Engine)
+- Vercel
+- Heroku
+- Digital Ocean
+- Railway
+- Render
+- Docker (with docker-compose)
+
+Quick Docker deployment:
+
+```bash
+docker-compose up -d
+```
+
 ## Available Commands
 
 ### User Commands
@@ -129,4 +245,19 @@ The project uses GitHub Actions for continuous integration:
 
 ## License
 
-This project is private and proprietary.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Community
+
+Join our Discord community (coming soon) to:
+
+- Get help with setup and deployment
+- Share your custom commands
+- Report bugs and request features
+- Connect with other Praetbot users
+
+## Acknowledgments
+
+- Built with [Discord.js](https://discord.js.org/)
+- Powered by [Node.js](https://nodejs.org/)
+- Weather data from [OpenWeatherMap](https://openweathermap.org/)

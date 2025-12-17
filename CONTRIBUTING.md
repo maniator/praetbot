@@ -2,6 +2,33 @@
 
 Thank you for your interest in contributing to Praetbot! This document provides guidelines and instructions for contributing to the project.
 
+## 🎨 Featured Contribution Opportunity: Web Interface Design
+
+**We need your help making the web interface beautiful!**
+
+The current web interface is functional but minimal. We're looking for designers and frontend developers to help create a modern, engaging UI.
+
+### What We Need
+
+- Modern, responsive design (mobile-friendly)
+- Cookie leaderboard with visual rankings
+- Bot statistics dashboard
+- Command browser/explorer
+- Dark/light mode support
+- Charts and data visualization
+
+### Skills Needed
+
+- HTML/CSS (Bootstrap, Tailwind, or custom)
+- JavaScript/TypeScript
+- UI/UX design
+- Responsive design
+- Accessibility best practices
+
+**See [docs/SCREENSHOTS.md](docs/SCREENSHOTS.md) for detailed design ideas and guidelines.**
+
+---
+
 ## Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
@@ -169,6 +196,53 @@ bot/
 - **Functions**: camelCase (e.g., `parseCommand`)
 - **Constants**: UPPER_SNAKE_CASE (e.g., `MAX_RETRIES`)
 - **Interfaces**: PascalCase (e.g., `UserCommand`)
+
+## Contributing to the Web Interface
+
+### Design Contributions
+
+We welcome design improvements to the web interface! Here's how to contribute:
+
+1. **Review Current State**
+   - Run the app locally: `npm run dev:web`
+   - Visit `http://localhost:3000`
+   - Check existing routes in `routes/` directory
+
+2. **Plan Your Changes**
+   - Create wireframes or mockups
+   - Consider mobile responsiveness
+   - Ensure accessibility (WCAG 2.1)
+   - Share your designs in an issue for feedback
+
+3. **Implement Your Design**
+   - Add CSS to `public/stylesheets/`
+   - Update Handlebars templates in `views/`
+   - Add new routes if needed in `routes/`
+   - Ensure TypeScript types are correct
+
+4. **Test Thoroughly**
+   - Test on different screen sizes
+   - Test with different data scenarios (empty, full)
+   - Verify accessibility with screen readers
+   - Add automated tests for new routes
+
+5. **Document Your Changes**
+   - Update `WEB_INTERFACE.md` if adding new features
+   - Take screenshots of your improvements
+   - Add them to `docs/screenshots/`
+   - Update `docs/SCREENSHOTS.md`
+
+### Suggested Technologies
+
+- **CSS Frameworks**: Bootstrap, Tailwind CSS, Bulma
+- **Icons**: Font Awesome, Material Icons, Feather Icons
+- **Charts**: Chart.js, Recharts, D3.js
+- **Real-time**: Socket.io for live updates
+- **State Management**: Consider Alpine.js or HTMX for interactivity
+
+### Example: Adding a Leaderboard Page
+
+See [WEB_INTERFACE.md](WEB_INTERFACE.md) for detailed examples of adding new routes and pages.
 
 ## Testing Guidelines
 
