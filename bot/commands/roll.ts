@@ -37,7 +37,7 @@ export default async function (
   bot: Client,
   channel: TextChannel,
   user: User,
-  ...args: any[]
+  ...args: string[]
 ): Promise<void> {
   try {
     const response = await rollCommand(bot, channel, args.join(' '));

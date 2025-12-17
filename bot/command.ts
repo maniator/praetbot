@@ -3,6 +3,8 @@ import { Command, User } from './command-interface.js';
 import { commands } from './commands.js';
 import { connect } from '../bin/dbConnect.js';
 import { Bot } from './index.js';
+import { CommandRegistry } from './types.js';
+import { Db } from 'mongodb';
 
 class CommandListener {
   private commandRegex: RegExp = /^\!\!([a-zA-Z]*)\s?(.*)?/;
@@ -13,7 +15,7 @@ class CommandListener {
     channel: TextChannel | DMChannel,
     command: Command,
     user: User,
-    commandNames: any,
+    commandNames: CommandRegistry,
     args: string = ''
   ): Promise<void> {
     if (command.execute) {
@@ -45,8 +47,11 @@ class CommandListener {
         if (response) {
           await channel.send(`${response}`);
         }
-      } catch (e: any) {
-        await channel.send(`<@${user.id}> there is some issue with that command. \`${e.message}\``);
+      } catch (e) {
+        const error = e as Error;
+        await channel.send(
+          `<@${user.id}> there is some issue with that command. \`${error.message}\``
+        );
       }
     }
   }
@@ -59,7 +64,7 @@ class CommandListener {
 
     const [, command, args = ''] = match;
 
-    connect(async (db: any) => {
+    connect(async (db: Db) => {
       try {
         const commandList: Command[] = await db.collection('commands').find({}).toArray();
         const list = commandList.filter((c: Command) => c._id === command);
@@ -74,10 +79,10 @@ class CommandListener {
           return;
         }
 
-        const commandNames: any = {};
+        const commandNames: CommandRegistry = {};
         commandList.forEach((c: Command) => {
-          commandNames[c._id] = {
-            name: c._id,
+          commandNames[c._id || ''] = {
+            name: c._id || '',
             run: this.runCommand.bind(this, channel, c, user, commandNames),
           };
         });
@@ -85,8 +90,8 @@ class CommandListener {
         commands.forEach((c: Command) => {
           commandNames[c.name] = {
             name: c.name,
-            run: async (cmdArgs: string) => {
-              await this.runCommand(channel, c, user, commandNames, cmdArgs);
+            run: async (cmdArgs?: string) => {
+              await this.runCommand(channel, c, user, commandNames, cmdArgs || '');
               return '';
             },
           };

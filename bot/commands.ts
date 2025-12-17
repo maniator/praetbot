@@ -1,6 +1,8 @@
 import { Command, User } from './command-interface.js';
 import { connect } from '../bin/dbConnect.js';
 import { Client, TextChannel, DMChannel } from 'discord.js';
+import { Db } from 'mongodb';
+import { StoredCommand } from './types.js';
 
 // returns whether the command cannot be deleted or not
 const isCommandConstant = (commandName: string): boolean => {
@@ -23,10 +25,10 @@ const lookupCommand = function (commandName: string): Promise<Command> {
       });
 
     if (!resolved) {
-      connect(async (db: any) => {
+      connect(async (db: Db) => {
         try {
-          const list: Command[] = await db
-            .collection('commands')
+          const list: StoredCommand[] = await db
+            .collection<StoredCommand>('commands')
             .find({
               _id: commandName,
             })
@@ -34,7 +36,7 @@ const lookupCommand = function (commandName: string): Promise<Command> {
 
           if (list.length) {
             resolved = true;
-            res(list[0]);
+            res(list[0] as Command);
           } else {
             rej(null);
           }
@@ -50,10 +52,13 @@ const commands: Command[] = [
   {
     name: 'listCommands',
     async execute(_bot: Client, channel: TextChannel | DMChannel, _user: User): Promise<void> {
-      connect(async (db: any) => {
+      connect(async (db: Db) => {
         try {
-          const list: Command[] = await db.collection('commands').find({}).toArray();
-          const commandList = list.map((item: any) => item._id);
+          const list: StoredCommand[] = await db
+            .collection<StoredCommand>('commands')
+            .find({})
+            .toArray();
+          const commandList = list.map((item: StoredCommand) => item._id);
 
           commandList.push(...commands.map((_command: Command) => _command.name));
 
@@ -67,7 +72,7 @@ const commands: Command[] = [
   {
     name: 'removeCommand',
     async execute(
-      bot: Client,
+      _bot: Client,
       channel: TextChannel | DMChannel,
       user: User,
       command: string
@@ -77,7 +82,7 @@ const commands: Command[] = [
         return;
       }
 
-      connect(async (db: any) => {
+      connect(async (db: Db) => {
         try {
           await db.collection('commands').deleteOne({
             _id: command,
@@ -92,11 +97,11 @@ const commands: Command[] = [
   {
     name: 'addCommand',
     async execute(
-      bot: Client,
+      _bot: Client,
       channel: TextChannel | DMChannel,
       user: User,
       command: string,
-      ...args: any[]
+      ...args: string[]
     ): Promise<void> {
       const value = args.length ? args.join(' ') : '';
 
@@ -105,7 +110,7 @@ const commands: Command[] = [
         return;
       }
 
-      connect(async (db: any) => {
+      connect(async (db: Db) => {
         try {
           await db
             .collection('commands')

@@ -4,11 +4,25 @@ import { Client, TextChannel, DMChannel } from 'discord.js';
 const weatherAppId = process.env.WEATHER_KEY;
 const weatherAPI = 'http://api.openweathermap.org/data/2.5/weather';
 
+interface WeatherDescription {
+  description: string;
+}
+
+interface WeatherMain {
+  temp: number;
+}
+
+interface WeatherResponse {
+  main?: WeatherMain;
+  weather?: WeatherDescription[];
+  message?: string;
+}
+
 const weather = {
   latlon: async function (lat: string, lon: string): Promise<string> {
     const nlat = Number(lat);
     const nlon = Number(lon);
-    const errs: any[] = [];
+    const errs: string[] = [];
 
     if (nlat < -180 || nlat > 180) {
       errs.push('Latitude must be between -180 and 180');
@@ -22,17 +36,17 @@ const weather = {
     }
 
     const res = await fetch(`${weatherAPI}?appid=${weatherAppId}&lat=${lat}&lon=${lon}&cnt=1`);
-    const data = await res.json();
+    const data = (await res.json()) as WeatherResponse;
     return this.format(data);
   },
 
   city: async function (city: string): Promise<string> {
     const res = await fetch(`${weatherAPI}?appid=${weatherAppId}&q=${city}&cnt=1`);
-    const data = await res.json();
+    const data = (await res.json()) as WeatherResponse;
     return this.format(data);
   },
 
-  format: function (resp: any): string {
+  format: function (resp: WeatherResponse): string {
     const main = resp.main;
 
     if (!main) {
@@ -43,8 +57,12 @@ const weather = {
     return this.formatter(resp);
   },
 
-  formatter: function (data: any): string {
+  formatter: function (data: WeatherResponse): string {
     const temps = data.main;
+    if (!temps) {
+      return "Sorry, I couldn't get the temperature data";
+    }
+
     let ret: string = '';
 
     const celsius = Number(temps.temp - 273.15).toFixed(1);
@@ -53,7 +71,7 @@ const weather = {
     ret += `${fahrenheit}F (${celsius}C)`;
 
     const descs = (data.weather || [])
-      .map(function (w: any) {
+      .map(function (w: WeatherDescription) {
         return w.description;
       })
       .join(', ');
@@ -80,10 +98,10 @@ async function weatherCommand(args: string): Promise<string> {
 }
 
 export default async function (
-  bot: Client,
+  _bot: Client,
   channel: TextChannel | DMChannel,
   user: User,
-  ...args: any[]
+  ...args: string[]
 ): Promise<void> {
   try {
     const response = await weatherCommand(args.join(' '));

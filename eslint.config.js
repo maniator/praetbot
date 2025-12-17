@@ -13,8 +13,6 @@ export default [
       '**/*.js',
       '**/*.mjs',
       '**/*.cjs',
-      'eApp.ts',
-      'routes/**',
     ],
   },
   {
@@ -54,7 +52,7 @@ export default [
 
       // TypeScript specific
       '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

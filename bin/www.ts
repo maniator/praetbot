@@ -4,22 +4,24 @@
  * Module dependencies.
  */
 
-var app = require('../eApp');
-var debug = require('debug')('praetbot:server');
-var http = require('http');
+import app from '../eApp.js';
+import debugLib from 'debug';
+import http from 'http';
+
+const debug = debugLib('praetbot:server');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -33,17 +35,17 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
-  var port = parseInt(val, 10);
+function normalizePort(val: string): number | string | false {
+  const portNum = parseInt(val, 10);
 
-  if (isNaN(port)) {
+  if (isNaN(portNum)) {
     // named pipe
     return val;
   }
 
-  if (port >= 0) {
+  if (portNum >= 0) {
     // port number
-    return port;
+    return portNum;
   }
 
   return false;
@@ -53,14 +55,17 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+interface SystemError extends Error {
+  syscall?: string;
+  code?: string;
+}
+
+function onError(error: SystemError): void {
   if (error.syscall !== 'listen') {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -81,10 +86,10 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+function onListening(): void {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr?.port;
   debug('Listening on ' + bind);
 }
+
+export { server };

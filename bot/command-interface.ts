@@ -8,7 +8,7 @@ interface Command {
     bot: Client,
     channel: TextChannel | DMChannel,
     user: User,
-    ...args: any[]
+    ...args: string[]
   ) => Promise<void> | void;
   value?: string;
   respond?: string;
