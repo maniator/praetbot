@@ -32,7 +32,8 @@
     "hbs": "^4.2.0",
     "mongodb": "^6.11.0",
     "morgan": "^1.10.0",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "vm2": "^3.9.19"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
