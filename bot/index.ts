@@ -111,7 +111,7 @@ class Bot {
             await updateCookie(cookie);
             
             const user = await this.bot.users.fetch(cookie.id);
-            const channelName = channel && 'name' in channel ? channel.name : 'a private channel';
+            const channelName = channel && 'name' in channel ? channel.name : null;
             
             await user.send(`You are being talked about in ${channelName ? `#${channelName}` : 'a private channel'}.`);
         } catch (error) {

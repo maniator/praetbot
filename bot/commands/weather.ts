@@ -18,7 +18,7 @@ const weather = {
         }
 
         if (errs.length) {
-            return Promise.reject(errs.join(', '));
+            throw new Error(errs.join(', '));
         }
 
         const res = await fetch(`${weatherAPI}?appid=${weatherAppId}&lat=${lat}&lon=${lon}&cnt=1`);
