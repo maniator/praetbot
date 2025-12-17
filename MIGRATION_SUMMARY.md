@@ -9,11 +9,13 @@ This document summarizes the complete migration of praetbot from Slack to Discor
 ### 1. Platform Migration (Slack → Discord)
 
 **Before:**
+
 - Used `slackbots` package (v0.5.3)
 - Slack-specific message formats and APIs
 - Slack user mentions: `<@username>`
 
 **After:**
+
 - Discord.js v14.16.3
 - Discord Events API
 - Discord user mentions: `<@123456789>` (using user IDs)
@@ -21,22 +23,24 @@ This document summarizes the complete migration of praetbot from Slack to Discor
 
 ### 2. Dependency Updates
 
-| Package | Old Version | New Version |
-|---------|------------|-------------|
-| Node.js | 10.15.0 | 20.19.6 |
-| TypeScript | 2.0.10 | 5.7.2 |
-| MongoDB Driver | 2.2.11 | 6.11.0 |
-| Express | 4.14.0 | 4.21.2 |
+| Package        | Old Version | New Version |
+| -------------- | ----------- | ----------- |
+| Node.js        | 10.15.0     | 20.19.6     |
+| TypeScript     | 2.0.10      | 5.7.2       |
+| MongoDB Driver | 2.2.11      | 6.11.0      |
+| Express        | 4.14.0      | 4.21.2      |
 
 ### 3. Build & Test Infrastructure
 
 **Before:**
+
 - No testing framework
 - ts-node for development
 - No build process
 - No linting
 
 **After:**
+
 - Vitest 2.1.8 for testing (50 comprehensive tests)
 - Vite 6.0.3 for building
 - ESLint 9.17.0 + Prettier 3.4.2 for code quality
@@ -45,12 +49,14 @@ This document summarizes the complete migration of praetbot from Slack to Discor
 ### 4. Code Modernization
 
 **Before:**
+
 - CommonJS modules (`require`)
 - Callbacks for async operations
 - Loose typing
 - Old MongoDB API (`save`, `remove`)
 
 **After:**
+
 - ESM modules (`import`/`export`)
 - Async/await throughout
 - Strict TypeScript with modern config
@@ -59,6 +65,7 @@ This document summarizes the complete migration of praetbot from Slack to Discor
 ## Files Modified
 
 ### Core Bot Files
+
 - `app.ts` - Updated to use Discord.js
 - `bot/index.ts` - Complete rewrite for Discord
 - `bot/command.ts` - Updated message handling
@@ -67,10 +74,12 @@ This document summarizes the complete migration of praetbot from Slack to Discor
 - `bot/commands/weather.ts` - Modernized with async/await
 
 ### Database Files
+
 - `bin/dbConnect.ts` - Updated to modern MongoDB API
 - `bin/cookies.ts` - Updated with async/await
 
 ### Configuration Files
+
 - `package.json` - Updated all dependencies
 - `tsconfig.json` - Modern TypeScript configuration
 - `.nvmrc` - Updated to Node 20
@@ -81,6 +90,7 @@ This document summarizes the complete migration of praetbot from Slack to Discor
 - `.github/workflows/ci.yml` - Added
 
 ### New Files
+
 - `README.md` - Comprehensive documentation
 - `.env.example` - Environment variable template
 - `*.test.ts` - 7 test files with 50 tests
@@ -107,7 +117,7 @@ All original bot features remain functional:
 ✅ Built-in commands: help, listCommands, addCommand, removeCommand  
 ✅ Weather command  
 ✅ XKCD comic fetcher  
-✅ Random user picker (roll)  
+✅ Random user picker (roll)
 
 ## CI/CD Pipeline
 
@@ -161,6 +171,7 @@ The new GitHub Actions workflow runs on every PR and push to master:
 ## Support
 
 For issues or questions about this migration, refer to:
+
 - `README.md` for setup instructions
 - `.env.example` for required environment variables
 - GitHub Actions logs for CI/CD troubleshooting
