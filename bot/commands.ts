@@ -195,6 +195,136 @@ const commands: Command[] = [
     },
     description: 'Gets a random user in the channel.: `!!roll who should buy cookies?`',
   },
+  {
+    name: 'dice',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const diceModule = await import('./commands/dice.js');
+      return diceModule.default(bot, channel, user, ...args);
+    },
+    description: 'Roll dice with modifiers: `!!dice 2d20+5` or `!!dice 1d6`',
+  },
+  {
+    name: '8ball',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const eightBallModule = await import('./commands/8ball.js');
+      return eightBallModule.default(bot, channel, user, ...args);
+    },
+    description: 'Ask the magic 8-ball: `!!8ball will it rain tomorrow?`',
+  },
+  {
+    name: 'coinflip',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const coinflipModule = await import('./commands/coinflip.js');
+      return coinflipModule.default(bot, channel, user, ...args);
+    },
+    description: 'Flip a coin: `!!coinflip`',
+  },
+  {
+    name: 'choose',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const chooseModule = await import('./commands/choose.js');
+      return chooseModule.default(bot, channel, user, ...args);
+    },
+    description: 'Choose randomly from options: `!!choose pizza tacos burgers`',
+  },
+  {
+    name: 'quote',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const quoteModule = await import('./commands/quote.js');
+      return quoteModule.default(bot, channel, user, ...args);
+    },
+    description: 'Get a motivational quote: `!!quote`',
+  },
+  {
+    name: 'color',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const colorModule = await import('./commands/color.js');
+      return colorModule.default(bot, channel, user, ...args);
+    },
+    description: 'Generate a random color: `!!color`',
+  },
+  {
+    name: 'food',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const foodModule = await import('./commands/food.js');
+      return foodModule.default(bot, channel, user, ...args);
+    },
+    description: 'Get food suggestions: `!!food lunch` or `!!food dinner`',
+  },
+  {
+    name: 'uptime',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const uptimeModule = await import('./commands/uptime.js');
+      return uptimeModule.default(bot, channel, user, ...args);
+    },
+    description: 'Check bot uptime: `!!uptime`',
+  },
+  {
+    name: 'ascii',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const asciiModule = await import('./commands/ascii.js');
+      return asciiModule.default(bot, channel, user, ...args);
+    },
+    description: 'Get ASCII art: `!!ascii heart` or `!!ascii cat`',
+  },
+  {
+    name: 'countdown',
+    execute: async (
+      bot: Client,
+      channel: TextChannel | DMChannel,
+      user: User,
+      ...args: string[]
+    ) => {
+      const countdownModule = await import('./commands/countdown.js');
+      return countdownModule.default(bot, channel, user, ...args);
+    },
+    description: 'Countdown to date: `!!countdown 2024-12-25` (YYYY-MM-DD)',
+  },
 ];
 
 export { commands };

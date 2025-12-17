@@ -5,6 +5,7 @@ import { connect } from '../bin/dbConnect.js';
 import { Bot } from './index.js';
 import { CommandRegistry } from './types.js';
 import { Db } from 'mongodb';
+import { executeSandboxedCode } from './sandbox.js';
 
 class CommandListener {
   private commandRegex: RegExp = /^\!\!([a-zA-Z]*)\s?(.*)?/;
@@ -24,24 +25,21 @@ class CommandListener {
       await channel.send(`<@${user.id}> ${command.respond}`);
     } else if (command.value) {
       try {
-        const value = new Function(
-          'bot',
-          'channel',
-          'user',
-          'commands',
-          'process',
-          '...args',
-          command.value
-        );
-        const response = value(
-          {
-            send: channel.send.bind(channel),
+        // Execute custom command in secure sandbox
+        const context = {
+          user: {
+            id: user.id,
+            name: user.name,
           },
-          channel,
-          user,
-          commandNames,
-          null,
-          ...args.split(' ')
+          args: args.split(' '),
+          channel: {
+            id: channel.id,
+          },
+        };
+
+        const response = executeSandboxedCode(
+          `return (function(user, args, channel) { ${command.value} })(user, args, channel);`,
+          context
         );
 
         if (response) {
