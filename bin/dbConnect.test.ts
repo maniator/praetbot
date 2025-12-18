@@ -49,19 +49,16 @@ describe('dbConnect', () => {
   it('should handle connection errors gracefully', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    // Mock a connection error by modifying the class prototype
-    const originalConnect = MongoClient.prototype.connect;
-    MongoClient.prototype.connect = vi.fn(async () => {
-      throw new Error('Connection failed');
-    });
+    // Mock a connection error using vi.spyOn for better test isolation
+    const connectSpy = vi.spyOn(MongoClient.prototype, 'connect').mockRejectedValue(new Error('Connection failed'));
 
     const mockCallback = vi.fn();
     await connect(mockCallback);
 
     expect(consoleErrorSpy).toHaveBeenCalled();
 
-    // Restore the original method
-    MongoClient.prototype.connect = originalConnect;
+    // Restore the spy
+    connectSpy.mockRestore();
     consoleErrorSpy.mockRestore();
   });
 
