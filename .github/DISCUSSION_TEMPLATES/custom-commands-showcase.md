@@ -18,23 +18,27 @@ Post your custom commands in the comments below with:
 
 ## Template
 
-```markdown
+````markdown
 ### Command: `!!mycommand`
 
 **Description**: Brief description of what it does
 
 **Code**:
+
 ```javascript
-return "Hello from my custom command!";
+return 'Hello from my custom command!';
 ```
+````
 
 **Usage**: `!!mycommand arguments`
 
 **Example Output**:
+
 > Hello from my custom command!
 
 **Screenshot**: (optional)
-```
+
+````
 
 ## Example Custom Commands
 
@@ -45,11 +49,12 @@ return "Hello from my custom command!";
 **Code**:
 ```javascript
 return Math.random() < 0.5 ? 'Heads! 🪙' : 'Tails! 🪙';
-```
+````
 
 **Usage**: `!!coinflip`
 
 **Example Output**:
+
 > Heads! 🪙
 
 ---
@@ -59,6 +64,7 @@ return Math.random() < 0.5 ? 'Heads! 🪙' : 'Tails! 🪙';
 **Description**: Magic 8-ball responses to your questions
 
 **Code**:
+
 ```javascript
 const responses = [
   'Yes, definitely!',
@@ -67,7 +73,7 @@ const responses = [
   'The stars say yes ✨',
   'Not looking good...',
   'Absolutely!',
-  'Don\'t count on it'
+  "Don't count on it",
 ];
 return responses[Math.floor(Math.random() * responses.length)];
 ```
@@ -75,6 +81,7 @@ return responses[Math.floor(Math.random() * responses.length)];
 **Usage**: `!!8ball Will I win the lottery?`
 
 **Example Output**:
+
 > Yes, definitely!
 
 ---
@@ -84,11 +91,12 @@ return responses[Math.floor(Math.random() * responses.length)];
 **Description**: Returns a random motivational quote
 
 **Code**:
+
 ```javascript
 const quotes = [
-  'Believe you can and you\'re halfway there. - Theodore Roosevelt',
+  "Believe you can and you're halfway there. - Theodore Roosevelt",
   'The only way to do great work is to love what you do. - Steve Jobs',
-  'Don\'t watch the clock; do what it does. Keep going. - Sam Levenson'
+  "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
 ];
 return quotes[Math.floor(Math.random() * quotes.length)];
 ```

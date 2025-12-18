@@ -11,7 +11,7 @@ As Praetbot grows, we need to consider database performance and scaling strategi
 - **Database**: MongoDB
 - **Driver**: mongodb v6.11.0
 - **Connection**: Direct connection via connection string
-- **Collections**: 
+- **Collections**:
   - `commands` - Custom commands
   - `cookies` - User cookie tracking
 
@@ -22,12 +22,14 @@ As Praetbot grows, we need to consider database performance and scaling strategi
 **Current approach**: Document-based NoSQL database
 
 **Pros:**
+
 - Flexible schema
 - Easy to get started
 - Good for unstructured data
 - Scales horizontally
 
 **Cons:**
+
 - Can be overkill for simple data
 - Costs for hosted solutions
 - No ACID transactions (in our current usage)
@@ -35,6 +37,7 @@ As Praetbot grows, we need to consider database performance and scaling strategi
 **Alternatives to consider:**
 
 #### PostgreSQL
+
 - Relational database
 - ACID compliant
 - Better for structured data
@@ -43,6 +46,7 @@ As Praetbot grows, we need to consider database performance and scaling strategi
 Vote: 👍 if you prefer PostgreSQL
 
 #### SQLite
+
 - File-based database
 - Zero configuration
 - Perfect for single-server deployments
@@ -51,6 +55,7 @@ Vote: 👍 if you prefer PostgreSQL
 Vote: ❤️ if you prefer SQLite
 
 #### Redis
+
 - In-memory key-value store
 - Extremely fast
 - Great for caching
@@ -59,6 +64,7 @@ Vote: ❤️ if you prefer SQLite
 Vote: 🎉 if you prefer Redis
 
 #### Keep MongoDB
+
 - Current solution works well
 - Don't fix what isn't broken
 - Just optimize what we have
@@ -70,12 +76,14 @@ Vote: 🚀 if you prefer staying with MongoDB
 Currently, we open/close connections frequently. Should we:
 
 **Option A**: Implement connection pooling
+
 ```typescript
 // Maintain persistent connection pool
 const pool = new MongoClient(uri, { maxPoolSize: 10 });
 ```
 
 **Option B**: Single persistent connection
+
 ```typescript
 // One connection, reused throughout
 const client = await MongoClient.connect(uri);
@@ -84,6 +92,7 @@ const client = await MongoClient.connect(uri);
 **Option C**: Keep current approach (open/close per operation)
 
 Which approach is best for:
+
 - Small deployments (1-5 servers)?
 - Medium deployments (6-50 servers)?
 - Large deployments (50+ servers)?
@@ -93,17 +102,20 @@ Which approach is best for:
 Should we add caching?
 
 **Use cases:**
+
 - Cache cookie counts (reduce DB reads)
 - Cache custom commands (loaded at startup)
 - Cache user data
 
 **Options:**
+
 - In-memory (simple object/Map)
 - Redis cache layer
 - Built-in MongoDB caching
 - No caching (query on demand)
 
 **Trade-offs:**
+
 - Memory usage vs speed
 - Data freshness vs performance
 - Complexity vs reliability
@@ -111,12 +123,14 @@ Should we add caching?
 ### 4. Data Migration
 
 How should we handle:
+
 - Database migrations/schema changes
 - Backup and restore
 - Moving between database types
 - Import/export functionality
 
 Should we:
+
 - Build migration tools
 - Use existing tools (e.g., migrate-mongo)
 - Document manual migration steps
@@ -129,6 +143,7 @@ What happens when Praetbot grows?
 **Scenarios:**
 
 #### Small Scale (Current)
+
 - Single bot instance
 - 1-10 Discord servers
 - < 1000 users
@@ -137,23 +152,27 @@ What happens when Praetbot grows?
 **What works:** Current setup
 
 #### Medium Scale
+
 - Single bot instance
 - 10-100 servers
 - 1K-10K users
 - Moderate database load
 
 **Considerations:**
+
 - Connection pooling?
 - Read replicas?
 - Caching layer?
 
 #### Large Scale
+
 - Multiple bot instances
 - 100+ servers
 - 10K+ users
 - Heavy database load
 
 **Considerations:**
+
 - Sharding
 - Load balancing
 - Distributed caching
@@ -164,12 +183,14 @@ What happens when Praetbot grows?
 If running multiple bot instances:
 
 **Challenges:**
+
 - Shared database access
 - Cache synchronization
 - Command registry updates
 - Rate limiting coordination
 
 **Solutions:**
+
 - Distributed locks (Redis)
 - Pub/Sub for cache invalidation
 - Central command registry
@@ -183,6 +204,7 @@ Should we support this use case?
 
 ```markdown
 **My deployment:**
+
 - Discord servers: X
 - Active users: Y
 - Database size: Z MB/GB
@@ -194,6 +216,7 @@ Should we support this use case?
 ## Performance Benchmarks
 
 Have you measured performance? Share:
+
 - Query response times
 - Connection overhead
 - Memory usage
@@ -263,6 +286,7 @@ Have you measured performance? Share:
 Want to help improve database performance?
 
 **Areas needing work:**
+
 - Performance profiling
 - Query optimization
 - Migration tools

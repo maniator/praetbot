@@ -13,6 +13,7 @@ Your experience can help others who are setting up their own bots.
 Tell us about your deployment by answering these questions:
 
 ### 1. Where did you deploy?
+
 - AWS (EC2, Elastic Beanstalk, Lambda, etc.)
 - Azure (App Service, Container Instances, etc.)
 - Google Cloud Platform
@@ -28,6 +29,7 @@ Tell us about your deployment by answering these questions:
 ### 3. How long did setup take?
 
 ### 4. What was your experience level?
+
 - Beginner
 - Intermediate
 - Advanced
@@ -38,6 +40,7 @@ Tell us about your deployment by answering these questions:
 ### 6. Tips for others deploying to the same platform?
 
 ### 7. What's your setup?
+
 - Number of Discord servers
 - Average users
 - Monthly cost (if applicable)
@@ -54,21 +57,25 @@ Tell us about your deployment by answering these questions:
 
 **Setup Time**: ~X hours/days
 
-**Why I chose it**: 
+**Why I chose it**:
 [Your reasoning]
 
 **The Good**:
+
 - Point 1
 - Point 2
 
 **The Bad**:
+
 - Point 1
 - Point 2
 
 **Gotchas**:
+
 - Thing I wish I knew before starting
 
 **My Setup**:
+
 - X Discord servers
 - ~Y active users
 - Cost: $Z/month (or free)
@@ -77,10 +84,12 @@ Tell us about your deployment by answering these questions:
 **Would I recommend it?**: Yes/No
 
 **Tips for others**:
+
 1. Tip 1
 2. Tip 2
 
 **Helpful resources**:
+
 - [Link to guide/tutorial you used]
 ```
 
@@ -95,21 +104,25 @@ Tell us about your deployment by answering these questions:
 **Why I chose it**: Heard it was easiest for beginners, wanted free tier
 
 **The Good**:
+
 - Super simple deployment with Git push
 - Free tier available
 - Automatic SSL
 - Good documentation
 
 **The Bad**:
+
 - Free tier has sleep after 30 min inactivity
 - Can be slow to wake up
 - Limited to 550 free hours/month
 
 **Gotchas**:
+
 - Need to keep it awake with external ping service
 - Environment variables must be set in dashboard
 
 **My Setup**:
+
 - 1 Discord server
 - ~50 users
 - Cost: Free (for now)
@@ -117,6 +130,7 @@ Tell us about your deployment by answering these questions:
 **Would I recommend it?**: Yes, for getting started!
 
 **Tips for others**:
+
 1. Use UptimeRobot to ping your app and keep it awake
 2. Set up MongoDB Atlas (also free) for database
 3. Read the Procfile carefully
@@ -132,22 +146,26 @@ Tell us about your deployment by answering these questions:
 **Why I chose it**: Wanted full control and better performance
 
 **The Good**:
+
 - Always running (no sleep)
 - Full control over server
 - Can run multiple bots
 - Free tier for 1 year
 
 **The Bad**:
+
 - More complex setup
 - Need to manage security updates
 - Requires SSH knowledge
 
 **Gotchas**:
+
 - Don't forget to configure security groups
 - PM2 auto-restart is crucial
 - Need to set up MongoDB separately
 
 **My Setup**:
+
 - 3 Discord servers
 - ~500 users total
 - Cost: Free (t2.micro, year 1)
@@ -155,6 +173,7 @@ Tell us about your deployment by answering these questions:
 **Would I recommend it?**: Yes, if you want reliability and control
 
 **Tips for others**:
+
 1. Use the deployment guide in DEPLOYMENT.md
 2. Set up PM2 from the start
 3. Enable CloudWatch for monitoring

@@ -13,6 +13,7 @@ This guide explains how to enable and populate the Praetbot GitHub Wiki with the
 ## Access the Wiki
 
 Once enabled:
+
 1. Click the **Wiki** tab in your repository
 2. Click **Create the first page**
 
@@ -24,19 +25,14 @@ Use the templates in `.github/WIKI_TEMPLATES/` to create these pages:
 
 1. **Home** (landing page)
    - Use: `Home.md`
-   
 2. **Community Commands**
    - Use: `Community-Commands.md`
-   
 3. **Awesome Praetbot Commands**
    - Use: `Awesome-Praetbot-Commands.md`
-   
 4. **Deployment Guides**
    - Use: `Deployment-Guides.md`
-   
 5. **Troubleshooting**
    - Use: `Troubleshooting.md`
-   
 6. **FAQ**
    - Use: `FAQ.md`
 
@@ -54,27 +50,32 @@ Recommended sidebar (edit `_Sidebar.md`):
 
 ```markdown
 **Home**
-* [Home](Home)
-* [Getting Started](Getting-Started)
+
+- [Home](Home)
+- [Getting Started](Getting-Started)
 
 **Commands**
-* [Built-in Commands](Built-in-Commands)
-* [Community Commands](Community-Commands)
-* [Awesome Commands](Awesome-Praetbot-Commands)
+
+- [Built-in Commands](Built-in-Commands)
+- [Community Commands](Community-Commands)
+- [Awesome Commands](Awesome-Praetbot-Commands)
 
 **Deployment**
-* [Quick Start](Quick-Start)
-* [Deployment Guides](Deployment-Guides)
-* [Docker Setup](Docker-Setup)
+
+- [Quick Start](Quick-Start)
+- [Deployment Guides](Deployment-Guides)
+- [Docker Setup](Docker-Setup)
 
 **Help**
-* [FAQ](FAQ)
-* [Troubleshooting](Troubleshooting)
-* [Migration Guide](Migration-Guide)
+
+- [FAQ](FAQ)
+- [Troubleshooting](Troubleshooting)
+- [Migration Guide](Migration-Guide)
 
 **Contributing**
-* [How to Contribute](Contributing)
-* [Style Guide](Style-Guide)
+
+- [How to Contribute](Contributing)
+- [Style Guide](Style-Guide)
 ```
 
 ## Maintain the Wiki
@@ -82,10 +83,12 @@ Recommended sidebar (edit `_Sidebar.md`):
 ### Allow Community Contributions
 
 Option 1: **Restrict to Collaborators** (more controlled)
+
 - Settings > Options > Wiki
 - Uncheck "Restrict editing to collaborators only"
 
 Option 2: **Open to Everyone** (more contributions, needs moderation)
+
 - Anyone can edit
 - Monitor recent changes
 - Revert vandalism if needed
@@ -130,6 +133,7 @@ Update `README.md`:
 ## Wiki vs Docs Folder
 
 **Use Wiki for:**
+
 - Community-contributed content
 - Tutorials and guides
 - FAQ and troubleshooting
@@ -137,6 +141,7 @@ Update `README.md`:
 - Deployment stories
 
 **Use `/docs` folder for:**
+
 - Official documentation
 - API references
 - Architecture diagrams

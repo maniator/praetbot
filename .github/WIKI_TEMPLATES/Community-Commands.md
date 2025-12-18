@@ -28,9 +28,7 @@ const match = args.match(/(\d+)d(\d+)/);
 if (!match) return 'Usage: !!roll XdY (e.g., 2d6)';
 
 const [, num, sides] = match.map(Number);
-const rolls = Array.from({ length: num }, () => 
-  Math.floor(Math.random() * sides) + 1
-);
+const rolls = Array.from({ length: num }, () => Math.floor(Math.random() * sides) + 1);
 const total = rolls.reduce((a, b) => a + b, 0);
 
 return `🎲 Rolled ${num}d${sides}: [${rolls.join(', ')}] = ${total}`;
@@ -52,10 +50,10 @@ const responses = [
   'The stars say yes ⭐',
   'Not looking good... 😬',
   'Absolutely! 💯',
-  'Don\'t count on it 😕',
+  "Don't count on it 😕",
   'Signs point to yes 👍',
   'Very doubtful 👎',
-  'Without a doubt! ✅'
+  'Without a doubt! ✅',
 ];
 return responses[Math.floor(Math.random() * responses.length)];
 ```
@@ -104,10 +102,12 @@ Show current time in different formats.
 
 ```javascript
 const now = new Date();
-return `🕐 Current time:\n` +
-       `Local: ${now.toLocaleString()}\n` +
-       `UTC: ${now.toUTCString()}\n` +
-       `Unix: ${Math.floor(now.getTime() / 1000)}`;
+return (
+  `🕐 Current time:\n` +
+  `Local: ${now.toLocaleString()}\n` +
+  `UTC: ${now.toUTCString()}\n` +
+  `Unix: ${Math.floor(now.getTime() / 1000)}`
+);
 ```
 
 ---
@@ -142,12 +142,12 @@ const args = Array.from(arguments).join(' ').toLowerCase();
 // Temperature
 if (args.includes('f to c')) {
   const f = parseFloat(args);
-  const c = ((f - 32) * 5/9).toFixed(2);
+  const c = (((f - 32) * 5) / 9).toFixed(2);
   return `${f}°F = ${c}°C`;
 }
 if (args.includes('c to f')) {
   const c = parseFloat(args);
-  const f = (c * 9/5 + 32).toFixed(2);
+  const f = ((c * 9) / 5 + 32).toFixed(2);
   return `${c}°C = ${f}°F`;
 }
 
@@ -230,8 +230,8 @@ const quotes = [
   'Innovation distinguishes between a leader and a follower. - Steve Jobs',
   'Stay hungry, stay foolish. - Steve Jobs',
   'The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt',
-  'Believe you can and you\'re halfway there. - Theodore Roosevelt',
-  'Don\'t watch the clock; do what it does. Keep going. - Sam Levenson'
+  "Believe you can and you're halfway there. - Theodore Roosevelt",
+  "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
 ];
 return '💬 ' + quotes[Math.floor(Math.random() * quotes.length)];
 ```
@@ -243,7 +243,11 @@ return '💬 ' + quotes[Math.floor(Math.random() * quotes.length)];
 Generate a random hex color.
 
 ```javascript
-const color = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+const color =
+  '#' +
+  Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, '0');
 return `🎨 Your random color: ${color}`;
 ```
 
@@ -295,7 +299,7 @@ const foods = [
   '🥗 Salad',
   '🍛 Curry',
   '🍳 Breakfast',
-  '🥙 Sandwich'
+  '🥙 Sandwich',
 ];
 return 'How about: ' + foods[Math.floor(Math.random() * foods.length)];
 ```
@@ -315,7 +319,7 @@ const exercises = [
   '25 Jumping Jacks',
   '30-second Wall Sit',
   '20 Lunges',
-  '15 Mountain Climbers'
+  '15 Mountain Climbers',
 ];
 return '💪 Your workout: ' + exercises[Math.floor(Math.random() * exercises.length)];
 ```
@@ -331,7 +335,7 @@ const moods = {
   happy: ['🎵 Upbeat Pop', '🎸 Feel-Good Rock', '🎹 Happy Piano'],
   sad: ['🎻 Emotional Ballad', '🎹 Sad Piano', '🎸 Slow Rock'],
   energetic: ['🎧 EDM', '🎸 Fast Rock', '🥁 Drum & Bass'],
-  chill: ['🎷 Jazz', '🎹 Lo-fi', '🎸 Acoustic']
+  chill: ['🎷 Jazz', '🎹 Lo-fi', '🎸 Acoustic'],
 };
 
 const mood = arguments[0] || 'chill';
@@ -352,13 +356,14 @@ To add any of these commands to your Praetbot:
 ```
 
 Example:
+
 ```
 !!addCommand coinflip return Math.random() < 0.5 ? 'Heads! 🪙' : 'Tails! 🪙';
 ```
 
 ## Contributing
 
-Found a bug in a command? Have improvements? 
+Found a bug in a command? Have improvements?
 
 1. Edit this wiki page
 2. Share in [GitHub Discussions](https://github.com/maniator/praetbot/discussions)

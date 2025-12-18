@@ -36,9 +36,7 @@ const mod = modifier ? parseInt(modifier) : 0;
 if (dice > 100) return '❌ Maximum 100 dice';
 if (sides > 1000) return '❌ Maximum 1000 sides';
 
-const rolls = Array.from({ length: dice }, () => 
-  Math.floor(Math.random() * sides) + 1
-);
+const rolls = Array.from({ length: dice }, () => Math.floor(Math.random() * sides) + 1);
 const sum = rolls.reduce((a, b) => a + b, 0);
 const total = sum + mod;
 
@@ -93,8 +91,7 @@ const mid = Math.ceil(players.length / 2);
 const team1 = players.slice(0, mid);
 const team2 = players.slice(mid);
 
-return `🔵 **Team 1**: ${team1.join(', ')}\n` +
-       `🔴 **Team 2**: ${team2.join(', ')}`;
+return `🔵 **Team 1**: ${team1.join(', ')}\n` + `🔴 **Team 2**: ${team2.join(', ')}`;
 ```
 
 **Why it's awesome**: Perfect for games, fair randomization, clean output.
@@ -154,10 +151,7 @@ const chars = text.length;
 const words = text.trim().split(/\s+/).length;
 const lines = text.split('\n').length;
 
-return `📋 **Text Stats**\n` +
-       `Characters: ${chars}\n` +
-       `Words: ${words}\n` +
-       `Lines: ${lines}`;
+return `📋 **Text Stats**\n` + `Characters: ${chars}\n` + `Words: ${words}\n` + `Lines: ${lines}`;
 ```
 
 ---
@@ -203,8 +197,7 @@ const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-return `⏱️ **Time until ${arguments[0]}**\n` +
-       `${days} days, ${hours} hours, ${minutes} minutes`;
+return `⏱️ **Time until ${arguments[0]}**\n` + `${days} days, ${hours} hours, ${minutes} minutes`;
 ```
 
 ---
@@ -226,11 +219,13 @@ const cls = classes[Math.floor(Math.random() * classes.length)];
 const trait = traits[Math.floor(Math.random() * traits.length)];
 const flaw = flaws[Math.floor(Math.random() * flaws.length)];
 
-return `🎭 **Random Character**\n` +
-       `Race: ${race}\n` +
-       `Class: ${cls}\n` +
-       `Trait: ${trait}\n` +
-       `Flaw: ${flaw}`;
+return (
+  `🎭 **Random Character**\n` +
+  `Race: ${race}\n` +
+  `Class: ${cls}\n` +
+  `Trait: ${trait}\n` +
+  `Flaw: ${flaw}`
+);
 ```
 
 ---
@@ -251,7 +246,7 @@ const art = {
   success: '(•̀ᴗ•́)و',
   disapproval: 'ಠ_ಠ',
   party: '٩(◕‿◕｡)۶',
-  music: '♪┏(・o･)┛♪'
+  music: '♪┏(・o･)┛♪',
 };
 
 return art[type] || `Available: ${Object.keys(art).join(', ')}`;
@@ -274,7 +269,7 @@ if (!text) return '❌ Provide text to analyze';
 const words = text.match(/\b\w+\b/g) || [];
 const freq = {};
 
-words.forEach(word => {
+words.forEach((word) => {
   freq[word] = (freq[word] || 0) + 1;
 });
 
@@ -330,11 +325,13 @@ if (!dateStr) return '❌ Provide a date (YYYY-MM-DD)';
 const date = new Date(dateStr);
 if (isNaN(date.getTime())) return '❌ Invalid date';
 
-return `📅 **Date Formats**\n` +
-       `Full: ${date.toDateString()}\n` +
-       `ISO: ${date.toISOString().split('T')[0]}\n` +
-       `Locale: ${date.toLocaleDateString()}\n` +
-       `Unix: ${Math.floor(date.getTime() / 1000)}`;
+return (
+  `📅 **Date Formats**\n` +
+  `Full: ${date.toDateString()}\n` +
+  `ISO: ${date.toISOString().split('T')[0]}\n` +
+  `Locale: ${date.toLocaleDateString()}\n` +
+  `Unix: ${Math.floor(date.getTime() / 1000)}`
+);
 ```
 
 ---
@@ -358,6 +355,7 @@ To get your command featured here:
 4. It should be well-documented
 
 Submit in [GitHub Discussions](https://github.com/maniator/praetbot/discussions) with:
+
 - Command name and code
 - Usage examples
 - Why it's awesome!

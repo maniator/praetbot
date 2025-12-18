@@ -164,9 +164,7 @@ describe('CommandListener', () => {
       expect(mockSend).toHaveBeenCalledWith(expect.stringContaining('Test response'));
     });
 
-    it.skip('should evaluate command value if provided (now runs in sandbox)', async () => {
-      // This test is skipped because custom commands now run in a secure sandbox
-      // which doesn't allow Function() constructor for security reasons
+    it('should execute command value in sandbox and return result', async () => {
       const listener = new CommandListener(mockBotListener as any);
 
       const mockCommand = {
@@ -184,7 +182,7 @@ describe('CommandListener', () => {
 
       expect(mockSend).toHaveBeenCalled();
       const response = mockSend.mock.calls[0][0] as string;
-      expect(response).toContain('Evaluated response');
+      expect(response).toBe('Evaluated response');
     });
 
     it('should handle value evaluation errors', async () => {

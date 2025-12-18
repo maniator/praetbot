@@ -46,38 +46,48 @@ After creating the discussion:
 After creating the discussion, update these files with the actual URL:
 
 ### In `README.md`
+
 Replace:
+
 ```markdown
 - Share your thoughts in [GitHub Discussions](https://github.com/maniator/praetbot/discussions)
 ```
 
 With:
+
 ```markdown
 - Share your thoughts in [GitHub Discussions](https://github.com/maniator/praetbot/discussions/1)
 ```
+
 (Use the actual discussion number)
 
 ### In `docs/SCREENSHOTS.md`
+
 Replace:
+
 ```markdown
 - [GitHub Discussions](https://github.com/maniator/praetbot/discussions)
 - Open an issue with tag `frontend` or `design`
 ```
 
 With:
+
 ```markdown
 - [Frontend Framework Discussion](https://github.com/maniator/praetbot/discussions/1)
 - Open an issue with tag `frontend` or `design`
 ```
 
 ### In `docs/screenshots/README.md`
+
 Replace:
+
 ```markdown
 - Open a [GitHub Discussion](https://github.com/maniator/praetbot/discussions)
 - Comment on [Issue #XX](https://github.com/maniator/praetbot/issues) (Frontend Framework Discussion)
 ```
 
 With:
+
 ```markdown
 - Join the [Frontend Framework Discussion](https://github.com/maniator/praetbot/discussions/1)
 ```

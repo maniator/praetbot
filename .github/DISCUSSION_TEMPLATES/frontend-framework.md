@@ -24,18 +24,22 @@ Vote and share your thoughts below! 👇
 ## Options
 
 ### Option 1: Keep It Simple ⚡
+
 **Enhance existing setup with:**
+
 - Bootstrap or Tailwind CSS for styling
 - Vanilla JavaScript for interactivity
 - Server-side rendering with Handlebars
 
 **Pros:**
+
 - Lightweight and fast
 - No build step required
 - Simple deployment
 - Easy for beginners
 
 **Cons:**
+
 - Less modern developer experience
 - Harder to build complex UIs
 - Less tooling/ecosystem
@@ -45,18 +49,22 @@ Vote and share your thoughts below! 👇
 ---
 
 ### Option 2: React Ecosystem ⚛️
+
 **Use React with:**
+
 - Vite for build tooling
 - React Router for navigation
 - Your choice of UI library (Chakra, shadcn/ui, MUI)
 
 **Pros:**
+
 - Huge ecosystem and community
 - Excellent developer experience
 - Rich component libraries
 - Easy to find contributors
 
 **Cons:**
+
 - Requires build step
 - Larger bundle size
 - More complex setup
@@ -66,18 +74,22 @@ Vote and share your thoughts below! 👇
 ---
 
 ### Option 3: Vue.js 💚
+
 **Use Vue 3 with:**
+
 - Vite for build tooling
 - Vue Router for navigation
 - Vuetify, PrimeVue, or other UI libraries
 
 **Pros:**
+
 - Great documentation
 - Easy to learn
 - Good performance
 - Growing ecosystem
 
 **Cons:**
+
 - Smaller ecosystem than React
 - Requires build step
 
@@ -86,19 +98,23 @@ Vote and share your thoughts below! 👇
 ---
 
 ### Option 4: Svelte 🧡
+
 **Use Svelte/SvelteKit:**
+
 - Built-in routing and SSR
 - No virtual DOM
 - Highly performant
 - Great DX
 
 **Pros:**
+
 - Smallest bundle size
 - Fastest performance
 - Amazing developer experience
 - Less boilerplate
 
 **Cons:**
+
 - Smaller ecosystem
 - Fewer UI libraries
 - Newer technology
@@ -108,19 +124,23 @@ Vote and share your thoughts below! 👇
 ---
 
 ### Option 5: Next.js 🔺
+
 **Use Next.js (React framework):**
+
 - Server-side rendering
 - File-based routing
 - API routes
 - Excellent DX
 
 **Pros:**
+
 - Full-stack framework
 - Great performance
 - SEO-friendly
 - Large ecosystem
 
 **Cons:**
+
 - More opinionated
 - Potential overkill for our needs
 
@@ -129,18 +149,22 @@ Vote and share your thoughts below! 👇
 ---
 
 ### Option 6: HTMX + Alpine.js 🏔️
+
 **Progressive enhancement:**
+
 - Keep server-side rendering
 - HTMX for dynamic content
 - Alpine.js for light interactivity
 
 **Pros:**
+
 - Simple and lightweight
 - Progressive enhancement
 - No complex build
 - Modern without SPAs
 
 **Cons:**
+
 - Less powerful than frameworks
 - Smaller community
 
@@ -149,7 +173,9 @@ Vote and share your thoughts below! 👇
 ---
 
 ### Option 7: Something Else? 💡
+
 **Suggest alternatives:**
+
 - Astro
 - Remix
 - SolidJS

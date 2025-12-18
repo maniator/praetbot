@@ -4,7 +4,7 @@ This directory contains screenshots of the Praetbot web interface and Discord bo
 
 ## Current Screenshots
 
-*Screenshots coming soon!*
+_Screenshots coming soon!_
 
 To contribute screenshots:
 
@@ -41,6 +41,7 @@ We're actively looking for contributors to improve the web interface!
 **Currently:** Basic Express + Handlebars templates (minimal styling)
 
 **We'd love your input on what to use:**
+
 - Keep it simple with vanilla HTML/CSS/JS?
 - Modern framework like React, Vue, or Svelte?
 - Static site generator like Next.js, Gatsby, or Astro?
@@ -48,6 +49,7 @@ We're actively looking for contributors to improve the web interface!
 - Something else entirely?
 
 **Share your ideas:**
+
 - Open a [GitHub Discussion](https://github.com/maniator/praetbot/discussions)
 - Comment on [Issue #XX](https://github.com/maniator/praetbot/issues) (Frontend Framework Discussion)
 - Join our Discord community (coming soon)

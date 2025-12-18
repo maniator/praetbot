@@ -23,11 +23,13 @@ Are you coming from:
 ### 1. Cookie/Points System Migration
 
 **From MEE6 levels/XP:**
+
 - Export your MEE6 data (if possible)
 - Convert to cookie format
 - Import to Praetbot database
 
 **From other points systems:**
+
 - Map old points to cookies
 - Preserve user rankings
 - Import custom commands
@@ -54,6 +56,7 @@ This helps us prioritize development!
 ### From MEE6
 
 **What transfers:**
+
 - ✅ Custom commands (manual recreation)
 - ✅ User points (as cookies, manual)
 - ❌ Levels (not yet supported)
@@ -61,6 +64,7 @@ This helps us prioritize development!
 - ❌ Moderation logs (not available)
 
 **Steps:**
+
 1. Document your MEE6 commands
 2. Recreate them in Praetbot with `!!addCommand`
 3. If you need levels, open a feature request!
@@ -68,6 +72,7 @@ This helps us prioritize development!
 ### From Dyno
 
 **What transfers:**
+
 - ✅ Custom commands
 - ✅ Auto-responses (via custom commands)
 - ❌ Moderation features
@@ -75,6 +80,7 @@ This helps us prioritize development!
 - ❌ Music features
 
 **Steps:**
+
 1. List your Dyno custom commands
 2. Convert to Praetbot format
 3. Set up similar functionality
@@ -82,6 +88,7 @@ This helps us prioritize development!
 ### From Carl-bot
 
 **What transfers:**
+
 - ✅ Custom commands
 - ✅ Fun commands (recreate)
 - ❌ Reaction roles
@@ -93,6 +100,7 @@ This helps us prioritize development!
 **If you built your own bot:**
 
 Share your experience switching! What did you:
+
 - Keep running alongside Praetbot?
 - Successfully migrate?
 - Have to give up?
@@ -101,7 +109,7 @@ Share your experience switching! What did you:
 
 ### Command Conversion Template
 
-```markdown
+````markdown
 ### Command: oldcommand
 
 **Old bot**: [Bot name]
@@ -109,12 +117,15 @@ Share your experience switching! What did you:
 **Old response**: [What it did]
 
 **Praetbot conversion**:
+
 ```javascript
 !!addCommand oldcommand [your code here]
 ```
+````
 
 **Notes**: [Any differences or limitations]
-```
+
+````
 
 ### User Data Migration Template
 
@@ -136,7 +147,7 @@ Share your experience switching! What did you:
 **Success rate**: X%
 
 **Issues encountered**: [Any problems]
-```
+````
 
 ## Help Needed
 
@@ -182,10 +193,10 @@ We could use community-contributed scripts for:
 const fs = require('fs');
 
 const mee6Data = JSON.parse(fs.readFileSync('mee6-export.json'));
-const praetbotCookies = mee6Data.users.map(user => ({
+const praetbotCookies = mee6Data.users.map((user) => ({
   id: user.id,
   name: user.username,
-  cookies: Math.floor(user.xp / 100) // Convert XP to cookies
+  cookies: Math.floor(user.xp / 100), // Convert XP to cookies
 }));
 
 fs.writeFileSync('praetbot-import.json', JSON.stringify(praetbotCookies));
@@ -213,6 +224,7 @@ Be honest! What features from your old bot can't Praetbot match?
 This helps us understand what to prioritize:
 
 **Common gaps:**
+
 - Advanced moderation
 - Music playback
 - Reaction roles
@@ -235,24 +247,28 @@ This helps us understand what to prioritize:
 **Difficulty**: Easy/Medium/Hard
 
 **What worked well**:
+
 - Point 1
 - Point 2
 
 **Challenges**:
+
 - Challenge 1
 - Challenge 2
 
 **What I miss from old bot**:
+
 - Feature 1
 - Feature 2
 
 **What's better in Praetbot**:
+
 - Better thing 1
 - Better thing 2
 
 **Overall experience**: [Would you recommend?]
 
-**Advice for others**: 
+**Advice for others**:
 [Your tips]
 ```
 
@@ -261,6 +277,7 @@ This helps us understand what to prioritize:
 Running Praetbot alongside another bot?
 
 **Common setups:**
+
 - Praetbot for custom commands + MEE6 for leveling
 - Praetbot for fun + Dyno for moderation
 - Multiple bots for different features
@@ -277,6 +294,7 @@ Running Praetbot alongside another bot?
 ## Need a Feature from Your Old Bot?
 
 Open a feature request! Include:
+
 - What bot had it
 - How it worked
 - Why you need it

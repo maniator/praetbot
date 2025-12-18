@@ -9,6 +9,7 @@ We're always looking to improve Praetbot and add new features! Share your ideas 
 ## Before Requesting
 
 Please check:
+
 - [ ] Is this already a feature? (Check the README)
 - [ ] Has someone already suggested this? (Search existing discussions)
 - [ ] Is this related to Discord bot functionality or the web interface?
@@ -58,6 +59,7 @@ Vote with reactions on what interests you most:
 ### Bot Commands
 
 **Examples:**
+
 - Reminder system (`!!remind me in 2 hours`)
 - Poll creator (`!!poll "Question" "Option 1" "Option 2"`)
 - User info lookup (`!!userinfo @user`)
@@ -70,6 +72,7 @@ Vote with reactions on what interests you most:
 ### Web Interface
 
 **Examples:**
+
 - Live dashboard with stats
 - Command management (add/edit/delete via web)
 - User leaderboard with filters
@@ -81,6 +84,7 @@ Vote with reactions on what interests you most:
 ### Integrations
 
 **Examples:**
+
 - GitHub notifications
 - Twitch stream alerts
 - Reddit post notifications
@@ -93,6 +97,7 @@ Vote with reactions on what interests you most:
 ### Moderation
 
 **Examples:**
+
 - Auto-mod rules
 - Bad word filter
 - Spam detection
@@ -104,6 +109,7 @@ Vote with reactions on what interests you most:
 ### Games & Fun
 
 **Examples:**
+
 - Trivia game
 - Word games
 - RPG system
@@ -116,6 +122,7 @@ Vote with reactions on what interests you most:
 ### Quality of Life
 
 **Examples:**
+
 - Command aliases
 - Custom prefixes
 - Per-server configuration
@@ -178,16 +185,19 @@ See [CONTRIBUTING.md](https://github.com/maniator/praetbot/blob/main/CONTRIBUTIN
 ## Feature Roadmap
 
 ### In Progress
+
 - [ ] Frontend framework selection
 - [ ] Web interface redesign
 - [ ] Documentation improvements
 
 ### Planned
+
 - [ ] Slash commands support
 - [ ] Better error handling
 - [ ] Command permissions system
 
 ### Under Consideration
+
 - [ ] Leveling system
 - [ ] Moderation commands
 - [ ] Integrations framework

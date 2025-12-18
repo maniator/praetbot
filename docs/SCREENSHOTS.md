@@ -6,13 +6,13 @@
 
 ![Home Page](screenshots/home-page.png)
 
-*The main landing page of the Praetbot web interface.*
+_The main landing page of the Praetbot web interface._
 
 ### Cookie Leaderboard
 
 ![Cookie Leaderboard](screenshots/users-endpoint.png)
 
-*JSON endpoint showing users and their cookie counts at `/users`.*
+_JSON endpoint showing users and their cookie counts at `/users`._
 
 ---
 
@@ -22,19 +22,19 @@
 
 ![Cookie System](screenshots/discord-cookies.png)
 
-*Users giving cookies to each other with `@user ++` and `@user --` commands.*
+_Users giving cookies to each other with `@user ++` and `@user --` commands._
 
 ### Built-in Commands
 
 ![Commands](screenshots/discord-commands.png)
 
-*Examples of built-in commands like `!!help`, `!!weather`, and `!!xkcd`.*
+_Examples of built-in commands like `!!help`, `!!weather`, and `!!xkcd`._
 
 ### Custom Commands
 
 ![Custom Commands](screenshots/discord-custom-commands.png)
 
-*Adding and using custom commands with `!!addCommand`.*
+_Adding and using custom commands with `!!addCommand`._
 
 ---
 
@@ -54,6 +54,7 @@
 **We'd love your opinion on the frontend stack:**
 
 #### Option 1: Keep It Simple
+
 - Enhance existing Handlebars templates
 - Add Bootstrap/Tailwind CSS
 - Vanilla JavaScript for interactivity
@@ -61,6 +62,7 @@
 - **Cons**: Less modern, harder to maintain complex UIs
 
 #### Option 2: Modern SPA Framework
+
 - **React** + Vite
 - **Vue.js** + Vite
 - **Svelte** + SvelteKit
@@ -69,6 +71,7 @@
 - **Cons**: Requires build step, heavier
 
 #### Option 3: Static Site Generator
+
 - **Next.js** (React)
 - **Gatsby** (React)
 - **Astro** (framework-agnostic)
@@ -77,6 +80,7 @@
 - **Cons**: May be overkill for our use case
 
 #### Option 4: Full-Stack Meta Framework
+
 - **Remix** (React)
 - **SvelteKit** (Svelte)
 - **SolidStart** (Solid)
@@ -84,6 +88,7 @@
 - **Cons**: More complex setup
 
 #### Option 5: HTMX/Alpine.js
+
 - Keep server-side rendering
 - Add **HTMX** for dynamic content
 - **Alpine.js** for lightweight interactivity
@@ -135,6 +140,7 @@ If you have design skills (regardless of implementation):
 - Component libraries
 
 **Share your work:**
+
 - Post in GitHub Discussions
 - Link in an issue
 - Submit a PR with designs in `docs/designs/`
@@ -174,8 +180,9 @@ Place screenshots in `docs/screenshots/` directory.
 ## Let's Discuss!
 
 Join the conversation:
+
 - [GitHub Discussions](https://github.com/maniator/praetbot/discussions)
 - Open an issue with tag `frontend` or `design`
 - Discord community (coming soon)
 
-*Note: Screenshots will be added as the web interface is developed and improved. All contributions welcome!*
+_Note: Screenshots will be added as the web interface is developed and improved. All contributions welcome!_

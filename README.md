@@ -81,7 +81,7 @@ npm run build
 Praetbot includes an Express web interface that runs alongside the Discord bot.
 
 ![Web Interface Preview](docs/screenshots/home-page.png)
-*Web interface coming soon - contributions welcome!*
+_Web interface coming soon - contributions welcome!_
 
 ### Starting the Web Server
 
@@ -148,17 +148,19 @@ See [WEB_INTERFACE.md](WEB_INTERFACE.md) for detailed customization guide.
 
 ### 🎨 Help Wanted: Improve the Web Interface!
 
-The current web interface is functional but minimal (Express + Handlebars templates). 
+The current web interface is functional but minimal (Express + Handlebars templates).
 
 **We need your input on the frontend stack and design!**
 
 #### What should we use?
+
 - Keep it simple with vanilla HTML/CSS/JS?
 - Modern framework (React, Vue, Svelte)?
 - Static site generator (Next.js, Gatsby, Astro)?
 - Something else?
 
 #### What we want to build:
+
 - Modern, beautiful UI
 - Visual cookie leaderboard
 - Responsive design
@@ -166,6 +168,7 @@ The current web interface is functional but minimal (Express + Handlebars templa
 - Better overall UX
 
 **Join the discussion:**
+
 - Share your thoughts in [GitHub Discussions](https://github.com/maniator/praetbot/discussions)
 - See [docs/SCREENSHOTS.md](docs/SCREENSHOTS.md) for detailed framework options and design ideas
 - Submit a prototype with your preferred stack!

@@ -48,7 +48,7 @@ export function executeSandboxedCode(
     /exports\s*\./gi,
     /child_process/gi,
     /eval\s*\(/gi,
-    /Function\s*\(/gi,
+    /Function\s*\(/g, // Case-sensitive - only blocks Function constructor, not function keyword
     /constructor\s*\(/gi,
   ];
 
@@ -149,7 +149,7 @@ export function validateCommandCode(code: string): { valid: boolean; error?: str
     { pattern: /exports\s*\./gi, name: 'exports object' },
     { pattern: /child_process/gi, name: 'child_process' },
     { pattern: /eval\s*\(/gi, name: 'eval()' },
-    { pattern: /Function\s*\(/gi, name: 'Function constructor' },
+    { pattern: /Function\s*\(/g, name: 'Function constructor' }, // Case-sensitive
   ];
 
   for (const { pattern, name } of dangerousPatterns) {
