@@ -2,10 +2,6 @@ import { getCookieByUserId, updateCookie, CookieUser } from '../bin/cookies.js';
 import { CommandListener } from './command.js';
 import { Client, GatewayIntentBits, Events, TextChannel, DMChannel } from 'discord.js';
 
-interface MessageParams {
-  reply?: boolean;
-}
-
 class Bot {
   private containsAUserRegex: RegExp = /<@(\d+)>/i;
   private giveUserStars: RegExp = /<@(\d+)>\s?\+\+/i;

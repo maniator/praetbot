@@ -64,7 +64,10 @@ class CommandListener {
 
     connect(async (db: Db) => {
       try {
-        const commandList = await db.collection('commands').find({}).toArray() as unknown as Command[];
+        const commandList = (await db
+          .collection('commands')
+          .find({})
+          .toArray()) as unknown as Command[];
         const list = commandList.filter((c: Command) => c._id === command);
 
         const user: User = {

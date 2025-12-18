@@ -228,7 +228,7 @@ const commands: Command[] = [
       bot: Client,
       channel: TextChannel | DMChannel,
       user: User,
-      ...args: string[]
+      ..._args: string[]
     ) => {
       const coinflipModule = await import('./commands/coinflip.js');
       return coinflipModule.default(bot, channel, user);
@@ -254,7 +254,7 @@ const commands: Command[] = [
       bot: Client,
       channel: TextChannel | DMChannel,
       user: User,
-      ...args: string[]
+      ..._args: string[]
     ) => {
       const quoteModule = await import('./commands/quote.js');
       return quoteModule.default(bot, channel, user);
@@ -267,7 +267,7 @@ const commands: Command[] = [
       bot: Client,
       channel: TextChannel | DMChannel,
       user: User,
-      ...args: string[]
+      ..._args: string[]
     ) => {
       const colorModule = await import('./commands/color.js');
       return colorModule.default(bot, channel, user);

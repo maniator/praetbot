@@ -44,7 +44,7 @@ export default async function (
     await channel.send('This command only works in server text channels.');
     return;
   }
-  
+
   try {
     const response = await rollCommand(bot, channel as TextChannel, args.join(' '));
     await channel.send(`<@${user.id}> ${response}`);

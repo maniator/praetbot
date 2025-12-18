@@ -13,6 +13,7 @@ const createMockMember = (id: string, username: string, isBot: boolean = false) 
 
 const mockChannel = {
   send: mockSend,
+  type: 0, // GuildText channel type
   guild: {
     id: 'guild123',
     members: {
@@ -96,6 +97,7 @@ describe('roll command', () => {
   it('should handle channels with no guild', async () => {
     const channelWithoutGuild = {
       send: mockSend,
+      type: 1, // DM channel type
       guild: null,
     };
 
@@ -110,7 +112,7 @@ describe('roll command', () => {
 
     expect(mockSend).toHaveBeenCalled();
     const sentMessage = mockSend.mock.calls[0][0];
-    expect(sentMessage).toContain('only works in server channels');
+    expect(sentMessage).toContain('only works in server text channels');
   });
 
   it('should tag the requesting user in response', async () => {
