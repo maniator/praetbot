@@ -85,9 +85,8 @@ const commands: Command[] = [
 
       connect(async (db: Db) => {
         try {
-          await db.collection('commands').deleteOne({
-            _id: command as string,
-          });
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          await db.collection('commands').deleteOne({ _id: command } as any);
           await channel.send(`<@${user.name}> ${command} removed!`);
         } catch (error) {
           console.error('Error removing command:', error);
@@ -115,7 +114,8 @@ const commands: Command[] = [
         try {
           await db
             .collection('commands')
-            .replaceOne({ _id: command as string }, { _id: command, value }, { upsert: true });
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .replaceOne({ _id: command } as any, { _id: command, value }, { upsert: true });
           await channel.send(`<@${user.name}> ${command} added!`);
         } catch (error) {
           console.error('Error adding command:', error);
