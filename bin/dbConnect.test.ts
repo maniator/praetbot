@@ -67,9 +67,6 @@ describe('dbConnect', () => {
 
   it('should construct correct MongoDB connection string', async () => {
     const mockCallback = vi.fn();
-    
-    // Spy on MongoClient constructor to capture the connection string
-    const constructorSpy = vi.spyOn(MongoClient.prototype, 'constructor' as any);
 
     // The environment variables should already be set in beforeEach
     // Just verify the function runs without errors
