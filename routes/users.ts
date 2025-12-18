@@ -1,12 +1,16 @@
-import { getCookies } from '../bin/cookies';
+import express, { Request, Response, NextFunction } from 'express';
+import { getCookies } from '../bin/cookies.js';
 
-var express = require('express');
-var router = express.Router();
-
+const router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req : any, res : any, next : Function) {
-  getCookies().then((cookies) => res.json(cookies));
+router.get('/', async (_req: Request, res: Response, _next: NextFunction) => {
+  try {
+    const cookies = await getCookies();
+    res.json(cookies);
+  } catch {
+    res.status(500).json({ error: 'Failed to fetch cookies' });
+  }
 });
 
-module.exports = router;
+export default router;

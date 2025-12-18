@@ -1,95 +1,131 @@
-import {Message} from './message';
-import {Command, User} from './command-interface';
-import {commands} from './commands';
-import {connect} from '../bin/dbConnect';
+import { Message as DiscordMessage, Events, TextChannel, DMChannel } from 'discord.js';
+import { Command, User } from './command-interface.js';
+import { commands } from './commands.js';
+import { connect } from '../bin/dbConnect.js';
+import { Bot } from './index.js';
+import { CommandRegistry } from './types.js';
+import { Db } from 'mongodb';
+import { executeSandboxedCode } from './sandbox.js';
 
 class CommandListener {
-    private commandRegex: RegExp = /^\!\!([a-zA-Z]*)\s?(.*)?/;
+  private commandRegex: RegExp = /^\!\!([a-zA-Z]*)\s?(.*)?/;
 
-    constructor(private botListener: any) { }
+  constructor(private botListener: Bot) {}
 
-    runCommand (bot : any, command: Command, channel : any, user : User, commandNames : any, args : string = '') {
-        if (command.execute) {
-            command.execute(bot, channel, user, ...args.split(' '));
-        } else if (command.respond) {
-            bot.postMessage(channel.id, `<@${user.id}> ${command.respond}`, {as_user: true});
-        } else if (command.value) {
-            try {
-                const value = new Function('bot', 'channel', 'user', 'commands', 'process', '...args', command.value);
-                const response = value({
-                    postMessage: bot.postMessage.bind(bot),
-                }, channel, user, commandNames, null, ...args.split(' '));
+  async runCommand(
+    channel: TextChannel | DMChannel,
+    command: Command,
+    user: User,
+    _commandNames: CommandRegistry,
+    args: string = ''
+  ): Promise<void> {
+    if (command.execute) {
+      await command.execute(this.botListener.bot, channel, user, ...args.split(' '));
+    } else if (command.respond) {
+      await channel.send(`<@${user.id}> ${command.respond}`);
+    } else if (command.value) {
+      try {
+        // Execute custom command in secure sandbox
+        const context = {
+          user: {
+            id: user.id,
+            name: user.name,
+          },
+          args: args.split(' '),
+          channel: {
+            id: channel.id,
+          },
+        };
 
-                if (response) {
-                    return bot.postMessage(channel.id, `${response}`, {as_user: true});
-                }
-            } catch (e) {
-                return bot.postMessage(channel.id, `<@${user.id}> there is some issue with that command. \`${e.message}\``, {as_user: true});
-            }
+        const response = executeSandboxedCode(
+          `return (function(user, args, channel) { ${command.value} })(user, args, channel);`,
+          context
+        );
+
+        if (response) {
+          await channel.send(`${response}`);
         }
+      } catch (e) {
+        const error = e as Error;
+        await channel.send(
+          `<@${user.id}> there is some issue with that command. \`${error.message}\``
+        );
+      }
+    }
+  }
+
+  async respondToCommand(message: DiscordMessage): Promise<void> {
+    const match = message.content.match(this.commandRegex);
+    if (!match) {
+      return;
     }
 
-    respondToCommand (message: Message) {
-        connect((db: any) => {
-            const [, command, args = ''] = message.text.match(this.commandRegex);
+    const [, command, args = ''] = match;
 
-            db.collection('commands').find({}).toArray((error: any, commandList: Command[] = []) => {
-                const list = commandList.filter((c: Command) => c._id === command);
-                const promises = [
-                    this.botListener.bot.getUserById(message.user),
-                    this.botListener.bot.getChannelById(message.channel),
-                    this.botListener.bot.getGroupById(message.channel),
-                ];
-                Promise.all(promises).then(([user, _channel, group] : any) => {
-                    const channel = _channel.id ? _channel : group;
-                    const commandNames : any = {};
-                    commandList.forEach((c: Command) => {
-                        commandNames[c._id] = {
-                            name: c._id,
-                            run: this.runCommand.bind(this, {
-                                postMessage (_ : string, message : string) {
-                                    return message;
-                                }
-                            }, c, channel, user, commandNames),
-                        }
-                    });
-                    commands.forEach((c: Command) => {
-                        commandNames[c.name] = {
-                            name: c.name,
-                            run: (args : string) => {
-                                // these commands are usually async
-                                this.runCommand(this.botListener.bot, c, channel, user, commandNames, args);
-                                return '';
-                            },
-                        }
-                    });
+    connect(async (db: Db) => {
+      try {
+        const commandList = (await db
+          .collection('commands')
+          .find({})
+          .toArray()) as unknown as Command[];
+        const list = commandList.filter((c: Command) => c._id === command);
 
-                    list.forEach((_command: Command) => this.runCommand(this.botListener.bot, _command, channel, user, commandNames, args));
+        const user: User = {
+          id: message.author.id,
+          name: message.author.username,
+        };
 
-                    commands.filter((_command: Command) => _command.name === command)
-                        .forEach((_command: Command) => this.runCommand(this.botListener.bot, _command, channel, user, commandNames, args));
+        const channel = message.channel;
+        if (!(channel instanceof TextChannel || channel instanceof DMChannel)) {
+          return;
+        }
 
-                    db.close();
-                });
-            });
+        const commandNames: CommandRegistry = {};
+        commandList.forEach((c: Command) => {
+          commandNames[c._id || ''] = {
+            name: c._id || '',
+            run: this.runCommand.bind(this, channel, c, user, commandNames),
+          };
         });
-    }
 
-    listen() {
-        this.botListener.bot.on('message', (message: Message) => {
-            const {botId} = this.botListener;
-
-            // don't let the bot recurse
-            if (message.user === botId) {
-                return;
-            }
-
-
-            if (this.commandRegex.test(message.text)) {
-                this.respondToCommand(message);
-            }
+        commands.forEach((c: Command) => {
+          commandNames[c.name] = {
+            name: c.name,
+            run: async (cmdArgs?: string) => {
+              await this.runCommand(channel, c, user, commandNames, cmdArgs || '');
+              return '';
+            },
+          };
         });
-    }
+
+        for (const _command of list) {
+          await this.runCommand(channel, _command, user, commandNames, args);
+        }
+
+        const matchingCommands = commands.filter((_command: Command) => _command.name === command);
+        for (const _command of matchingCommands) {
+          await this.runCommand(channel, _command, user, commandNames, args);
+        }
+      } catch (error) {
+        console.error('Error in respondToCommand:', error);
+      }
+    });
+  }
+
+  listen(): void {
+    this.botListener.bot.on(Events.MessageCreate, async (message: DiscordMessage) => {
+      const { botId } = this.botListener;
+
+      // don't let the bot recurse
+      if (message.author.id === botId) {
+        return;
+      }
+
+      if (this.commandRegex.test(message.content)) {
+        await this.respondToCommand(message);
+      }
+    });
+  }
 }
 
-export {CommandListener};
+export { CommandListener };
