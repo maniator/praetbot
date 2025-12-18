@@ -2,9 +2,9 @@
 //http://venturebeat.com/2016/11/07/how-our-dumb-bot-attracted-1-million-users-without-even-trying/
 
 import { User } from '../command-interface.js';
-import { Client, TextChannel } from 'discord.js';
+import { Client, TextChannel, DMChannel } from 'discord.js';
 
-async function rollCommand(bot: Client, channel: TextChannel, args: string): Promise<string> {
+async function rollCommand(_bot: Client, channel: TextChannel, args: string): Promise<string> {
   try {
     // Get guild members from the channel
     const guild = channel.guild;
@@ -35,12 +35,18 @@ async function rollCommand(bot: Client, channel: TextChannel, args: string): Pro
 
 export default async function (
   bot: Client,
-  channel: TextChannel,
+  channel: TextChannel | DMChannel,
   user: User,
   ...args: string[]
 ): Promise<void> {
+  // Check if it's a text channel (has guild)
+  if (channel.type !== 0) {
+    await channel.send('This command only works in server text channels.');
+    return;
+  }
+  
   try {
-    const response = await rollCommand(bot, channel, args.join(' '));
+    const response = await rollCommand(bot, channel as TextChannel, args.join(' '));
     await channel.send(`<@${user.id}> ${response}`);
   } catch (error) {
     await channel.send(`<@${user.id}> Error: ${error}`);

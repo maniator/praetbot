@@ -40,8 +40,9 @@ const lookupCommand = function (commandName: string): Promise<Command> {
           } else {
             rej(null);
           }
-        } finally {
-          await db.close();
+        } catch (error) {
+          console.error('Error looking up command:', error);
+          rej(error);
         }
       });
     }
@@ -63,8 +64,8 @@ const commands: Command[] = [
           commandList.push(...commands.map((_command: Command) => _command.name));
 
           await channel.send(commandList.join(', '));
-        } finally {
-          await db.close();
+        } catch (error) {
+          console.error('Error listing commands:', error);
         }
       });
     },
@@ -85,11 +86,11 @@ const commands: Command[] = [
       connect(async (db: Db) => {
         try {
           await db.collection('commands').deleteOne({
-            _id: command,
+            _id: command as string,
           });
           await channel.send(`<@${user.name}> ${command} removed!`);
-        } finally {
-          await db.close();
+        } catch (error) {
+          console.error('Error removing command:', error);
         }
       });
     },
@@ -114,10 +115,10 @@ const commands: Command[] = [
         try {
           await db
             .collection('commands')
-            .replaceOne({ _id: command }, { _id: command, value }, { upsert: true });
+            .replaceOne({ _id: command as string }, { _id: command, value }, { upsert: true });
           await channel.send(`<@${user.name}> ${command} added!`);
-        } finally {
-          await db.close();
+        } catch (error) {
+          console.error('Error adding command:', error);
         }
       });
     },
@@ -128,7 +129,7 @@ const commands: Command[] = [
   {
     name: 'help',
     async execute(
-      bot: Client,
+      _bot: Client,
       channel: TextChannel | DMChannel,
       user: User,
       commandName: string
@@ -154,14 +155,14 @@ const commands: Command[] = [
   {
     name: 'xkcd',
     async execute(
-      bot: Client,
+      _bot: Client,
       channel: TextChannel | DMChannel,
-      user: User,
+      _user: User,
       id: string
     ): Promise<void> {
       try {
         const res = await fetch(`http://xkcd.com/${id}/info.0.json`);
-        const json = await res.json();
+        const json = (await res.json()) as { img: string };
         await channel.send(json.img);
       } catch (error) {
         console.error('Error fetching xkcd:', error);
@@ -230,7 +231,7 @@ const commands: Command[] = [
       ...args: string[]
     ) => {
       const coinflipModule = await import('./commands/coinflip.js');
-      return coinflipModule.default(bot, channel, user, ...args);
+      return coinflipModule.default(bot, channel, user);
     },
     description: 'Flip a coin: `!!coinflip`',
   },
@@ -256,7 +257,7 @@ const commands: Command[] = [
       ...args: string[]
     ) => {
       const quoteModule = await import('./commands/quote.js');
-      return quoteModule.default(bot, channel, user, ...args);
+      return quoteModule.default(bot, channel, user);
     },
     description: 'Get a motivational quote: `!!quote`',
   },
@@ -269,7 +270,7 @@ const commands: Command[] = [
       ...args: string[]
     ) => {
       const colorModule = await import('./commands/color.js');
-      return colorModule.default(bot, channel, user, ...args);
+      return colorModule.default(bot, channel, user);
     },
     description: 'Generate a random color: `!!color`',
   },
@@ -279,10 +280,10 @@ const commands: Command[] = [
       bot: Client,
       channel: TextChannel | DMChannel,
       user: User,
-      ...args: string[]
+      ..._args: string[]
     ) => {
       const foodModule = await import('./commands/food.js');
-      return foodModule.default(bot, channel, user, ...args);
+      return foodModule.default(bot, channel, user);
     },
     description: 'Get food suggestions: `!!food lunch` or `!!food dinner`',
   },
@@ -292,10 +293,10 @@ const commands: Command[] = [
       bot: Client,
       channel: TextChannel | DMChannel,
       user: User,
-      ...args: string[]
+      ..._args: string[]
     ) => {
       const uptimeModule = await import('./commands/uptime.js');
-      return uptimeModule.default(bot, channel, user, ...args);
+      return uptimeModule.default(bot, channel, user);
     },
     description: 'Check bot uptime: `!!uptime`',
   },

@@ -11,9 +11,6 @@ class Bot {
   private giveUserStars: RegExp = /<@(\d+)>\s?\+\+/i;
   private takeUserStars: RegExp = /<@(\d+)>\s?--/i;
   public bot: Client;
-  private defaultParams: MessageParams = {
-    reply: false,
-  };
 
   public botId: string = '';
   private botName: string = '';
@@ -56,7 +53,7 @@ class Bot {
       }
 
       if (message.content) {
-        await this.respondToUserMention(message.content, message.channelId, message.author.id);
+        await this.respondToUserMention(message.content, message.channelId);
       }
     });
   }

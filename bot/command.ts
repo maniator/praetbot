@@ -16,7 +16,7 @@ class CommandListener {
     channel: TextChannel | DMChannel,
     command: Command,
     user: User,
-    commandNames: CommandRegistry,
+    _commandNames: CommandRegistry,
     args: string = ''
   ): Promise<void> {
     if (command.execute) {
@@ -64,7 +64,7 @@ class CommandListener {
 
     connect(async (db: Db) => {
       try {
-        const commandList: Command[] = await db.collection('commands').find({}).toArray();
+        const commandList = await db.collection('commands').find({}).toArray() as unknown as Command[];
         const list = commandList.filter((c: Command) => c._id === command);
 
         const user: User = {
@@ -105,8 +105,6 @@ class CommandListener {
         }
       } catch (error) {
         console.error('Error in respondToCommand:', error);
-      } finally {
-        await db.close();
       }
     });
   }

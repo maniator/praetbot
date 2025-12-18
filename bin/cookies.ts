@@ -47,7 +47,7 @@ const getCookieByUserId = function (cookieUserId: string): Promise<CookieUser | 
       const cookies = await collection.find({ id: cookieUserId }).toArray();
 
       if (cookies.length === 1) {
-        res(cookies[0] as CookieUser);
+        res(cookies[0] as unknown as CookieUser);
       } else {
         res(null);
       }
@@ -60,7 +60,7 @@ const getCookies = function (): Promise<CookieUser[]> {
     connect(async (db) => {
       const collection = db.collection('cookie');
       const cookies = await collection.find({}).toArray();
-      res(cookies as CookieUser[]);
+      res(cookies as unknown as CookieUser[]);
     });
   });
 };
