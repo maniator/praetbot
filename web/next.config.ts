@@ -7,6 +7,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname, '..'),
   webpack: (config, { isServer }) => {
+    // Add parent node_modules to resolve paths
+    config.resolve = config.resolve || {};
+    config.resolve.modules = config.resolve.modules || [];
+    config.resolve.modules.push(path.join(__dirname, '../node_modules'));
+
     if (isServer) {
       config.externals = config.externals || [];
       config.externals.push({
