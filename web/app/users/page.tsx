@@ -1,11 +1,15 @@
-import { getCookies } from '../../bin/cookies.js';
+import { getCookies } from '@/lib/cookies';
 
 export default async function UsersPage() {
   let cookies: Record<string, number> = {};
   let error: string | null = null;
 
   try {
-    cookies = await getCookies();
+    const userList = await getCookies();
+    // Convert array to object keyed by userId
+    userList.forEach((user) => {
+      cookies[user.id] = user.cookies ?? 0;
+    });
   } catch {
     error = 'Failed to fetch cookies';
   }
