@@ -109,7 +109,8 @@ export default async function (
     const response = await processCommand(args);
     await channel.send(`<@${user.id}> ${response}`);
   } catch (error) {
-    await channel.send(`<@${user.id}> Error: ${error}`);
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+    await channel.send(`<@${user.id}> Error: ${errorMessage}`);
   }
 }
 ```
@@ -209,18 +210,18 @@ All configuration should be in environment variables:
 - Keep all dependencies updated
 - Review dependency security advisories
 - Use `npm audit` to check for vulnerabilities
-- Never introduce deprecated libraries (especially jQuery)
+- Avoid introducing outdated libraries that don't fit the modern tech stack
 
 ## Discord.js Specifics
 
 ### Required Intents
 
-The bot uses these Discord intents:
-- `Guilds` - Access guild information
-- `GuildMessages` - Read messages in guilds
-- `MessageContent` - Access message content (privileged)
-- `GuildMembers` - Access member information
-- `DirectMessages` - Send DMs to users
+The bot uses these Discord.js GatewayIntentBits:
+- `GatewayIntentBits.Guilds` - Access guild information
+- `GatewayIntentBits.GuildMessages` - Read messages in guilds
+- `GatewayIntentBits.MessageContent` - Access message content (privileged)
+- `GatewayIntentBits.GuildMembers` - Access member information
+- `GatewayIntentBits.DirectMessages` - Send DMs to users
 
 ### Channel Types
 
