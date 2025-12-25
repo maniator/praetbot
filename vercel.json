@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "eApp.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "eApp.ts"
+    }
+  ],
+  "env": {
+    "MONGO_USER": "@mongo-user",
+    "MONGO_PASSWORD": "@mongo-password",
+    "MONGO_SERVER": "@mongo-server"
+  }
+}
