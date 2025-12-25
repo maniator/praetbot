@@ -27,11 +27,8 @@ A Discord bot with custom commands, cookie tracking, and various utilities, plus
 ## Installation
 
 ```bash
-# Install dependencies for both bot and web interface
+# Install dependencies (npm workspaces handles all packages)
 npm install
-
-# Install web dependencies
-cd web && npm install && cd ..
 
 # Set up environment variables
 cp .env.example .env
@@ -54,17 +51,24 @@ WEATHER_KEY=your_openweathermap_api_key
 
 ## Development
 
+This project uses **Turborepo** to manage monorepo tasks across all workspaces:
+
 ```bash
-# Run both bot and web interface (requires concurrently)
+# Run all dev servers (bot + web)
 npm run dev
 
-# Run just the bot
-npm run dev:bot
+# Run specific workspace dev server
+npm run dev --filter=@praetbot/bot
+npm run dev --filter=@praetbot/web
 
-# Run just the web interface
-npm run dev:web
+# Build all workspaces
+npm run build
 
-# Run tests
+# Build specific workspace
+npm run build --filter=@praetbot/bot
+npm run build --filter=@praetbot/web
+
+# Run all tests
 npm test
 
 # Run tests with coverage
@@ -73,18 +77,29 @@ npm run test:coverage
 # Run tests in watch mode
 npm run test:watch
 
-# Lint code
+# Lint all workspaces
 npm run lint
 
 # Fix linting issues
 npm run lint:fix
 
-# Format code
+# Format all code
 npm run format
+Turborepo orchestrates builds across all workspaces with proper dependency order:
 
-# Check formatting
-npm run format:check
+```bash
+# Build all workspaces for production
+npm run build
+
+# Build specific workspace
+npm run build:bot    # Bot Vite build + shared-lib TypeScript compilation
+npm run build:web    # Web Next.js build
 ```
+
+**Build Output:**
+- `apps/bot/dist/` - Bundled bot application
+- `apps/web/.next/` - Next.js build output
+- `packages/shared-lib/dist/` - Compiled shared library (TypeScript → JavaScript)int and test tasks run in parallel across workspaces
 
 ## Building
 
@@ -101,28 +116,60 @@ npm run build:web
 
 ## Project Structure
 
+Praetbot uses **Turborepo** for monorepo management with three main workspaces:
+
 ```
 praetbot/
-├── app.ts                 # Discord bot entry point
-├── bot/                   # Bot implementation and commands
-├── bin/                   # Legacy bin directory (uses lib)
-├── lib/                   # Shared library (database, utilities)
-├── routes/                # Legacy Express routes (for reference)
-├── web/                   # Next.js web interface
-│   ├── app/
-│   │   ├── page.tsx      # Home page
-│   │   ├── users/
-│   │   │   └── page.tsx  # Users/cookies page
-│   │   ├── layout.tsx    # Root layout
-│   │   └── globals.css   # Global styles
-│   ├── lib/              # Re-exports shared lib
-│   ├── public/           # Static assets
-│   └── package.json      # Web app dependencies
-├── docs/                 # Documentation
-├── public/               # Static files
-├── package.json          # Root dependencies
-└── vercel.json          # Vercel deployment configuration
+├── apps/
+│   ├── bot/                       # Discord bot application
+│   │   ├── app.ts               # Entry point
+│   │   ├── index.ts             # Bot class
+│   │   ├── command.ts           # Command listener
+│   │   ├── commands.ts          # Built-in commands registry
+│   │   ├── commands/            # Individual command modules
+│   │   ├── routes/              # Express API routes
+│   │   ├── tests/               # Bot-specific tests
+│   │   ├── vite.config.ts       # Vite build config
+│   │   ├── vitest.config.ts     # Vitest config
+│   │   ├── tsconfig.json        # TypeScript config
+│   │   └── package.json         # Bot dependencies
+│   │
+│   └── web/                       # Next.js web interface
+│       ├── app/
+│       │   ├── page.tsx         # Home page
+│       │   ├── users/
+│       │   │   └── page.tsx     # Users/cookies page
+│       │   ├── layout.tsx       # Root layout
+│       │   └── globals.css      # Global styles
+│       ├── lib/                 # Re-exports shared utilities
+│       ├── public/              # Static assets
+│       ├── next.config.ts       # Next.js config
+│       ├── tsconfig.json        # TypeScript config
+│       └── package.json         # Web app dependencies
+│
+├── packages/
+│   └── shared-lib/                # Shared library package
+│       ├── cookies.ts           # Cookie operations
+│       ├── dbConnect.ts         # MongoDB connection
+│       ├── cookies.test.ts      # Cookie tests
+│       ├── dbConnect.test.ts    # Connection tests
+│       ├── tsconfig.json        # TypeScript config
+│       ├── vitest.config.ts     # Vitest config
+│       └── package.json         # Library dependencies
+│
+├── docs/                          # Documentation
+├── .github/                       # GitHub configuration
+├── package.json                   # Root monorepo config
+├── turbo.json                    # Turborepo configuration
+├── vercel.json                   # Vercel deployment config
+└── tsconfig.json                 # Root TypeScript config
 ```
+
+### Workspace Structure
+
+- **@praetbot/bot** - Discord bot app with Express routes, commands, and tests
+- **@praetbot/web** - Next.js 15 web interface for monitoring
+- **@praetbot/shared-lib** - Shared MongoDB utilities (cookies, database connection)
 
 ## Web Interface
 

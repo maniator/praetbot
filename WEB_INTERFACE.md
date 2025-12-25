@@ -1,33 +1,64 @@
 # Web Interface Guide
 
-Praetbot ships with a Next.js (App Router) web interface that runs alongside the Discord bot.
+Praetbot ships with a modern Next.js (App Router) web interface that runs alongside the Discord bot as part of the Turborepo monorepo.
 
 ## Overview
 
-- Framework: Next.js 15 (TypeScript, App Router)
-- Location: /web
-- Shared code: /lib (database and cookie helpers)
-- Current pages: / (home), /users (cookie leaderboard)
+- **Framework**: Next.js 15 with TypeScript and App Router
+- **Location**: `apps/web/`
+- **Shared Code**: `packages/shared-lib/` (database and cookie helpers)
+- **Current Pages**: `/` (home), `/users` (cookie leaderboard)
+- **Package Name**: `@praetbot/web`
 
 ## Getting Started
 
 ```bash
-# Start bot + web together
+# Start both bot and web together
 npm run dev
 
-# Start web only
-npm run dev:web
+# Start web only (uses Turborepo filter)
+npm run dev --filter=@praetbot/web
 
 # Start bot only
-npm run dev:bot
+npm run dev --filter=@praetbot/bot
+
+# Build web for production
+npm run build:web
 ```
 
 The web interface is available at http://localhost:3000.
 
 ### Environment Variables
 
-- MONGODB_URI (required for build and runtime data access)
-- MONGODB_DB (optional; defaults to `praetbot`)
+Required for both development and deployment:
+- `MONGODB_URI` (required for build and runtime data access)
+- `MONGODB_DB` (optional; defaults to `praetbot`)
+
+## Monorepo Integration
+
+The web app is part of a Turborepo monorepo structure:
+
+```
+apps/
+├── bot/          # Discord bot (@praetbot/bot)
+└── web/          # Web interface (@praetbot/web)
+packages/
+└── shared-lib/   # Shared utilities (@praetbot/shared-lib)
+```
+
+### Using Shared Library
+
+The web app depends on `@praetbot/shared-lib` for database operations:
+
+```typescript
+// apps/web/lib/cookies.ts
+export { updateCookie, getCookies, getCookieByUserId, type CookieUser } from '@praetbot/shared-lib/cookies';
+
+// apps/web/lib/dbConnect.ts
+export { connect } from '@praetbot/shared-lib/dbConnect';
+```
+
+These are re-exported for convenience in the web app and can be used in API routes and components.
 
 ## Current Pages
 
@@ -36,10 +67,10 @@ The web interface is available at http://localhost:3000.
 
 ## Adding a Page
 
-Create a folder under /web/app following Next.js conventions:
+Create a folder under `apps/web/app/` following Next.js conventions:
 
 ```typescript
-// /web/app/about/page.tsx
+// apps/web/app/about/page.tsx
 export default function AboutPage() {
   return (
     <main>
@@ -50,12 +81,12 @@ export default function AboutPage() {
 }
 ```
 
-The route becomes available at /about automatically.
+The route becomes available at `/about` automatically.
 
-## Creating an API Route (optional)
+## Creating an API Route
 
 ```typescript
-// /web/app/api/cookies/route.ts
+// apps/web/app/api/cookies/route.ts
 import { NextResponse } from 'next/server';
 import { getCookies } from '@/lib/cookies';
 
@@ -69,23 +100,67 @@ export async function GET() {
 }
 ```
 
-Available at /api/cookies.
+Available at `/api/cookies`.
 
 ## Styling
 
-- Global styles: /web/app/globals.css
-- Component styles: CSS Modules or inline styles
-- Static assets: /web/public
+- **Global Styles**: `apps/web/app/globals.css`
+- **Component Styles**: CSS Modules or inline styles
+- **Static Assets**: `apps/web/public/`
+
+## Building for Production
+
+The web interface is built as part of the monorepo build process:
+
+```bash
+# Build all workspaces including web
+npm run build
+
+# Build web only
+npm run build:web
+```
+
+Build output is generated in `apps/web/.next/`.
+
+### Turborepo Build Process
+
+1. `shared-lib` builds first (TypeScript → JavaScript)
+2. `bot` and `web` build in parallel using the compiled shared-lib
+3. Build caching is enabled for faster rebuilds
 
 ## Deployment
 
-- vercel.json installs and builds in /web:
-  - installCommand: cd web && npm install
-  - buildCommand: cd web && npm run build
-- Ensure MONGODB_URI is set in the hosting environment.
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions on deploying to Vercel or other platforms.
+
+### Vercel Deployment
+
+The `vercel.json` configuration is set up for monorepo deployment:
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/web/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "installCommand": "npm install",
+  "buildCommand": "npm run build:web",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/apps/web/$1"
+    }
+  ]
+}
+```
+
+Ensure `MONGODB_URI` is set in Vercel environment variables.
 
 ## Troubleshooting
 
-- Blank deploy: confirm Vercel uses repo root with provided vercel.json.
-- Database errors: verify MONGODB_URI is configured.
-- Path issues: use @/lib/... imports inside /web for shared utilities.
+- **Blank Deploy**: Confirm Vercel uses repo root with provided vercel.json
+- **Database Errors**: Verify MONGODB_URI is configured in environment
+- **Module Not Found**: Ensure `@praetbot/shared-lib` dependency is installed (`npm install`)
+- **Build Failures**: Check that shared-lib builds successfully first (`npm run build --filter=@praetbot/shared-lib`)
