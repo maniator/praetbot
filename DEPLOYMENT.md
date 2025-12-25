@@ -173,48 +173,9 @@ PORT=3000
 
 ⚠️ **Note**: Discord bots work best with persistent connections. Lambda is better suited for the web interface part.
 
-1. **Create `lambda.js` wrapper**
-
-   ```javascript
-   import serverless from 'serverless-http';
-   import app from './eApp.js';
-
-   export const handler = serverless(app);
-   ```
-
-2. **Install serverless framework**
-
-   ```bash
-   npm install -g serverless
-   npm install serverless-http
-   ```
-
-3. **Create `serverless.yml`**
-
-   ```yaml
-   service: praetbot
-
-   provider:
-     name: aws
-     runtime: nodejs20.x
-     region: us-east-1
-     environment:
-       BOT_API_KEY: ${env:BOT_API_KEY}
-       MONGODB_URI: ${env:MONGODB_URI}
-       WEATHER_KEY: ${env:WEATHER_KEY}
-
-   functions:
-     api:
-       handler: lambda.handler
-       events:
-         - http: ANY /
-         - http: 'ANY /{proxy+}'
-   ```
-
-4. **Deploy**
-   ```bash
-   serverless deploy
-   ```
+> Express entrypoint (`eApp`) was removed. There is no standalone HTTP server in this repo today—
+> the bot runs from `app.ts`, and the web UI is the Next.js app under `web/`. If you need a
+> serverless handler, export the Next.js app or add a dedicated Express entrypoint first.
 
 ---
 
