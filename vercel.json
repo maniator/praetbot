@@ -11,10 +11,5 @@
       "src": "/(.*)",
       "dest": "eApp.ts"
     }
-  ],
-  "env": {
-    "MONGO_USER": "@mongo-user",
-    "MONGO_PASSWORD": "@mongo-password",
-    "MONGO_SERVER": "@mongo-server"
-  }
+  ]
 }

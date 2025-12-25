@@ -33,9 +33,13 @@ cp .env.example .env
 
 ```env
 BOT_API_KEY=your_discord_bot_token
-MONGO_USER=your_mongodb_user
-MONGO_PASSWORD=your_mongodb_password
-MONGO_SERVER=your_mongodb_server:port/database
+# Option 1: Use MongoDB connection string (recommended)
+MONGODB_URI=your_mongodb_connection_string
+
+# Option 2: Use individual credentials (not needed if MONGODB_URI is provided)
+# MONGO_USER=your_mongodb_user
+# MONGO_PASSWORD=your_mongodb_password
+# MONGO_SERVER=your_mongodb_server:port/database
 WEATHER_KEY=your_openweathermap_api_key
 ```
 

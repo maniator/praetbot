@@ -47,13 +47,17 @@ All deployments require these environment variables:
 
 ```env
 BOT_API_KEY=your_discord_bot_token
-MONGO_USER=your_mongodb_username
-MONGO_PASSWORD=your_mongodb_password
-MONGO_SERVER=your_mongodb_host:port/database
+MONGODB_URI=your_mongodb_connection_string
+# OR use individual MongoDB credentials (not needed if MONGODB_URI is provided):
+# MONGO_USER=your_mongodb_username
+# MONGO_PASSWORD=your_mongodb_password
+# MONGO_SERVER=your_mongodb_host:port/database
 WEATHER_KEY=your_openweathermap_api_key
 NODE_ENV=production
 PORT=3000
 ```
+
+**Note**: You can either provide `MONGODB_URI` (recommended) OR the individual `MONGO_USER`, `MONGO_PASSWORD`, and `MONGO_SERVER` variables, but not both.
 
 ---
 
@@ -87,9 +91,7 @@ PORT=3000
 
    ```bash
    eb setenv BOT_API_KEY=your_token \
-     MONGO_USER=user \
-     MONGO_PASSWORD=pass \
-     MONGO_SERVER=host:port/db \
+     MONGODB_URI=your_connection_string \
      WEATHER_KEY=key \
      NODE_ENV=production
    ```
@@ -190,9 +192,7 @@ PORT=3000
      region: us-east-1
      environment:
        BOT_API_KEY: ${env:BOT_API_KEY}
-       MONGO_USER: ${env:MONGO_USER}
-       MONGO_PASSWORD: ${env:MONGO_PASSWORD}
-       MONGO_SERVER: ${env:MONGO_SERVER}
+       MONGODB_URI: ${env:MONGODB_URI}
        WEATHER_KEY: ${env:WEATHER_KEY}
 
    functions:
@@ -266,9 +266,7 @@ PORT=3000
      --name praetbot-app \
      --settings \
        BOT_API_KEY=your_token \
-       MONGO_USER=user \
-       MONGO_PASSWORD=pass \
-       MONGO_SERVER=host:port/db \
+       MONGODB_URI=your_connection_string \
        WEATHER_KEY=key \
        NODE_ENV=production
    ```
@@ -312,9 +310,7 @@ PORT=3000
      --ports 3000 \
      --environment-variables \
        BOT_API_KEY=your_token \
-       MONGO_USER=user \
-       MONGO_PASSWORD=pass \
-       MONGO_SERVER=host:port/db \
+       MONGODB_URI=your_connection_string \
        WEATHER_KEY=key
    ```
 
@@ -352,7 +348,7 @@ PORT=3000
      --platform managed \
      --region us-central1 \
      --allow-unauthenticated \
-     --set-env-vars BOT_API_KEY=your_token,MONGO_USER=user,MONGO_PASSWORD=pass,MONGO_SERVER=host:port/db,WEATHER_KEY=key
+     --set-env-vars BOT_API_KEY=your_token,MONGODB_URI=your_connection_string,WEATHER_KEY=key
    ```
 
 5. **View logs**
@@ -419,9 +415,7 @@ PORT=3000
        }
      ],
      "env": {
-       "MONGO_USER": "@mongo-user",
-       "MONGO_PASSWORD": "@mongo-password",
-       "MONGO_SERVER": "@mongo-server"
+       "MONGODB_URI": "@mongodb-uri"
      }
    }
    ```
@@ -429,9 +423,7 @@ PORT=3000
 3. **Add secrets**
 
    ```bash
-   vercel secrets add mongo-user your_username
-   vercel secrets add mongo-password your_password
-   vercel secrets add mongo-server your_server
+   vercel secrets add mongodb-uri your_connection_string
    ```
 
 4. **Deploy**
@@ -467,9 +459,7 @@ PORT=3000
 
    ```bash
    heroku config:set BOT_API_KEY=your_token
-   heroku config:set MONGO_USER=user
-   heroku config:set MONGO_PASSWORD=pass
-   heroku config:set MONGO_SERVER=host:port/db
+   heroku config:set MONGODB_URI=your_connection_string
    heroku config:set WEATHER_KEY=key
    ```
 
@@ -654,12 +644,12 @@ services:
       - '3000:3000'
     environment:
       - BOT_API_KEY=${BOT_API_KEY}
-      - MONGO_USER=${MONGO_USER}
-      - MONGO_PASSWORD=${MONGO_PASSWORD}
-      - MONGO_SERVER=${MONGO_SERVER}
+      - MONGODB_URI=${MONGODB_URI}
       - WEATHER_KEY=${WEATHER_KEY}
       - NODE_ENV=production
     restart: unless-stopped
+    depends_on:
+      - mongodb
 
   mongodb:
     image: mongo:6

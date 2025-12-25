@@ -416,9 +416,13 @@ curl http://localhost:3000/health
 PORT=3000
 
 # Database connection (same as bot)
-MONGO_USER=your_username
-MONGO_PASSWORD=your_password
-MONGO_SERVER=your_host:port/database
+# Option 1: Use MongoDB connection string (recommended)
+MONGODB_URI=your_mongodb_connection_string
+
+# Option 2: Use individual credentials (not needed if MONGODB_URI is provided)
+# MONGO_USER=your_username
+# MONGO_PASSWORD=your_password
+# MONGO_SERVER=your_host:port/database
 ```
 
 ### Running in Production
@@ -767,7 +771,11 @@ Check your MongoDB connection string in `.env`:
 
 ```env
 # Format: mongodb://username:password@host:port/database
-MONGO_SERVER=localhost:27017/praetbot
+# Option 1: Use MongoDB connection string (recommended)
+MONGODB_URI=mongodb://localhost:27017/praetbot
+
+# Option 2: Use individual credentials (not needed if MONGODB_URI is provided)
+# MONGO_SERVER=localhost:27017/praetbot
 ```
 
 ### Template Not Found
