@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getCookies } from '@/lib/cookies';
 
 export default async function UsersPage() {

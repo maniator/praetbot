@@ -5,4 +5,3 @@
   "buildCommand": "cd web && npm run build",
   "routes": [{ "src": "/(.*)", "dest": "/web/$1" }]
 }
-

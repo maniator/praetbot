@@ -1,17 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { updateCookie, getCookieByUserId, getCookies, type CookieUser } from '../../lib/cookies.js';
 
 // Mock the database connection used by lib/cookies BEFORE importing the module under test
-vi.mock('../lib/dbConnect.js', () => ({
+vi.mock('../../lib/dbConnect.js', () => ({
   connect: vi.fn((callback) => {
     const mockDb = {
-      collection: vi.fn((name: string) => ({
-        find: vi.fn((query: any) => ({
+      collection: vi.fn((_name: string) => ({
+        find: vi.fn((query: unknown) => ({
           toArray: vi.fn(async () => {
-            // Return mock data based on query
-            if (query.id === 'user123') {
+            const q = query as Record<string, unknown>;
+            if (q.id === 'user123') {
               return [{ id: 'user123', name: 'TestUser', cookies: 5 }];
             }
-            if (Object.keys(query).length === 0) {
+            if (Object.keys(q).length === 0) {
               return [
                 { id: 'user1', name: 'User1', cookies: 3 },
                 { id: 'user2', name: 'User2', cookies: 7 },
@@ -20,15 +21,13 @@ vi.mock('../lib/dbConnect.js', () => ({
             return [];
           }),
         })),
-        insertOne: vi.fn(async (doc: any) => ({ acknowledged: true })),
-        updateOne: vi.fn(async (query: any, update: any) => ({ acknowledged: true })),
+        insertOne: vi.fn(async (_doc: unknown) => ({ acknowledged: true })),
+        updateOne: vi.fn(async (_query: unknown, _update: unknown) => ({ acknowledged: true })),
       })),
     };
-    callback(mockDb);
+    callback(mockDb as unknown as { collection: (name: string) => unknown });
   }),
 }));
-
-import { updateCookie, getCookieByUserId, getCookies, CookieUser } from './cookies';
 
 describe('cookies', () => {
   beforeEach(() => {

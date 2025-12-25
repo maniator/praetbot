@@ -5,6 +5,7 @@ This guide covers deploying Praetbot (Discord bot + Next.js web interface) to va
 ## Overview
 
 Praetbot consists of two components:
+
 - **Discord Bot**: Runs continuously and connects to Discord
 - **Web Interface**: Built with Next.js, handles the web dashboard and API routes
 
@@ -12,24 +13,49 @@ Both components share the same deployment and can run together on most platforms
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
-- [Environment Variables](#environment-variables)
-- [AWS Deployment](#aws-deployment)
-  - [AWS Elastic Beanstalk](#aws-elastic-beanstalk)
-  - [AWS EC2](#aws-ec2)
-  - [AWS Lambda with API Gateway](#aws-lambda-with-api-gateway)
-- [Azure Deployment](#azure-deployment)
-  - [Azure App Service](#azure-app-service)
-  - [Azure Container Instances](#azure-container-instances)
-- [Google Cloud Platform](#google-cloud-platform)
-  - [Google Cloud Run](#google-cloud-run)
-  - [Google Compute Engine](#google-compute-engine)
-- [Vercel Deployment](#vercel-deployment)
-- [Heroku Deployment](#heroku-deployment)
-- [Digital Ocean](#digital-ocean)
-- [Railway](#railway)
-- [Render](#render)
-- [Docker Deployment](#docker-deployment)
+- [Deployment Guide](#deployment-guide)
+  - [Overview](#overview)
+  - [Table of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+  - [Environment Variables](#environment-variables)
+  - [AWS Deployment](#aws-deployment)
+    - [AWS Elastic Beanstalk](#aws-elastic-beanstalk)
+    - [AWS EC2](#aws-ec2)
+    - [AWS Lambda with API Gateway](#aws-lambda-with-api-gateway)
+  - [Azure Deployment](#azure-deployment)
+    - [Azure App Service](#azure-app-service)
+    - [Azure Container Instances](#azure-container-instances)
+  - [Google Cloud Platform](#google-cloud-platform)
+    - [Google Cloud Run](#google-cloud-run)
+    - [Google Compute Engine](#google-compute-engine)
+  - [Vercel Deployment](#vercel-deployment)
+  - [Heroku Deployment](#heroku-deployment)
+  - [Digital Ocean](#digital-ocean)
+    - [Using App Platform](#using-app-platform)
+    - [Using Droplet (VPS)](#using-droplet-vps)
+  - [Railway](#railway)
+  - [Render](#render)
+  - [Docker Deployment](#docker-deployment)
+    - [Create Dockerfile](#create-dockerfile)
+    - [Create `.dockerignore`](#create-dockerignore)
+    - [Build and run locally](#build-and-run-locally)
+    - [Docker Compose](#docker-compose)
+  - [MongoDB Setup](#mongodb-setup)
+    - [MongoDB Atlas (Recommended)](#mongodb-atlas-recommended)
+    - [Self-hosted MongoDB](#self-hosted-mongodb)
+  - [Post-Deployment Checklist](#post-deployment-checklist)
+  - [Troubleshooting](#troubleshooting)
+    - [Bot not coming online](#bot-not-coming-online)
+    - [Database connection errors](#database-connection-errors)
+    - [Commands not working](#commands-not-working)
+    - [High memory usage](#high-memory-usage)
+  - [Monitoring and Maintenance](#monitoring-and-maintenance)
+    - [Recommended Tools](#recommended-tools)
+    - [Backup Strategy](#backup-strategy)
+    - [Updates](#updates)
+  - [Support](#support)
+  - [Community](#community)
+  - [License](#license)
 
 ## Prerequisites
 
@@ -367,7 +393,6 @@ PORT=3000
    ```
 
 2. **Connect GitHub Repository**
-
    - Go to [Vercel Dashboard](https://vercel.com/dashboard)
    - Click "Add New..." → "Project"
    - Select your GitHub repository

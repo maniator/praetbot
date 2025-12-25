@@ -160,6 +160,7 @@ http://localhost:3000
 Replace `localhost:3000` with your deployment URL (e.g., `https://your-app.vercel.app`)
 
 ### Environment Variables
+
 - **`MONGODB_URI`**: Connection string for MongoDB Atlas or server
 - **`MONGODB_DB`**: Optional. Database name to use (defaults to `praetbot`)
 
@@ -183,7 +184,6 @@ See [WEB_INTERFACE.md](WEB_INTERFACE.md) for detailed customization guide.
 The web interface uses Next.js with App Router for a modern, performant experience with server-side rendering and static generation capabilities.
 
 **Contributing to the Web Interface:**
-
 
 - Modern, beautiful UI
 - Visual cookie leaderboard
