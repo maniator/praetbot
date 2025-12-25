@@ -106,13 +106,15 @@ praetbot/
 ├── app.ts                 # Discord bot entry point
 ├── bot/                   # Bot implementation and commands
 ├── bin/                   # Database connection and utilities
-├── routes/                # Legacy routes (kept for compatibility)
-├── views/                 # Legacy views (kept for compatibility)
+├── routes/                # Legacy Express routes (for reference)
+├── views/                 # Legacy Handlebars views (for reference)
 ├── web/                   # Next.js web interface
 │   ├── app/
-│   │   ├── api/          # API routes
 │   │   ├── page.tsx      # Home page
-│   │   └── layout.tsx    # Root layout
+│   │   ├── users/
+│   │   │   └── page.tsx  # Users/cookies page
+│   │   ├── layout.tsx    # Root layout
+│   │   └── globals.css   # Global styles
 │   ├── public/           # Static assets
 │   └── package.json      # Web app dependencies
 ├── public/               # Static files

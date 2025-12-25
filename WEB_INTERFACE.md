@@ -59,13 +59,13 @@ Open your browser to:
 http://localhost:3000
 ```
 
-## Available Routes
+## Available Pages
 
 ### Home Page
 
 **`GET /`**
 
-Renders the home page with bot information.
+Renders the home page with Praetbot welcome information.
 
 **Response:** HTML page
 
@@ -77,64 +77,37 @@ curl http://localhost:3000
 
 ---
 
-### Users Endpoint
+### Users Page
 
 **`GET /users`**
 
-Returns all users and their cookie counts as JSON.
+Displays a table of all users and their cookie counts, sorted by most cookies first.
 
-**Response:** JSON array of user objects
+**Response:** HTML page with styled table
 
-**Example Request:**
+**Example:**
 
 ```bash
 curl http://localhost:3000/users
 ```
 
-**Example Response:**
+## Adding New Pages
 
-```json
-[
-  {
-    "id": "123456789012345678",
-    "name": "Alice",
-    "cookies": 42
-  },
-  {
-    "id": "987654321098765432",
-    "name": "Bob",
-    "cookies": 15
-  },
-  {
-    "id": "555555555555555555",
-    "name": "Charlie",
-    "cookies": 8
-  }
-]
+To add a new page, create a new file in `/web/app/` using Next.js conventions:
+
+```typescript
+// /web/app/about/page.tsx
+export default function AboutPage() {
+  return (
+    <main>
+      <h1>About Praetbot</h1>
+      <p>Your content here</p>
+    </main>
+  );
+}
 ```
 
-**Using in JavaScript:**
-
-```javascript
-fetch('http://localhost:3000/users')
-  .then((res) => res.json())
-  .then((users) => {
-    console.log('Top user:', users[0]);
-  });
-```
-
-**Using in Python:**
-
-```python
-import requests
-
-response = requests.get('http://localhost:3000/users')
-users = response.json()
-
-# Sort by cookies
-sorted_users = sorted(users, key=lambda x: x['cookies'], reverse=True)
-print(f"Top user: {sorted_users[0]['name']} with {sorted_users[0]['cookies']} cookies")
-```
+This will be automatically available at `/about`.
 
 ## Customizing the Interface
 
@@ -142,12 +115,21 @@ print(f"Top user: {sorted_users[0]['name']} with {sorted_users[0]['cookies']} co
 
 ```
 praetbot/
-├── eApp.ts              # Main Express application
-├── routes/              # Route handlers
-│   ├── index.ts         # Home page route
-│   └── users.ts         # Users API route
-├── views/               # Handlebars templates
-│   ├── index.hbs        # Home page template
+├── app.ts               # Discord bot entry point
+├── web/                 # Next.js web application
+│   ├── app/
+│   │   ├── page.tsx     # Home page
+│   │   ├── users/
+│   │   │   └── page.tsx # Users page
+│   │   ├── layout.tsx   # Root layout
+│   │   └── globals.css  # Global styles
+│   ├── public/          # Static assets
+│   └── package.json
+├── routes/              # Legacy Express routes (for reference)
+├── views/               # Legacy Handlebars templates (for reference)
+├── bin/                 # Database utilities
+└── bot/                 # Discord bot implementation
+```
 │   ├── layout.hbs       # Base layout
 │   └── error.hbs        # Error page
 ├── public/              # Static assets
@@ -251,9 +233,106 @@ Update `eApp.ts` to serve static files (already included):
 app.use(express.static(path.join(__dirname, 'public')));
 ```
 
-## Adding New Routes
+## Adding New Pages
 
-### Example: Add Leaderboard Route
+### Example: Add a Stats Page
+
+Create `web/app/stats/page.tsx`:
+
+```typescript
+export default async function StatsPage() {
+  // You can fetch data here
+  // const stats = await getStats();
+
+  return (
+    <main>
+      <h1>Bot Statistics</h1>
+      <div>
+        <h2>Server Stats</h2>
+        <p>Guilds: --</p>
+        <p>Users: --</p>
+        <p>Commands Run: --</p>
+      </div>
+    </main>
+  );
+}
+```
+
+Now the page is automatically available at `/stats`.
+
+### Example: Add a Leaderboard Page
+
+Create `web/app/leaderboard/page.tsx`:
+
+```typescript
+import { getCookies } from '../../bin/cookies.js';
+
+export default async function LeaderboardPage() {
+  let cookies: Record<string, number> = {};
+  let error: string | null = null;
+
+  try {
+    cookies = await getCookies();
+  } catch {
+    error = 'Failed to fetch leaderboard';
+  }
+
+  const sorted = Object.entries(cookies)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 100); // Top 100
+
+  return (
+    <main>
+      <h1>Cookie Leaderboard</h1>
+      {error ? (
+        <p style={{ color: 'red' }}>Error: {error}</p>
+      ) : (
+        <ol>
+          {sorted.map(([userId, count], index) => (
+            <li key={userId}>
+              {index + 1}. <code>{userId}</code> - {count} cookies
+            </li>
+          ))}
+        </ol>
+      )}
+    </main>
+  );
+}
+```
+
+This uses server-side data fetching to display the leaderboard.
+
+### Creating API Routes (Optional)
+
+If you need JSON endpoints, create files in `/web/app/api/`:
+
+```typescript
+// /web/app/api/cookies/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { getCookies } from '../../../bin/cookies.js';
+
+export async function GET(_req: NextRequest) {
+  try {
+    const cookies = await getCookies();
+    return NextResponse.json(cookies);
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to fetch cookies' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+Now available at `/api/cookies`.
+
+---
+
+## Old: Express Routing
+
+The original Express routing examples are kept below for reference. The codebase has been migrated to Next.js pages.
+
+### Example: Add Leaderboard Route (Express - Legacy)
 
 Create `routes/leaderboard.ts`:
 
@@ -296,7 +375,7 @@ import leaderboardRouter from './routes/leaderboard.js';
 app.use('/leaderboard', leaderboardRouter);
 ```
 
-### Example: Add Commands API
+### Example: Add Commands API (Express - Legacy)
 
 Create `routes/commands.ts`:
 
