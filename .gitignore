@@ -9,6 +9,7 @@ yarn.lock
 dist
 *.js
 *.js.map
+.turbo
 
 # Environment variables
 .env
