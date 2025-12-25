@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { updateCookie, getCookieByUserId, getCookies, type CookieUser } from '../../lib/cookies.js';
+import { updateCookie, getCookieByUserId, getCookies, type CookieUser } from '../../../../packages/shared-lib/cookies';
 
 // Mock the database connection used by lib/cookies BEFORE importing the module under test
 vi.mock('../../lib/dbConnect.js', () => ({

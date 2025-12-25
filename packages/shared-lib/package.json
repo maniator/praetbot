@@ -1,0 +1,30 @@
+{
+  "name": "@praetbot/shared-lib",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.8",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "mongodb": "^6.11.0"
+  },
+  "exports": {
+    "./dbConnect": {
+      "import": "./dist/dbConnect.js",
+      "types": "./dist/dbConnect.d.ts"
+    },
+    "./cookies": {
+      "import": "./dist/cookies.js",
+      "types": "./dist/cookies.d.ts"
+    }
+  }
+}

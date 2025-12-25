@@ -1,7 +1,17 @@
 {
   "version": 2,
-  "builds": [{ "src": "web/package.json", "use": "@vercel/next" }],
-  "installCommand": "npm install && cd web && npm install",
-  "buildCommand": "cd web && npm run build",
-  "routes": [{ "src": "/(.*)", "dest": "/web/$1" }]
+  "builds": [
+    {
+      "src": "apps/web/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "installCommand": "npm install",
+  "buildCommand": "npm run build:web",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/apps/web/$1"
+    }
+  ]
 }

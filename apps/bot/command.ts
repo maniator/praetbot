@@ -1,7 +1,7 @@
 import { Message as DiscordMessage, Events, TextChannel, DMChannel } from 'discord.js';
 import { Command, User } from './command-interface.js';
 import { commands } from './commands.js';
-import { connect } from '../bin/dbConnect.js';
+import { connect } from '../../packages/shared-lib/dbConnect';
 import { Bot } from './index.js';
 import { CommandRegistry } from './types.js';
 import { Db } from 'mongodb';

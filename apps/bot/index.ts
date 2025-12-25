@@ -1,4 +1,4 @@
-import { getCookieByUserId, updateCookie, CookieUser } from '../bin/cookies.js';
+import { getCookieByUserId, updateCookie, CookieUser } from '../../packages/shared-lib/cookies';
 import { CommandListener } from './command.js';
 import { Client, GatewayIntentBits, Events, TextChannel, DMChannel } from 'discord.js';
 

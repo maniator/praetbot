@@ -1,0 +1,41 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.local"],
+  "globalEnv": [
+    "BOT_API_KEY",
+    "MONGO_USER",
+    "MONGO_PASSWORD",
+    "MONGO_SERVER",
+    "MONGODB_URI",
+    "MONGODB_DB",
+    "WEATHER_KEY"
+  ],
+  "tasks": {
+    "build": {
+      "outputs": ["dist/**", ".next/**", ".vercel"],
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "outputs": [],
+      "cache": false
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "cache": false
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "test:coverage": {
+      "outputs": ["coverage/**"],
+      "cache": false
+    }
+  }
+}

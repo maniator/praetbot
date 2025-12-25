@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { getCookies } from '../bin/cookies.js';
+import { getCookies } from '../../../packages/shared-lib/cookies';
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import { Command, User } from './command-interface.js';
-import { connect } from '../bin/dbConnect.js';
+import { connect } from '../../packages/shared-lib/dbConnect';
 import { Client, TextChannel, DMChannel } from 'discord.js';
 import { Db } from 'mongodb';
 import { StoredCommand } from './types.js';

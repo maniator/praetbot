@@ -1,4 +1,4 @@
-import { Bot } from './bot/index.js';
+import { Bot } from './index.js';
 
 const apiKey: string = process.env.BOT_API_KEY || '';
 
