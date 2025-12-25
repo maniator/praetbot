@@ -4,11 +4,11 @@ const user = process.env.MONGO_USER;
 const password = process.env.MONGO_PASSWORD;
 const mongoServer = process.env.MONGO_SERVER;
 
-const connect = async function (cb: (db: Db) => Promise<void> | void): Promise<void> {
-  // Connection URL
-  const url = `mongodb://${user}:${password}@${mongoServer}`;
+// Connection URL
+const mongoUri = process.env.MONGODB_URI ?? `mongodb://${user}:${password}@${mongoServer}`;
 
-  const client = new MongoClient(url);
+const connect = async function (cb: (db: Db) => Promise<void> | void): Promise<void> {
+  const client = new MongoClient(mongoUri);
 
   try {
     await client.connect();
