@@ -126,30 +126,27 @@ praetbot/
 
 ## Web Interface
 
-Praetbot includes an Express web interface that runs alongside the Discord bot.
+Praetbot ships with a Next.js web interface (App Router) that runs alongside the Discord bot.
 
 ![Web Interface Preview](docs/screenshots/home-page.png)
-_Web interface coming soon - contributions welcome!_
+_Web interface powered by Next.js_
 
 ### Starting the Web Server
 
 ```bash
-# Start both bot and web interface
-npm start
+# Start both bot and web interface (concurrently)
+npm run dev
 
-# Or start web interface only
+# Start web interface only
 npm run dev:web
-
-# With auto-reload during development
-npm run dev:web:watch
 ```
 
-The web interface will be available at `http://localhost:3000` (or your configured PORT).
+The web interface is available at `http://localhost:3000` during development.
 
-### Available Endpoints
+### Available Pages
 
-- **`GET /`** - Home page with bot information
-- **`GET /users`** - View all users and their cookie counts (JSON)
+- **`GET /`** - Home page with Praetbot welcome information
+- **`GET /users`** - Users and cookie counts rendered as an HTML table
 
 ### Accessing the Web Interface
 
@@ -160,28 +157,11 @@ http://localhost:3000
 ```
 
 **Production:**
-Replace `localhost:3000` with your deployment URL (e.g., `https://your-app.herokuapp.com`)
+Replace `localhost:3000` with your deployment URL (e.g., `https://your-app.vercel.app`)
 
 ### Example: Viewing Cookie Leaderboard
 
-```bash
-# Get all users and cookies as JSON
-curl http://localhost:3000/users
-
-# Example response:
-[
-  {
-    "id": "123456789",
-    "name": "Alice",
-    "cookies": 42
-  },
-  {
-    "id": "987654321",
-    "name": "Bob",
-    "cookies": 15
-  }
-]
-```
+Open `http://localhost:3000/users` to see a sorted table of users and cookie counts.
 
 ### Customizing the Web Interface
 

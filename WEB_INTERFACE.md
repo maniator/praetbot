@@ -1,15 +1,15 @@
 # Web Interface Guide
 
-Praetbot includes a Next.js web interface that runs alongside the Discord bot, providing a modern dashboard and API endpoints for viewing bot data and statistics.
+Praetbot includes a Next.js web interface that runs alongside the Discord bot, providing a modern dashboard for viewing bot data and a cookie leaderboard.
 
 ## Table of Contents
 
 - [Overview](#overview)
 - [Architecture](#architecture)
 - [Getting Started](#getting-started)
-- [Available Routes](#available-routes)
-- [API Endpoints](#api-endpoints)
-- [Adding New Routes](#adding-new-routes)
+- [Available Pages](#available-pages)
+- [Adding New Pages](#adding-new-pages)
+- [Customizing Styles](#customizing-styles)
 - [Deploying the Web Interface](#deploying-the-web-interface)
 - [Security Considerations](#security-considerations)
 
@@ -17,83 +17,58 @@ Praetbot includes a Next.js web interface that runs alongside the Discord bot, p
 
 The web interface provides:
 
-- **Dashboard** - View bot statistics and cookie leaderboard
-- **JSON API** - Access bot data programmatically via Next.js API routes
-- **Modern React/Next.js** - TypeScript, server components, and dynamic routing
-- **Responsive Design** - Works on desktop and mobile devices
-- **Separate from Bot** - Can be deployed independently
+- **Dashboard** - Home page with Praetbot info and entry points
+- **Cookie Leaderboard** - Users and cookie counts in a sortable table
+- **Modern Stack** - Next.js App Router with TypeScript and server components
+- **Responsive Layout** - Works on desktop and mobile
+- **Runs With Bot** - Can be started alongside or independently from the Discord bot
 
 ## Architecture
 
-The web interface is built with:
 - **Framework**: Next.js 15+
 - **Language**: TypeScript
 - **Location**: `/web` directory in the monorepo
-- **API Routes**: `/web/app/api/*` for backend endpoints
-- **Pages**: `/web/app/page.tsx` and other page components
+- **Pages**: `/web/app/page.tsx` (home) and `/web/app/users/page.tsx` (leaderboard)
+- **Shared Code**: `/lib` (database and cookies) imported by both bot and web
 
-The Discord bot continues to run in the background as a separate process (`app.ts` at root level).
+The Discord bot continues to run as a separate process (`app.ts` at the repo root).
 
 ## Getting Started
 
-### Starting the Server
+### Start Locally
 
 ```bash
-# Start both Discord bot and web interface together
+# Start bot + web together
 npm run dev
 
-# Start web interface only (without Discord bot)
+# Start web only
 npm run dev:web
 
 # Start bot only
 npm run dev:bot
 ```
 
-The server runs on port 3000 by default for the web interface.
+The web interface runs on `http://localhost:3000` by default.
 
-### Accessing Locally
+### Environment Variables
 
-Open your browser to:
-
-```
-http://localhost:3000
-```
+Set `MONGODB_URI` for the web build and runtime (same connection string used by the bot).
 
 ## Available Pages
 
-### Home Page
+### Home Page — `/`
 
-**`GET /`**
+- Renders the Praetbot welcome content.
+- Example: `curl http://localhost:3000`
 
-Renders the home page with Praetbot welcome information.
+### Users Page — `/users`
 
-**Response:** HTML page
-
-**Example:**
-
-```bash
-curl http://localhost:3000
-```
-
----
-
-### Users Page
-
-**`GET /users`**
-
-Displays a table of all users and their cookie counts, sorted by most cookies first.
-
-**Response:** HTML page with styled table
-
-**Example:**
-
-```bash
-curl http://localhost:3000/users
-```
+- Displays a table of all users and their cookie counts, sorted by most cookies first.
+- Example: `curl http://localhost:3000/users`
 
 ## Adding New Pages
 
-To add a new page, create a new file in `/web/app/` using Next.js conventions:
+Create a new folder under `/web/app` following Next.js conventions:
 
 ```typescript
 // /web/app/about/page.tsx
@@ -107,98 +82,25 @@ export default function AboutPage() {
 }
 ```
 
-This will be automatically available at `/about`.
+This is automatically available at `/about`.
 
-## Customizing the Interface
+## Customizing Styles
 
-### Project Structure
+- Global styles live in `/web/app/globals.css`.
+- Add component-scoped styles with CSS Modules or inline styles as needed.
+- Static assets can be placed in `/web/public`.
 
-```
-praetbot/
-├── app.ts               # Discord bot entry point
-├── bot/                 # Bot implementation and commands
-├── bin/                 # Legacy bin directory (uses lib)
-├── lib/                 # Shared library (database, utilities)
-├── routes/              # Legacy Express routes (for reference)
-├── web/                 # Next.js web application
-│   ├── app/
-│   │   ├── page.tsx     # Home page
-│   │   ├── users/
-│   │   │   └── page.tsx # Users/cookies page
-│   │   ├── layout.tsx   # Root layout
-│   │   └── globals.css  # Global styles
-│   ├── lib/             # Re-exports shared lib
-│   ├── public/          # Static assets
-│   └── package.json
-└── package.json         # Root dependencies
-```
-│   ├── layout.hbs       # Base layout
-│   └── error.hbs        # Error page
-├── public/              # Static assets
-│   ├── stylesheets/
-│   └── images/
-└── bin/
-    └── www.ts           # HTTP server setup
-```
+## Deploying the Web Interface
 
-### Modifying Templates
+- Build command (root `vercel.json`): `cd web && npm install && npm run build`
+- Output directory: `/web/.next`
+- Ensure `MONGODB_URI` is configured in your deployment environment.
 
-Templates use Handlebars (`.hbs` files).
+## Security Considerations
 
-**Example: Edit Home Page (`views/index.hbs`)**
-
-```handlebars
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-
-<div class='features'>
-  <h2>Features</h2>
-  <ul>
-    <li>Cookie tracking system</li>
-    <li>Custom commands</li>
-    <li>Weather information</li>
-  </ul>
-</div>
-
-<a href='/users'>View Cookie Leaderboard</a>
-```
-
-**Create a leaderboard page (`views/leaderboard.hbs`)**
-
-```handlebars
-<h1>Cookie Leaderboard</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Rank</th>
-      <th>User</th>
-      <th>Cookies</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each users}}
-      <tr>
-        <td>{{@index}}</td>
-        <td>{{this.name}}</td>
-        <td>{{this.cookies}} 🍪</td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
-```
-
-### Adding CSS Styles
-
-Create `public/stylesheets/style.css`:
-
-```css
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background: #f5f5f5;
+- Do not expose secrets in pages or client components.
+- Use environment variables for all credentials (e.g., `MONGODB_URI`).
+- Keep dependencies updated (`npm audit` and `npm outdated`).
 }
 
 h1 {
