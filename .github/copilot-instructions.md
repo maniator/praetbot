@@ -100,7 +100,7 @@ When handling errors in commands:
 - Provide user-friendly error messages
 - Log detailed errors to console for debugging
 
-Example (recommended pattern):
+**Best Practice Pattern (use for all new code):**
 
 ```typescript
 import { Client, TextChannel, DMChannel } from 'discord.js';
@@ -235,7 +235,10 @@ The bot uses these Discord.js GatewayIntentBits:
 
 - Check channel type before guild-specific operations
 - Handle both TextChannel and DMChannel appropriately
-- Type 0 = GUILD_TEXT channel
+- Use `ChannelType` enum from discord.js for type checking (recommended)
+  - Import: `import { ChannelType } from 'discord.js';`
+  - Example: `if (channel.type === ChannelType.GuildText)`
+- Common types: `ChannelType.GuildText`, `ChannelType.DM`
 
 ### User Mentions
 
