@@ -23,6 +23,7 @@ The web interface is available at http://localhost:3000.
 
 ### Environment Variables
 - MONGODB_URI (required for build and runtime data access)
+ - MONGODB_DB (optional; defaults to `praetbot`)
 
 ## Current Pages
 - / – Home page with Praetbot info

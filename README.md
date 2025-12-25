@@ -159,6 +159,10 @@ http://localhost:3000
 **Production:**
 Replace `localhost:3000` with your deployment URL (e.g., `https://your-app.vercel.app`)
 
+### Environment Variables
+- **`MONGODB_URI`**: Connection string for MongoDB Atlas or server
+- **`MONGODB_DB`**: Optional. Database name to use (defaults to `praetbot`)
+
 ### Example: Viewing Cookie Leaderboard
 
 Open `http://localhost:3000/users` to see a sorted table of users and cookie counts.
