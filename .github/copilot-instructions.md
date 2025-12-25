@@ -92,7 +92,15 @@ All Discord bot commands follow this pattern:
 5. Return user-friendly error messages
 6. Place tests in `.test.ts` files alongside implementation
 
-Example command structure:
+### Error Handling
+
+When handling errors in commands:
+- Always use try-catch blocks for async operations
+- Extract error message safely to avoid exposing sensitive information
+- Provide user-friendly error messages
+- Log detailed errors to console for debugging
+
+Example (recommended pattern):
 
 ```typescript
 import { Client, TextChannel, DMChannel } from 'discord.js';
