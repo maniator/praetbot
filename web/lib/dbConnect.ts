@@ -23,5 +23,3 @@ const connect = async function (cb: (db: Db) => Promise<void> | void): Promise<v
 };
 
 export { connect };
-
-

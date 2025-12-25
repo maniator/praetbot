@@ -10,6 +10,7 @@ export default [
       'node_modules/**',
       'dist/**',
       'coverage/**',
+      'web/.next/**',
       '**/*.js',
       '**/*.mjs',
       '**/*.cjs',

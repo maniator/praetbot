@@ -12,11 +12,11 @@
     "dev:web:build": "cd web && npm run build",
     "build": "npm run build:bot && npm run build:web",
     "build:bot": "vite build",
-    "build:web": "cd web && npm ci && npm run build",
+    "build:web": "cd web && npm install --no-audit --no-fund && npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint . --ext .ts && cd web && npm ci && npm run lint",
+    "lint": "eslint . --ext .ts && cd web && npm install --no-audit --no-fund && npm run lint",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write \"**/*.{ts,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,json,md,yml,yaml}\""

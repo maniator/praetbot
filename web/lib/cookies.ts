@@ -66,5 +66,3 @@ const getCookies = function (): Promise<CookieUser[]> {
 };
 
 export { updateCookie, getCookies, getCookieByUserId };
-
-
