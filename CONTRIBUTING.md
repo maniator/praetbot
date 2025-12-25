@@ -45,8 +45,6 @@ This project follows a simple code of conduct: be respectful, constructive, and 
 
 ## Getting Started
 
-## Getting Started
-
 ### Prerequisites
 
 - Node.js >= 20.0.0
