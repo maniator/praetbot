@@ -7,6 +7,7 @@ These instructions provide GitHub Copilot with repository-specific guidance, cod
 Praetbot is a Discord bot built with TypeScript, featuring custom commands, cookie tracking, and various utilities. It includes both a Discord bot and an Express web interface.
 
 **Primary Technologies:**
+
 - Runtime: Node.js >= 20.0.0
 - Language: TypeScript 5.7.2
 - Discord API: Discord.js v14
@@ -95,6 +96,7 @@ All Discord bot commands follow this pattern:
 ### Error Handling
 
 When handling errors in commands:
+
 - Always use try-catch blocks for async operations
 - Extract error message safely to avoid exposing sensitive information
 - Provide user-friendly error messages
@@ -200,6 +202,7 @@ npm run format:check     # Check code formatting
 ### Environment Variables
 
 All configuration should be in environment variables:
+
 - `BOT_API_KEY` - Discord bot token
 - `MONGO_USER` - MongoDB username
 - `MONGO_PASSWORD` - MongoDB password
@@ -225,6 +228,7 @@ All configuration should be in environment variables:
 ### Required Intents
 
 The bot uses these Discord.js GatewayIntentBits:
+
 - `GatewayIntentBits.Guilds` - Access guild information
 - `GatewayIntentBits.GuildMessages` - Read messages in guilds
 - `GatewayIntentBits.MessageContent` - Access message content (privileged)
@@ -280,6 +284,7 @@ The bot uses these Discord.js GatewayIntentBits:
 ## Ignore Patterns
 
 Do not modify or generate suggestions for:
+
 - `node_modules/` - Dependencies
 - `dist/` - Build output
 - `coverage/` - Test coverage reports
@@ -298,6 +303,7 @@ Follow Conventional Commits specification:
 ```
 
 **Types:**
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation changes
@@ -307,6 +313,7 @@ Follow Conventional Commits specification:
 - `chore` - Maintenance tasks
 
 **Examples:**
+
 - `feat(commands): add dice roll command`
 - `fix(cookie): prevent negative cookie counts`
 - `docs(readme): update installation instructions`
