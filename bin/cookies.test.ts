@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { updateCookie, getCookieByUserId, getCookies, CookieUser } from './cookies';
 
-// Mock the database connection
-vi.mock('./dbConnect', () => ({
+// Mock the database connection used by lib/cookies
+vi.mock('../lib/dbConnect.js', () => ({
   connect: vi.fn((callback) => {
     const mockDb = {
       collection: vi.fn((name: string) => ({
