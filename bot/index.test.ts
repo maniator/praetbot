@@ -7,26 +7,26 @@ vi.mock('discord.js', async () => {
   const actual = await vi.importActual('discord.js');
   return {
     ...actual,
-    Client: vi.fn(() => ({
-      login: vi.fn(async () => undefined),
-      once: vi.fn(),
-      on: vi.fn(),
-      user: { id: 'bot123', username: 'TestBot' },
-      users: {
+    Client: class {
+      login = vi.fn(async () => undefined);
+      once = vi.fn();
+      on = vi.fn();
+      user = { id: 'bot123', username: 'TestBot' };
+      users = {
         fetch: vi.fn(async (id: string) => ({
           id,
           username: 'TestUser',
           send: vi.fn(),
         })),
-      },
-      channels: {
+      };
+      channels = {
         fetch: vi.fn(async (id: string) => ({
           id,
           name: 'test-channel',
           send: vi.fn(),
         })),
-      },
-    })),
+      };
+    },
     GatewayIntentBits: {
       Guilds: 1,
       GuildMessages: 2,
@@ -53,9 +53,9 @@ vi.mock('../bin/cookies', () => ({
 
 // Mock CommandListener
 vi.mock('./command', () => ({
-  CommandListener: vi.fn(() => ({
-    listen: vi.fn(),
-  })),
+  CommandListener: class {
+    listen = vi.fn();
+  },
 }));
 
 describe('Bot', () => {
