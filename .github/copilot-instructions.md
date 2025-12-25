@@ -4,7 +4,7 @@ These instructions provide GitHub Copilot with repository-specific guidance, cod
 
 ## Project Overview
 
-Praetbot is a Discord bot built with TypeScript, featuring custom commands, cookie tracking, and various utilities. It includes both a Discord bot and an Express web interface.
+Praetbot is a Discord bot built with TypeScript, featuring custom commands, cookie tracking, and various utilities. It includes both a Discord bot and a Next.js web interface.
 
 **Primary Technologies:**
 
@@ -12,7 +12,7 @@ Praetbot is a Discord bot built with TypeScript, featuring custom commands, cook
 - Language: TypeScript 5.7.2
 - Discord API: Discord.js v14
 - Database: MongoDB 6.11.0
-- Web Framework: Express 4.21.2
+- Web Framework: Next.js 15
 - Testing: Vitest 2.1.8
 - Build Tool: Vite 6.0.3
 - Linting: ESLint 9.17.0
@@ -260,22 +260,17 @@ The bot uses these Discord.js GatewayIntentBits:
 - Filter out bots when selecting random users
 - Escape special characters in Discord messages as needed (note: `no-useless-escape` is disabled for this reason)
 
-## Express Web Interface
+## Next.js Web Interface
 
-### Routes
-
-- Place route handlers in `routes/` directory
-- Use Handlebars templates in `views/` directory
-- Serve static files from `public/` directory
-- Main Express app is in `eApp.ts`
-
-### Design Principles
-
-- Keep web interface functional but simple
-- Ensure mobile responsiveness
-- Consider accessibility (WCAG 2.1)
-- Use semantic HTML
-- Future consideration: modern frontend framework
+- Location: `/web`
+- Framework: Next.js 15 (App Router, TypeScript)
+- Shared code: `/lib` (e.g., `dbConnect.ts`, `cookies.ts`)
+- Current pages: `/` and `/users`
+- Development commands:
+  - `npm run dev` (bot + web)
+  - `npm run dev:web` (web only)
+  - `npm run dev:bot` (bot only)
+- Env vars: ensure `MONGODB_URI` is set for build/runtime
 
 ## Module System
 

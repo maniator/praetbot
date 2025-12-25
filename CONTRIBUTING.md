@@ -206,7 +206,7 @@ We welcome design improvements to the web interface! Here's how to contribute:
 1. **Review Current State**
    - Run the app locally: `npm run dev:web`
    - Visit `http://localhost:3000`
-   - Check existing routes in `routes/` directory
+   - Check existing pages in `/web/app`
 
 2. **Plan Your Changes**
    - Create wireframes or mockups
@@ -215,16 +215,16 @@ We welcome design improvements to the web interface! Here's how to contribute:
    - Share your designs in an issue for feedback
 
 3. **Implement Your Design**
-   - Add CSS to `public/stylesheets/`
-   - Update Handlebars templates in `views/`
-   - Add new routes if needed in `routes/`
+   - Update React components in `/web/app`
+   - Add styles in `/web/app/globals.css` or component-level CSS Modules
+   - Add new pages by creating folders under `/web/app`
    - Ensure TypeScript types are correct
 
 4. **Test Thoroughly**
    - Test on different screen sizes
    - Test with different data scenarios (empty, full)
    - Verify accessibility with screen readers
-   - Add automated tests for new routes
+   - Add automated tests for new pages or API routes
 
 5. **Document Your Changes**
    - Update `WEB_INTERFACE.md` if adding new features

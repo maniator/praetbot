@@ -245,7 +245,7 @@ docker-compose up -d
 - **Building**: Vite 6.0.3
 - **Linting**: ESLint 9.17.0
 - **Formatting**: Prettier 3.4.2
-- **Web Framework**: Express 4.21.2
+- **Web Framework**: Next.js 15
 
 ## CI/CD
 
