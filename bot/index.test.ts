@@ -7,7 +7,7 @@ vi.mock('discord.js', async () => {
   const actual = await vi.importActual('discord.js');
   return {
     ...actual,
-    Client: class MockClient {
+    Client: class {
       login = vi.fn(async () => undefined);
       once = vi.fn();
       on = vi.fn();
@@ -53,7 +53,7 @@ vi.mock('../bin/cookies', () => ({
 
 // Mock CommandListener
 vi.mock('./command', () => ({
-  CommandListener: class MockCommandListener {
+  CommandListener: class {
     listen = vi.fn();
   },
 }));
