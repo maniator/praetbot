@@ -1,6 +1,14 @@
 # Deployment Guide
 
-This guide covers deploying Praetbot to various cloud platforms.
+This guide covers deploying Praetbot (Discord bot + Next.js web interface) to various cloud platforms.
+
+## Overview
+
+Praetbot consists of two components:
+- **Discord Bot**: Runs continuously and connects to Discord
+- **Web Interface**: Built with Next.js, handles the web dashboard and API routes
+
+Both components share the same deployment and can run together on most platforms.
 
 ## Table of Contents
 
@@ -382,56 +390,55 @@ PORT=3000
 
 ## Vercel Deployment
 
-**Best for**: Serverless functions and static sites
+**Best for**: Serverless web interface hosting
 
-⚠️ **Note**: Vercel is designed for serverless functions with short execution times. The Discord bot needs to run continuously, so you'll need to split the deployment:
+⚠️ **Note**: The Discord bot requires continuous runtime. For Vercel deployment:
 
-1. **Deploy web interface to Vercel**
-2. **Deploy bot to another platform** (AWS EC2, Railway, etc.)
+1. **Deploy web interface to Vercel** (Next.js app in `/web` directory)
+2. **Deploy bot separately** to a platform supporting long-running processes (AWS EC2, Railway, Render, etc.)
 
 **Deploying Web Interface:**
 
-1. **Install Vercel CLI**
+1. **Install Vercel CLI** (optional, can use GitHub integration)
 
    ```bash
    npm install -g vercel
    ```
 
-2. **Create `vercel.json`**
+2. **Connect GitHub Repository**
 
-   ```json
-   {
-     "version": 2,
-     "builds": [
-       {
-         "src": "eApp.ts",
-         "use": "@vercel/node"
-       }
-     ],
-     "routes": [
-       {
-         "src": "/(.*)",
-         "dest": "eApp.ts"
-       }
-     ],
-     "env": {
-       "MONGODB_URI": "@mongodb-uri"
-     }
-   }
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "Add New..." → "Project"
+   - Select your GitHub repository
+   - Vercel will auto-detect the Next.js app in the `/web` directory
+
+3. **Configure Environment Variables**
+
+   In Vercel Dashboard → Project Settings → Environment Variables, add:
+
    ```
-
-3. **Add secrets**
-
-   ```bash
-   vercel secrets add mongodb-uri your_connection_string
+   MONGODB_URI=your_connection_string
+   WEATHER_KEY=your_openweathermap_api_key
    ```
 
 4. **Deploy**
+
    ```bash
+   # Via Vercel CLI
    vercel --prod
+
+   # Or automatically when you push to main branch (if GitHub integration enabled)
+   git push origin main
    ```
 
-**Note**: The bot itself (`app.ts`) should be deployed to a platform that supports long-running processes.
+5. **For the Discord Bot**
+
+   Deploy `app.ts` separately to a platform that supports continuous processes:
+   - **Railway**: `npm install -g @railway/cli && railway up`
+   - **Render**: Connect GitHub, set build command to `npm install && npm run build:bot`
+   - **AWS EC2/Heroku**: Follow their respective deployment guides
+
+**Note**: The `vercel.json` in the root is automatically configured to deploy the Next.js app. Environment variables should be set in the Vercel dashboard, not in config files.
 
 ---
 

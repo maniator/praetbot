@@ -1,43 +1,55 @@
 # Web Interface Guide
 
-Praetbot includes an Express.js web interface that runs alongside the Discord bot, providing HTTP endpoints for viewing bot data and statistics.
+Praetbot includes a Next.js web interface that runs alongside the Discord bot, providing a modern dashboard and API endpoints for viewing bot data and statistics.
 
 ## Table of Contents
 
 - [Overview](#overview)
+- [Architecture](#architecture)
 - [Getting Started](#getting-started)
-- [Available Endpoints](#available-endpoints)
-- [Customizing the Interface](#customizing-the-interface)
+- [Available Routes](#available-routes)
+- [API Endpoints](#api-endpoints)
 - [Adding New Routes](#adding-new-routes)
 - [Deploying the Web Interface](#deploying-the-web-interface)
 - [Security Considerations](#security-considerations)
-- [API Documentation](#api-documentation)
 
 ## Overview
 
 The web interface provides:
 
-- **View cookie leaderboard** - See which users have the most cookies
-- **JSON API** - Access bot data programmatically
-- **Extensible architecture** - Easy to add new routes and features
-- **Modern Express setup** - TypeScript, ESM modules, async/await
+- **Dashboard** - View bot statistics and cookie leaderboard
+- **JSON API** - Access bot data programmatically via Next.js API routes
+- **Modern React/Next.js** - TypeScript, server components, and dynamic routing
+- **Responsive Design** - Works on desktop and mobile devices
+- **Separate from Bot** - Can be deployed independently
+
+## Architecture
+
+The web interface is built with:
+- **Framework**: Next.js 15+
+- **Language**: TypeScript
+- **Location**: `/web` directory in the monorepo
+- **API Routes**: `/web/app/api/*` for backend endpoints
+- **Pages**: `/web/app/page.tsx` and other page components
+
+The Discord bot continues to run in the background as a separate process (`app.ts` at root level).
 
 ## Getting Started
 
 ### Starting the Server
 
 ```bash
-# Start both Discord bot and web interface
-npm start
+# Start both Discord bot and web interface together
+npm run dev
 
 # Start web interface only (without Discord bot)
 npm run dev:web
 
-# Start with auto-reload during development
-npm run dev:web:watch
+# Start bot only
+npm run dev:bot
 ```
 
-The server runs on port 3000 by default (configurable via `PORT` environment variable).
+The server runs on port 3000 by default for the web interface.
 
 ### Accessing Locally
 
@@ -47,7 +59,7 @@ Open your browser to:
 http://localhost:3000
 ```
 
-## Available Endpoints
+## Available Routes
 
 ### Home Page
 

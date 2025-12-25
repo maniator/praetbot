@@ -1,15 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "eApp.ts",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "eApp.ts"
-    }
-  ]
+  "buildCommand": "cd web && npm install && npm run build",
+  "outputDirectory": "web/.next"
 }
+

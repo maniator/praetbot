@@ -1,6 +1,6 @@
-# Praetbot - Discord Bot
+# Praetbot - Discord Bot + Web Interface
 
-A Discord bot with custom commands, cookie tracking, and various utilities.
+A Discord bot with custom commands, cookie tracking, and various utilities, plus a Next.js web interface for managing the bot.
 
 ## Features
 
@@ -10,6 +10,12 @@ A Discord bot with custom commands, cookie tracking, and various utilities.
 - 🎨 **XKCD Comics**: Fetch XKCD comics by ID with `!!xkcd <id>`
 - 📝 **Custom Commands**: Create, list, and remove custom commands dynamically
 - 💬 **Help System**: Get help for any command with `!!help <command>`
+- 🌐 **Web Dashboard**: Next.js-based web interface for monitoring and managing the bot
+
+## Architecture
+
+- **Bot**: Discord bot running in the background (`app.ts`)
+- **Web Interface**: Next.js app in the `web/` directory serving the dashboard and API routes
 
 ## Requirements
 
@@ -21,8 +27,11 @@ A Discord bot with custom commands, cookie tracking, and various utilities.
 ## Installation
 
 ```bash
-# Install dependencies
+# Install dependencies for both bot and web interface
 npm install
+
+# Install web dependencies
+cd web && npm install && cd ..
 
 # Set up environment variables
 cp .env.example .env
@@ -46,8 +55,14 @@ WEATHER_KEY=your_openweathermap_api_key
 ## Development
 
 ```bash
-# Run in development mode with auto-reload
+# Run both bot and web interface (requires concurrently)
 npm run dev
+
+# Run just the bot
+npm run dev:bot
+
+# Run just the web interface
+npm run dev:web
 
 # Run tests
 npm test
@@ -74,10 +89,35 @@ npm run format:check
 ## Building
 
 ```bash
-# Build for production
+# Build both bot and web interface for production
 npm run build
 
-# The built files will be in the dist/ directory
+# Build just the bot
+npm run build:bot
+
+# Build just the web interface
+npm run build:web
+```
+
+## Project Structure
+
+```
+praetbot/
+├── app.ts                 # Discord bot entry point
+├── bot/                   # Bot implementation and commands
+├── bin/                   # Database connection and utilities
+├── routes/                # Legacy routes (kept for compatibility)
+├── views/                 # Legacy views (kept for compatibility)
+├── web/                   # Next.js web interface
+│   ├── app/
+│   │   ├── api/          # API routes
+│   │   ├── page.tsx      # Home page
+│   │   └── layout.tsx    # Root layout
+│   ├── public/           # Static assets
+│   └── package.json      # Web app dependencies
+├── public/               # Static files
+├── package.json          # Root dependencies
+└── vercel.json          # Vercel deployment configuration
 ```
 
 ## Web Interface
