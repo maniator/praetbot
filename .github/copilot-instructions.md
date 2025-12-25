@@ -74,12 +74,22 @@ bot/
 ├── sandbox.ts           # Sandboxed code execution
 └── types.ts             # Shared types
 
-routes/
-├── index.ts             # Home route
-└── users.ts             # User data routes
+lib/                     # Shared library
+├── dbConnect.ts         # MongoDB connection
+└── cookies.ts           # Cookie operations
 
-views/                   # Handlebars templates
-public/                  # Static files
+web/                     # Next.js web interface
+├── app/
+│   ├── page.tsx         # Home page
+│   ├── users/
+│   │   └── page.tsx     # Users page
+│   ├── layout.tsx       # Root layout
+│   └── globals.css      # Global styles
+├── lib/                 # Re-exports shared lib
+├── public/              # Static files
+└── package.json         # Web dependencies
+
+routes/                  # Legacy Express routes (for reference)
 ```
 
 ## Command Pattern

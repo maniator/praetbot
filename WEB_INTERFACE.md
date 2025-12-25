@@ -116,19 +116,21 @@ This will be automatically available at `/about`.
 ```
 praetbot/
 ├── app.ts               # Discord bot entry point
+├── bot/                 # Bot implementation and commands
+├── bin/                 # Legacy bin directory (uses lib)
+├── lib/                 # Shared library (database, utilities)
+├── routes/              # Legacy Express routes (for reference)
 ├── web/                 # Next.js web application
 │   ├── app/
 │   │   ├── page.tsx     # Home page
 │   │   ├── users/
-│   │   │   └── page.tsx # Users page
+│   │   │   └── page.tsx # Users/cookies page
 │   │   ├── layout.tsx   # Root layout
 │   │   └── globals.css  # Global styles
+│   ├── lib/             # Re-exports shared lib
 │   ├── public/          # Static assets
 │   └── package.json
-├── routes/              # Legacy Express routes (for reference)
-├── views/               # Legacy Handlebars templates (for reference)
-├── bin/                 # Database utilities
-└── bot/                 # Discord bot implementation
+└── package.json         # Root dependencies
 ```
 │   ├── layout.hbs       # Base layout
 │   └── error.hbs        # Error page

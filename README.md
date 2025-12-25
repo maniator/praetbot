@@ -105,9 +105,9 @@ npm run build:web
 praetbot/
 ├── app.ts                 # Discord bot entry point
 ├── bot/                   # Bot implementation and commands
-├── bin/                   # Database connection and utilities
+├── bin/                   # Legacy bin directory (uses lib)
+├── lib/                   # Shared library (database, utilities)
 ├── routes/                # Legacy Express routes (for reference)
-├── views/                 # Legacy Handlebars views (for reference)
 ├── web/                   # Next.js web interface
 │   ├── app/
 │   │   ├── page.tsx      # Home page
@@ -115,8 +115,10 @@ praetbot/
 │   │   │   └── page.tsx  # Users/cookies page
 │   │   ├── layout.tsx    # Root layout
 │   │   └── globals.css   # Global styles
+│   ├── lib/              # Re-exports shared lib
 │   ├── public/           # Static assets
 │   └── package.json      # Web app dependencies
+├── docs/                 # Documentation
 ├── public/               # Static files
 ├── package.json          # Root dependencies
 └── vercel.json          # Vercel deployment configuration
@@ -183,29 +185,21 @@ curl http://localhost:3000/users
 
 ### Customizing the Web Interface
 
-The web interface is built with Express and Handlebars templates:
+The web interface is built with Next.js and React:
 
-- **Templates:** `views/` directory
-- **Routes:** `routes/` directory
-- **Static files:** `public/` directory
-- **Main app:** `eApp.ts`
+- **Pages:** `web/app/` directory with Next.js App Router
+- **Library code:** `lib/` directory (shared with bot)
+- **Static files:** `web/public/` directory
+- **Configuration:** `web/next.config.js`, `web/tsconfig.json`
 
 See [WEB_INTERFACE.md](WEB_INTERFACE.md) for detailed customization guide.
 
-### 🎨 Help Wanted: Improve the Web Interface!
+### 🌐 Modern Next.js Architecture
 
-The current web interface is functional but minimal (Express + Handlebars templates).
+The web interface uses Next.js with App Router for a modern, performant experience with server-side rendering and static generation capabilities.
 
-**We need your input on the frontend stack and design!**
+**Contributing to the Web Interface:**
 
-#### What should we use?
-
-- Keep it simple with vanilla HTML/CSS/JS?
-- Modern framework (React, Vue, Svelte)?
-- Static site generator (Next.js, Gatsby, Astro)?
-- Something else?
-
-#### What we want to build:
 
 - Modern, beautiful UI
 - Visual cookie leaderboard
