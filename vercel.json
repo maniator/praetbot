@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "apps/web/package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "installCommand": "npm install",
   "buildCommand": "npm run build:web",
+  "installCommand": "npm install",
+  "outputDirectory": "apps/web/.next",
   "routes": [
     {
       "src": "/(.*)",
