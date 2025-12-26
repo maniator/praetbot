@@ -42,7 +42,7 @@ vi.mock('discord.js', async () => {
 });
 
 // Mock the cookies module
-vi.mock('../bin/cookies', () => ({
+vi.mock('@praetbot/shared-lib/cookies', () => ({
   getCookieByUserId: vi.fn(async (id: string) => ({
     id,
     name: 'TestUser',
@@ -134,7 +134,7 @@ describe('Bot', () => {
   describe('respondToUserMention', () => {
     it('should increment cookies on ++ mention', async () => {
       const bot = new Bot('test-token');
-      const { updateCookie } = await import('../bin/cookies');
+      const { updateCookie } = await import('@praetbot/shared-lib/cookies');
 
       await bot.respondToUserMention('<@123456789> ++', 'channel123', 'author123');
 
@@ -148,7 +148,7 @@ describe('Bot', () => {
 
     it('should decrement cookies on -- mention', async () => {
       const bot = new Bot('test-token');
-      const { updateCookie } = await import('../bin/cookies');
+      const { updateCookie } = await import('@praetbot/shared-lib/cookies');
 
       await bot.respondToUserMention('<@123456789> --', 'channel123', 'author123');
 
@@ -162,7 +162,7 @@ describe('Bot', () => {
 
     it('should handle new users with no existing cookies', async () => {
       const bot = new Bot('test-token');
-      const { getCookieByUserId, updateCookie } = await import('../bin/cookies');
+      const { getCookieByUserId, updateCookie } = await import('@praetbot/shared-lib/cookies');
 
       (getCookieByUserId as any).mockResolvedValueOnce(null);
 
@@ -178,7 +178,7 @@ describe('Bot', () => {
 
     it('should not respond to messages without mentions', async () => {
       const bot = new Bot('test-token');
-      const { updateCookie } = await import('../bin/cookies');
+      const { updateCookie } = await import('@praetbot/shared-lib/cookies');
 
       await bot.respondToUserMention('Hello world', 'channel123', 'author123');
 

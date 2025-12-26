@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { commands } from './commands';
 
 // Mock the database connection
-vi.mock('../bin/dbConnect', () => ({
+vi.mock('@praetbot/shared-lib/dbConnect', () => ({
   connect: vi.fn((callback) => {
     const mockDb = {
       collection: vi.fn((name: string) => ({

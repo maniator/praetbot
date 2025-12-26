@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { connect } from '../../../../packages/shared-lib/dbConnect';
+import { connect } from '@praetbot/shared-lib/dbConnect';
 import { MongoClient } from 'mongodb';
 
 // Mock MongoClient from mongodb
