@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { updateCookie, getCookieByUserId, getCookies, type CookieUser } from './cookies';
+import { updateCookie, getCookieByUserId, getCookies, type CookieUser } from './cookies.js';
 
 // Mock the database connection used by lib/cookies BEFORE importing the module under test
 vi.mock('./dbConnect.ts', () => ({
@@ -25,7 +25,9 @@ vi.mock('./dbConnect.ts', () => ({
         updateOne: vi.fn(async (_query: unknown, _update: unknown) => ({ acknowledged: true })),
       })),
     };
-    callback(mockDb as unknown as { collection: (name: string) => unknown });
+    return Promise.resolve(
+      callback(mockDb as unknown as { collection: (name: string) => unknown })
+    );
   }),
 }));
 

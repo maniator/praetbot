@@ -87,7 +87,7 @@ const commands: Command[] = [
         try {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           await db.collection('commands').deleteOne({ _id: command } as any);
-          await channel.send(`<@${user.name}> ${command} removed!`);
+          await channel.send(`<@${user.id}> ${command} removed!`);
         } catch (error) {
           console.error('Error removing command:', error);
         }
@@ -105,6 +105,11 @@ const commands: Command[] = [
     ): Promise<void> {
       const value = args.length ? args.join(' ') : '';
 
+      if (!command || command.trim().length === 0) {
+        await channel.send(`<@${user.id}> Command name cannot be empty.`);
+        return;
+      }
+
       if (isCommandConstant(command)) {
         await channel.send(`${command} cannot be changed. Sorry :-(`);
         return;
@@ -116,7 +121,7 @@ const commands: Command[] = [
             .collection('commands')
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .replaceOne({ _id: command } as any, { _id: command, value }, { upsert: true });
-          await channel.send(`<@${user.name}> ${command} added!`);
+          await channel.send(`<@${user.id}> ${command} added!`);
         } catch (error) {
           console.error('Error adding command:', error);
         }
@@ -135,7 +140,7 @@ const commands: Command[] = [
       commandName: string
     ): Promise<void> {
       if (!commandName || commandName.length === 0) {
-        await channel.send(`<@${user.name}> Please use as follows: \`!!help <commandName>\``);
+        await channel.send(`<@${user.id}> Please use as follows: \`!!help <commandName>\``);
       } else {
         try {
           const command = await lookupCommand(commandName);
@@ -145,9 +150,9 @@ const commands: Command[] = [
             explain = command.value ? '```' + command.value + '```' : 'No current description';
           }
 
-          await channel.send(`<@${user.name}> ${commandName}: ${explain}`);
+          await channel.send(`<@${user.id}> ${commandName}: ${explain}`);
         } catch {
-          await channel.send(`<@${user.name}> That command does not exist`);
+          await channel.send(`<@${user.id}> That command does not exist`);
         }
       }
     },

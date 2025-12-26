@@ -8,7 +8,7 @@ import { Db } from 'mongodb';
 import { executeSandboxedCode } from './sandbox.js';
 
 class CommandListener {
-  private commandRegex: RegExp = /^\!\!([a-zA-Z]*)\s?(.*)?/;
+  private commandRegex: RegExp = /^\!\!([0-9a-zA-Z]*)\s?(.*)?/;
 
   constructor(private botListener: Bot) {}
 
@@ -55,11 +55,15 @@ class CommandListener {
   }
 
   async respondToCommand(message: DiscordMessage): Promise<void> {
+    console.log('🔍 Checking for command in message:', message.content);
+
     const match = message.content.match(this.commandRegex);
     if (!match) {
+      console.log('❌ No command pattern found');
       return;
     }
 
+    console.log('✅ Command detected:', match);
     const [, command, args = ''] = match;
 
     connect(async (db: Db) => {
@@ -113,6 +117,8 @@ class CommandListener {
   }
 
   listen(): void {
+    console.log('👂 Command listener started');
+
     this.botListener.bot.on(Events.MessageCreate, async (message: DiscordMessage) => {
       const { botId } = this.botListener;
 
@@ -121,8 +127,12 @@ class CommandListener {
         return;
       }
 
+      console.log('🎯 CommandListener: Checking message for commands');
       if (this.commandRegex.test(message.content)) {
+        console.log('🎯 CommandListener: Command regex matched!');
         await this.respondToCommand(message);
+      } else {
+        console.log('🎯 CommandListener: No command pattern matched');
       }
     });
   }

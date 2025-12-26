@@ -1,17 +1,13 @@
 export const dynamic = 'force-dynamic';
 
-import { getCookies } from '@/lib/cookies';
+import { getCookies, CookieUser } from '@/lib/cookies';
 
 export default async function UsersPage() {
-  let cookies: Record<string, number> = {};
+  let users: CookieUser[] = [];
   let error: string | null = null;
 
   try {
-    const userList = await getCookies();
-    // Convert array to object keyed by userId
-    userList.forEach((user) => {
-      cookies[user.id] = user.cookies ?? 0;
-    });
+    users = await getCookies();
   } catch {
     error = 'Failed to fetch cookies';
   }
@@ -23,7 +19,7 @@ export default async function UsersPage() {
         <p style={{ color: 'red' }}>Error: {error}</p>
       ) : (
         <div>
-          {Object.keys(cookies).length === 0 ? (
+          {users.length === 0 ? (
             <p>No users found</p>
           ) : (
             <table style={{ borderCollapse: 'collapse', width: '100%' }}>
@@ -34,14 +30,16 @@ export default async function UsersPage() {
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(cookies)
-                  .sort(([, a], [, b]) => b - a)
-                  .map(([userId, count]) => (
-                    <tr key={userId} style={{ borderBottom: '1px solid #eee' }}>
+                {users
+                  .sort((a, b) => (b.cookies ?? 0) - (a.cookies ?? 0))
+                  .map((user) => (
+                    <tr key={user.id} style={{ borderBottom: '1px solid #eee' }}>
                       <td style={{ padding: '8px' }}>
-                        <code>{userId}</code>
+                        <strong>{user.name}</strong>
+                        <br />
+                        <small style={{ color: '#666' }}>ID: {user.id}</small>
                       </td>
-                      <td style={{ padding: '8px' }}>{count}</td>
+                      <td style={{ padding: '8px' }}>{user.cookies ?? 0}</td>
                     </tr>
                   ))}
               </tbody>
