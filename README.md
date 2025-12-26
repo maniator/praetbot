@@ -35,6 +35,60 @@ cp .env.example .env
 # Edit .env with your configuration
 ```
 
+## Discord Bot Setup
+
+Before running the bot, you need to create a Discord application and get your bot token:
+
+### 1. Create a Discord Application
+
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications)
+2. Click **New Application**
+3. Enter a name for your application (e.g., "Praetbot")
+4. Click **Create**
+
+### 2. Create a Bot User
+
+1. In your application, navigate to the **Bot** section in the left sidebar
+2. Click **Add Bot**
+3. Click **Yes, do it!** to confirm
+4. Under the bot's username, click **Reset Token**
+5. Click **Yes, do it!** and copy the token
+6. **Save this token securely** - this is your `BOT_API_KEY`
+
+### 3. Configure Bot Permissions
+
+1. In the **Bot** section, scroll down to **Privileged Gateway Intents**
+2. Enable the following intents:
+   - ✅ **SERVER MEMBERS INTENT** (to access guild member information)
+   - ✅ **MESSAGE CONTENT INTENT** (to read message content)
+3. Click **Save Changes**
+
+### 4. Invite Bot to Your Server
+
+1. Navigate to the **OAuth2** → **URL Generator** section
+2. Under **Scopes**, select:
+   - ✅ `bot`
+3. Under **Bot Permissions**, select:
+   - ✅ **Send Messages**
+   - ✅ **Read Messages/View Channels**
+   - ✅ **Read Message History**
+   - ✅ **Embed Links**
+   - ✅ **Attach Files**
+   - ✅ **Add Reactions**
+   - ✅ **Use External Emojis**
+   - Or simply select **Administrator** for full permissions (easier for development)
+4. Copy the generated URL at the bottom
+5. Paste the URL in your browser and select the server to add the bot to
+6. Click **Authorize**
+
+### 5. Add Token to Environment Variables
+
+Add the bot token you copied in step 2 to your `.env` file:
+
+```env
+BOT_API_KEY=your_token_here
+```
+
 ## Environment Variables
 
 ```env

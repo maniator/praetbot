@@ -72,11 +72,50 @@ npm run lint                 # Lint code
 npm run lint:fix             # Fix auto-fixable linting issues
 ```
 
+## Discord Bot Setup
+
+To get your `BOT_API_KEY`, you need to create a Discord application:
+
+### Quick Setup
+
+1. **Create Application**: Go to [Discord Developer Portal](https://discord.com/developers/applications) → New Application
+2. **Add Bot**: Navigate to **Bot** section → Add Bot → Reset Token → Copy token
+3. **Enable Intents**: Under **Privileged Gateway Intents**, enable:
+   - SERVER MEMBERS INTENT
+   - MESSAGE CONTENT INTENT
+4. **Invite Bot**: Go to **OAuth2** → **URL Generator**
+   - Scopes: `bot`
+   - Bot Permissions: Administrator (or specific permissions)
+   - Use generated URL to invite bot to your server
+5. **Add Token**: Add the copied token to `.env` as `BOT_API_KEY`
+
+### Required Permissions
+
+The bot needs these permissions:
+- Send Messages
+- Read Messages/View Channels
+- Read Message History
+- Embed Links
+- Attach Files
+- Add Reactions
+- Use External Emojis
+
+### Required Intents
+
+The bot uses these Gateway Intents (configured in code):
+- `GatewayIntentBits.Guilds`
+- `GatewayIntentBits.GuildMessages`
+- `GatewayIntentBits.MessageContent` (privileged - must be enabled)
+- `GatewayIntentBits.GuildMembers` (privileged - must be enabled)
+- `GatewayIntentBits.DirectMessages`
+
+For detailed setup instructions, see the [main README](../../README.md#discord-bot-setup).
+
 ## Environment Variables
 
 Required environment variables (set in monorepo root `.env`):
 
-- `BOT_API_KEY` - Discord bot token
+- `BOT_API_KEY` - Discord bot token (see Discord Bot Setup above)
 - `MONGODB_URI` - MongoDB connection string (or use MONGO_USER, MONGO_PASSWORD, MONGO_SERVER)
 - `WEATHER_KEY` - OpenWeatherMap API key (for weather command)
 
