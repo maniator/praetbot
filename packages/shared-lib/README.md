@@ -89,6 +89,7 @@ npm run build
 ```
 
 This generates:
+
 - `dist/dbConnect.js` and `dist/dbConnect.d.ts`
 - `dist/cookies.js` and `dist/cookies.d.ts`
 
@@ -132,6 +133,7 @@ npm run test
 ```
 
 Test files are co-located with implementation:
+
 - `dbConnect.test.ts` - Database connection tests
 - `cookies.test.ts` - Cookie operation tests
 
@@ -142,12 +144,13 @@ Test files are co-located with implementation:
 Establishes connection to MongoDB database.
 
 ```typescript
-async function dbConnect(): Promise<Db>
+async function dbConnect(): Promise<Db>;
 ```
 
 **Returns**: MongoDB `Db` instance
 
 **Environment Variables**:
+
 - `MONGODB_URI` (preferred) or
 - `MONGO_USER`, `MONGO_PASSWORD`, `MONGO_SERVER`
 
@@ -156,10 +159,11 @@ async function dbConnect(): Promise<Db>
 Retrieves cookie count for a user.
 
 ```typescript
-async function getCookies(userId: string): Promise<number>
+async function getCookies(userId: string): Promise<number>;
 ```
 
 **Parameters**:
+
 - `userId` - Discord user ID
 
 **Returns**: Number of cookies the user has
@@ -169,10 +173,11 @@ async function getCookies(userId: string): Promise<number>
 Adds cookies to a user's count.
 
 ```typescript
-async function addCookie(userId: string, amount: number): Promise<void>
+async function addCookie(userId: string, amount: number): Promise<void>;
 ```
 
 **Parameters**:
+
 - `userId` - Discord user ID
 - `amount` - Number of cookies to add
 
@@ -181,10 +186,11 @@ async function addCookie(userId: string, amount: number): Promise<void>
 Removes cookies from a user's count.
 
 ```typescript
-async function removeCookie(userId: string, amount: number): Promise<void>
+async function removeCookie(userId: string, amount: number): Promise<void>;
 ```
 
 **Parameters**:
+
 - `userId` - Discord user ID
 - `amount` - Number of cookies to remove
 
@@ -200,9 +206,11 @@ See the root [.github/copilot-instructions.md](../../.github/copilot-instruction
 ## Dependencies
 
 ### Runtime
+
 - `mongodb@^6.11.0` - MongoDB driver for Node.js
 
 ### Development
+
 - `typescript@^5.7.2` - TypeScript compiler
 - `vitest@^2.1.8` - Testing framework
 - `@vitest/coverage-v8@^2.1.8` - Code coverage

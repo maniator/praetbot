@@ -25,7 +25,9 @@ vi.mock('./dbConnect.ts', () => ({
         updateOne: vi.fn(async (_query: unknown, _update: unknown) => ({ acknowledged: true })),
       })),
     };
-    return Promise.resolve(callback(mockDb as unknown as { collection: (name: string) => unknown }));
+    return Promise.resolve(
+      callback(mockDb as unknown as { collection: (name: string) => unknown })
+    );
   }),
 }));
 

@@ -50,6 +50,7 @@ apps/bot/
 ### Prerequisites
 
 From the monorepo root, ensure you have:
+
 - Node.js >= 20.0.0
 - npm >= 10.0.0
 - Environment variables configured (see root README.md)
@@ -92,6 +93,7 @@ To get your `BOT_API_KEY`, you need to create a Discord application:
 ### Required Permissions
 
 The bot needs these permissions:
+
 - Send Messages
 - Read Messages/View Channels
 - Read Message History
@@ -103,6 +105,7 @@ The bot needs these permissions:
 ### Required Intents
 
 The bot uses these Gateway Intents (configured in code):
+
 - `GatewayIntentBits.Guilds`
 - `GatewayIntentBits.GuildMessages`
 - `GatewayIntentBits.MessageContent` (privileged - must be enabled)
@@ -123,6 +126,7 @@ Required environment variables (set in monorepo root `.env`):
 
 1. Create a new file in `commands/` directory (e.g., `commands/mycommand.ts`)
 2. Export a default async function with this signature:
+
    ```typescript
    import { Client, TextChannel, DMChannel } from 'discord.js';
    import { User } from '../command-interface.js';
@@ -136,6 +140,7 @@ Required environment variables (set in monorepo root `.env`):
      // Command logic here
    }
    ```
+
 3. Add the command to `commands.ts` registry
 4. Create a test file `commands/mycommand.test.ts`
 
@@ -155,6 +160,7 @@ describe('mycommand', () => {
 ```
 
 Run tests with:
+
 ```bash
 npm test
 ```
