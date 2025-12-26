@@ -36,7 +36,7 @@ class Bot {
       const guilds = client.guilds?.cache;
       if (guilds) {
         console.log(`Guilds (servers) the bot is in: ${guilds.size}`);
-        guilds.forEach(guild => {
+        guilds.forEach((guild) => {
           console.log(`  - ${guild.name} (ID: ${guild.id})`);
         });
       } else {
@@ -49,7 +49,7 @@ class Bot {
       console.log('  - MessageContent: ✅ (requires privileged intent in Discord Portal)');
       console.log('  - GuildMembers: ✅ (requires privileged intent in Discord Portal)');
       console.log('  - DirectMessages: ✅');
-      console.log('\n⚠️  If you don\'t see messages, check Discord Developer Portal:');
+      console.log("\n⚠️  If you don't see messages, check Discord Developer Portal:");
       console.log('   1. Go to https://discord.com/developers/applications');
       console.log('   2. Select your bot');
       console.log('   3. Go to Bot section');
