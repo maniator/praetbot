@@ -145,12 +145,9 @@ This project follows a simple code of conduct: be respectful, constructive, and 
 
 ### Where to Add Tests
 
-- **Bot commands**: `apps/bot/commands/<command>.test.ts`
-- **Bot features**: `apps/bot/<feature>.test.ts`
-- \*\*Bot routWEB_INTERFACE.md for web interface changes
-  - Update DEPLOYMENT.md for deployment-related changes
-  - Update CHANGELOG.md with your changes
-  - Add JSDoc comments for new functions/classes
+1. Locations
+   - **Bot commands**: `apps/bot/commands/<command>.test.ts`
+   - **Bot features**: `apps/bot/<feature>.test.ts`
 
 2. **Ensure CI Passes**
    - All tests must pass: `npm test`
@@ -164,28 +161,27 @@ This project follows a simple code of conduct: be respectful, constructive, and 
    - Reference any related issues (#123)
      apps/web/app/users/page.tsx # Web interface
 
-```
-
 ## Pull Request Process
 
 1. **Update Documentation**
+   - Update WEB_INTERFACE.md for web interface changes
    - Update README.md if you've added new features
    - Update CHANGELOG.md with your changes
    - Add JSDoc comments for new functions/classes
 
-2. **Ensure CI Passes**
+3. **Ensure CI Passes**
    - All tests must pass
    - Linting must pass with 0 errors
    - Code must be properly formatted
    - TypeScript compilation must succeed
 
-3. **Submit PR**
+4. **Submit PR**
    - Provide a clear description of changes
    - Reference any related issues
    - Add screenshots for UI changes
    - Request review from maintainers
 
-4. **Address Review Feedback**
+5. **Address Review Feedback**
    - Respond to comments promptly
    - Make requested changes
    - Re-request review after updates
@@ -214,7 +210,6 @@ This project follows a simple code of conduct: be respectful, constructive, and 
 The project uses a **Turborepo monorepo** structure with three workspaces:
 
 ```
-
 praetbot/
 ├── apps/
 │ ├── bot/ # Bot app (@praetbot/bot)
@@ -237,7 +232,6 @@ praetbot/
 │
 ├── turbo.json # Turborepo config
 └── package.json # Root monorepo config
-
 ````
 
 **Key Points:**
