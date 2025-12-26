@@ -32,6 +32,26 @@ class Bot {
       this.botId = client.user.id;
       this.botName = client.user.username;
       console.log(`Logged in as ${this.botName}!`);
+      console.log(`Bot ID: ${this.botId}`);
+      console.log(`Guilds (servers) the bot is in: ${client.guilds.cache.size}`);
+      
+      client.guilds.cache.forEach(guild => {
+        console.log(`  - ${guild.name} (ID: ${guild.id})`);
+      });
+
+      console.log('\n🔧 Gateway Intents configured:');
+      console.log('  - Guilds: ✅');
+      console.log('  - GuildMessages: ✅');
+      console.log('  - MessageContent: ✅ (requires privileged intent in Discord Portal)');
+      console.log('  - GuildMembers: ✅ (requires privileged intent in Discord Portal)');
+      console.log('  - DirectMessages: ✅');
+      console.log('\n⚠️  If you don\'t see messages, check Discord Developer Portal:');
+      console.log('   1. Go to https://discord.com/developers/applications');
+      console.log('   2. Select your bot');
+      console.log('   3. Go to Bot section');
+      console.log('   4. Enable MESSAGE CONTENT INTENT under Privileged Gateway Intents');
+      console.log('   5. Enable SERVER MEMBERS INTENT under Privileged Gateway Intents');
+      console.log('   6. Save and restart bot\n');
 
       this.listenForMessages();
       this.commandListener.listen();
@@ -43,8 +63,22 @@ class Bot {
   }
 
   listenForMessages(): void {
+    console.log('🎧 Setting up MessageCreate event listener...');
+    
     this.bot.on(Events.MessageCreate, async (message) => {
+      // Debug logging: Log ALL messages the bot sees
+      console.log('📨 Message received:', {
+        author: message.author.username,
+        authorId: message.author.id,
+        content: message.content,
+        channelId: message.channelId,
+        guildId: message.guildId,
+        isBot: message.author.bot,
+        isSelf: message.author.id === this.botId,
+      });
+
       if (message.author.id === this.botId) {
+        console.log('⏭️  Skipping own message');
         return;
       }
 
@@ -52,6 +86,8 @@ class Bot {
         await this.respondToUserMention(message.content, message.channelId);
       }
     });
+    
+    console.log('✅ MessageCreate listener attached');
   }
 
   async respondToUserMention(text: string, channelId: string): Promise<void> {
