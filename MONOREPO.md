@@ -5,6 +5,7 @@ Praetbot uses **Turborepo** to manage a monorepo with three independent workspac
 ## Why Turborepo?
 
 Turborepo provides:
+
 - **Task orchestration**: Automatically handles build order and parallelization
 - **Intelligent caching**: Skips rebuilds if nothing changed
 - **Workspace isolation**: Each package has independent dependencies and configuration
@@ -45,6 +46,7 @@ apps/bot/
 ```
 
 **Key Dependencies:**
+
 - discord.js (Discord API)
 - express (legacy HTTP server)
 - mongodb (database client)
@@ -53,6 +55,7 @@ apps/bot/
 - vitest (test framework)
 
 **Build Output:**
+
 - `apps/bot/dist/app.js` - Bundled application
 
 ### @praetbot/web
@@ -77,12 +80,14 @@ apps/web/
 ```
 
 **Key Dependencies:**
+
 - next (React framework)
 - react/react-dom (UI framework)
 - @praetbot/shared-lib (shared utilities)
 - mongodb (database client)
 
 **Build Output:**
+
 - `apps/web/.next/` - Next.js build directory
 
 ### @praetbot/shared-lib
@@ -101,6 +106,7 @@ packages/shared-lib/
 ```
 
 **Exports:**
+
 ```json
 {
   "exports": {
@@ -117,6 +123,7 @@ packages/shared-lib/
 ```
 
 **Build Output:**
+
 - `packages/shared-lib/dist/` - Compiled JavaScript and type definitions
 
 ## Dependency Management
@@ -149,16 +156,13 @@ The root `package.json` defines workspaces:
 
 ```json
 {
-  "workspaces": [
-    "apps/bot",
-    "apps/web",
-    "packages/shared-lib"
-  ],
+  "workspaces": ["apps/bot", "apps/web", "packages/shared-lib"],
   "packageManager": "npm@10.8.1"
 }
 ```
 
 **Benefits:**
+
 - Single `node_modules` at root (dependencies deduplicated)
 - `npm install` installs all workspaces
 - Workspaces automatically linked for development
@@ -219,12 +223,12 @@ npm run test --filter=!@praetbot/web
 
 Some tasks generate artifacts:
 
-| Task | Outputs | Caching |
-|------|---------|---------|
-| build | dist/, .next/, .vercel | Enabled |
-| test | coverage/ | Disabled |
-| lint | - | Disabled |
-| dev | - | Disabled (persistent) |
+| Task  | Outputs                | Caching               |
+| ----- | ---------------------- | --------------------- |
+| build | dist/, .next/, .vercel | Enabled               |
+| test  | coverage/              | Disabled              |
+| lint  | -                      | Disabled              |
+| dev   | -                      | Disabled (persistent) |
 
 ## Development Workflow
 
@@ -236,6 +240,7 @@ npm install
 ```
 
 This command:
+
 1. Creates single `node_modules` at root
 2. Links workspace packages to each other
 3. Installs external dependencies
@@ -266,6 +271,7 @@ npm run build --filter=@praetbot/shared-lib
 ```
 
 **Build Order:**
+
 1. shared-lib compiles TypeScript → JavaScript
 2. bot and web build in parallel using compiled shared-lib
 
@@ -340,6 +346,7 @@ import { listCommands } from './commands';
 To add a new workspace (e.g., `apps/api`):
 
 1. **Create directory structure:**
+
    ```bash
    mkdir -p apps/api/src
    cd apps/api
@@ -347,12 +354,13 @@ To add a new workspace (e.g., `apps/api`):
    ```
 
 2. **Update root `package.json`:**
+
    ```json
    {
      "workspaces": [
        "apps/bot",
        "apps/web",
-       "apps/api",  // Add here
+       "apps/api", // Add here
        "packages/shared-lib"
      ]
    }
@@ -364,6 +372,7 @@ To add a new workspace (e.g., `apps/api`):
    - Task scripts (build, dev, test, lint)
 
 4. **Install dependencies:**
+
    ```bash
    npm install
    ```
@@ -377,11 +386,13 @@ To add a new workspace (e.g., `apps/api`):
 ### Dependency Management
 
 ✅ **DO:**
+
 - Use exact versions for external dependencies
 - Use `*` for workspace dependencies
 - Regularly update dependencies
 
 ❌ **DON'T:**
+
 - Use different versions of same package in different workspaces
 - Add unnecessary dependencies to root
 - Forget to install before running tasks
@@ -389,12 +400,14 @@ To add a new workspace (e.g., `apps/api`):
 ### Code Organization
 
 ✅ **DO:**
+
 - Keep shared code in `packages/`
 - Keep app-specific code in `apps/`
 - Use clear package names with `@` scope
 - Document workspace responsibilities
 
 ❌ **DON'T:**
+
 - Mix shared and app-specific code
 - Create circular dependencies
 - Use relative paths that escape workspace bounds
@@ -402,12 +415,14 @@ To add a new workspace (e.g., `apps/api`):
 ### Build and Test
 
 ✅ **DO:**
+
 - Run full build before committing: `npm run build`
 - Run tests for affected workspaces: `npm test`
 - Use Turborepo filters for faster CI: `npm run lint --filter=@praetbot/bot`
 - Cache build outputs appropriately
 
 ❌ **DON'T:**
+
 - Build individual workspaces without building dependencies
 - Skip tests before PR
 - Assume local changes don't affect other workspaces
@@ -419,6 +434,7 @@ To add a new workspace (e.g., `apps/api`):
 **Cause:** npm install incomplete or workspace not properly linked
 
 **Solution:**
+
 ```bash
 npm install
 npm run build --filter=@praetbot/shared-lib
@@ -429,6 +445,7 @@ npm run build --filter=@praetbot/shared-lib
 **Cause:** Dependency not installed or version mismatch
 
 **Solution:**
+
 ```bash
 npm install
 npm run build  # Full build ensures proper order
@@ -439,6 +456,7 @@ npm run build  # Full build ensures proper order
 **Cause:** Cached test results or shared-lib not rebuilt
 
 **Solution:**
+
 ```bash
 npm run build
 npm test
@@ -449,6 +467,7 @@ npm test
 **Cause:** Variables not set in workspace execution context
 
 **Solution:**
+
 - Check `.env` file exists at root
 - Verify variables are exported: `export VAR=value`
 - Restart dev server
@@ -467,6 +486,7 @@ praetbot/
 ```
 
 **Issues:**
+
 - Import paths were confusing (`../../../lib`)
 - Module resolution issues on Vercel
 - Shared code versioning unclear
@@ -485,6 +505,7 @@ praetbot/
 ```
 
 **Benefits:**
+
 - Clear dependency graph
 - Automatic build ordering
 - Proper module scoping
