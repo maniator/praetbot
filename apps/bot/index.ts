@@ -33,11 +33,15 @@ class Bot {
       this.botName = client.user.username;
       console.log(`Logged in as ${this.botName}!`);
       console.log(`Bot ID: ${this.botId}`);
-      console.log(`Guilds (servers) the bot is in: ${client.guilds.cache.size}`);
-      
-      client.guilds.cache.forEach(guild => {
-        console.log(`  - ${guild.name} (ID: ${guild.id})`);
-      });
+      const guilds = client.guilds?.cache;
+      if (guilds) {
+        console.log(`Guilds (servers) the bot is in: ${guilds.size}`);
+        guilds.forEach(guild => {
+          console.log(`  - ${guild.name} (ID: ${guild.id})`);
+        });
+      } else {
+        console.log('Guilds (servers) the bot is in: 0');
+      }
 
       console.log('\n🔧 Gateway Intents configured:');
       console.log('  - Guilds: ✅');
@@ -64,7 +68,7 @@ class Bot {
 
   listenForMessages(): void {
     console.log('🎧 Setting up MessageCreate event listener...');
-    
+
     this.bot.on(Events.MessageCreate, async (message) => {
       // Debug logging: Log ALL messages the bot sees
       console.log('📨 Message received:', {
@@ -86,7 +90,7 @@ class Bot {
         await this.respondToUserMention(message.content, message.channelId);
       }
     });
-    
+
     console.log('✅ MessageCreate listener attached');
   }
 

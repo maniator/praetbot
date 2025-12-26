@@ -103,7 +103,6 @@ const commands: Command[] = [
       command: string,
       ...args: string[]
     ): Promise<void> {
-
       const value = args.length ? args.join(' ') : '';
 
       if (!command || command.trim().length === 0) {

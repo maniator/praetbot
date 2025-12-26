@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx app.ts",
     "dev:watch": "tsx watch app.ts",
-    "build": "vite build",
+    "build": "tsc -b",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "vitest run",

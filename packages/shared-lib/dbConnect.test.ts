@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { connect } from './dbConnect';
+import { connect } from './dbConnect.js';
 import { MongoClient } from 'mongodb';
 
 // Mock MongoClient from mongodb

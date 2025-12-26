@@ -1,4 +1,4 @@
-import { connect } from './dbConnect';
+import { connect } from './dbConnect.js';
 import { Collection } from 'mongodb';
 
 export interface CookieUser {

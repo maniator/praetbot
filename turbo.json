@@ -13,7 +13,6 @@
   "tasks": {
     "build": {
       "outputs": ["dist/**", ".next/**", ".vercel"],
-      "cache": false,
       "dependsOn": ["^build"]
     },
     "dev": {
@@ -27,15 +26,17 @@
     },
     "test": {
       "outputs": ["coverage/**"],
-      "cache": false
+      "dependsOn": ["^build"]
     },
     "test:watch": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["^build"]
     },
     "test:coverage": {
       "outputs": ["coverage/**"],
-      "cache": false
+      "cache": false,
+      "dependsOn": ["^build"]
     }
   }
 }
