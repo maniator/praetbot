@@ -8,7 +8,10 @@ yarn.lock
 # Build outputs
 dist
 *.js
+!eslint.config.js
+!**/eslint.config.js
 *.js.map
+.turbo
 
 # Environment variables
 .env

@@ -67,6 +67,11 @@ This project follows a simple code of conduct: be respectful, constructive, and 
    npm install
    ```
 
+   The monorepo structure with npm workspaces automatically sets up all three packages:
+   - `@praetbot/bot`
+   - `@praetbot/web`
+   - `@praetbot/shared-lib`
+
 3. **Set Up Environment Variables**
 
    ```bash
@@ -80,9 +85,15 @@ This project follows a simple code of conduct: be respectful, constructive, and 
    npm test
    ```
 
-5. **Start Development Server**
+5. **Start Development Servers**
+
    ```bash
+   # Run both bot and web
    npm run dev
+
+   # Or run specific workspace
+   npm run dev --filter=@praetbot/bot
+   npm run dev --filter=@praetbot/web
    ```
 
 ## Development Workflow
@@ -91,24 +102,20 @@ This project follows a simple code of conduct: be respectful, constructive, and 
 
    ```bash
    git checkout -b feature/your-feature-name
-   ```
-
-   or
-
-   ```bash
+   # or
    git checkout -b fix/your-bugfix-name
    ```
 
 2. **Make Your Changes**
    - Write clean, readable code
    - Follow the existing code style
-   - Add tests for new functionality
+   - Add tests for new functionality (see "Where to Add Tests" below)
    - Update documentation as needed
 
 3. **Run Quality Checks**
 
    ```bash
-   # Run linting
+   # Run linting across all workspaces
    npm run lint
 
    # Fix auto-fixable issues
@@ -117,14 +124,17 @@ This project follows a simple code of conduct: be respectful, constructive, and 
    # Check code formatting
    npm run format:check
 
-   # Format code
+   # Format all code
    npm run format
 
-   # Run tests
+   # Run all tests
    npm test
 
    # Run tests with coverage
    npm run test:coverage
+
+   # Build all workspaces
+   npm run build
    ```
 
 4. **Commit Your Changes**
@@ -132,6 +142,29 @@ This project follows a simple code of conduct: be respectful, constructive, and 
    git add .
    git commit -m "feat: add amazing feature"
    ```
+
+### Where to Add Tests
+
+- **Bot commands**: `apps/bot/commands/<command>.test.ts`
+- **Bot features**: `apps/bot/<feature>.test.ts`
+- \*\*Bot routWEB_INTERFACE.md for web interface changes
+  - Update DEPLOYMENT.md for deployment-related changes
+  - Update CHANGELOG.md with your changes
+  - Add JSDoc comments for new functions/classes
+
+2. **Ensure CI Passes**
+   - All tests must pass: `npm test`
+   - Linting must pass with 0 errors: `npm run lint`
+   - Code must be properly formatted: `npm run format:check`
+   - TypeScript compilation must succeed: `npm run build`
+   - Build artifacts must be generated for all workspaces
+
+3. **Submit PR**
+   - Provide a clear description of changes
+   - Reference any related issues (#123)
+     apps/web/app/users/page.tsx # Web interface
+
+```
 
 ## Pull Request Process
 
@@ -178,16 +211,40 @@ This project follows a simple code of conduct: be respectful, constructive, and 
 
 ### File Organization
 
+The project uses a **Turborepo monorepo** structure with three workspaces:
+
 ```
-bot/
-├── index.ts           # Main bot class
-├── command.ts         # Command listener
-├── commands.ts        # Built-in commands
-├── commands/          # Individual command modules
-│   ├── roll.ts
-│   └── weather.ts
-└── command-interface.ts  # Type definitions
-```
+
+praetbot/
+├── apps/
+│ ├── bot/ # Bot app (@praetbot/bot)
+│ │ ├── commands/ # Command modules
+│ │ ├── routes/ # Express API routes
+│ │ ├── tests/ # Bot-specific tests
+│ │ └── vite.config.ts # Vite build config
+│ │
+│ └── web/ # Web app (@praetbot/web)
+│ ├── app/ # Next.js app directory
+│ ├── lib/ # Re-exported utilities
+│ └── next.config.ts # Next.js config
+│
+├── packages/
+│ └── shared-lib/ # Shared lib (@praetbot/shared-lib)
+│ ├── cookies.ts
+│ ├── dbConnect.ts
+│ ├── cookies.test.ts
+│ └── dbConnect.test.ts
+│
+├── turbo.json # Turborepo config
+└── package.json # Root monorepo config
+
+````
+
+**Key Points:**
+- Each workspace has its own `package.json` and `tsconfig.json`
+- Shared code in `packages/shared-lib` is used by both bot and web
+- Build task dependencies ensure shared-lib builds before bot/web
+- Turborepo handles task orchestration and caching
 
 ### Naming Conventions
 
@@ -206,7 +263,7 @@ We welcome design improvements to the web interface! Here's how to contribute:
 1. **Review Current State**
    - Run the app locally: `npm run dev:web`
    - Visit `http://localhost:3000`
-   - Check existing routes in `routes/` directory
+   - Check existing pages in `/web/app`
 
 2. **Plan Your Changes**
    - Create wireframes or mockups
@@ -215,16 +272,16 @@ We welcome design improvements to the web interface! Here's how to contribute:
    - Share your designs in an issue for feedback
 
 3. **Implement Your Design**
-   - Add CSS to `public/stylesheets/`
-   - Update Handlebars templates in `views/`
-   - Add new routes if needed in `routes/`
+   - Update React components in `/web/app`
+   - Add styles in `/web/app/globals.css` or component-level CSS Modules
+   - Add new pages by creating folders under `/web/app`
    - Ensure TypeScript types are correct
 
 4. **Test Thoroughly**
    - Test on different screen sizes
    - Test with different data scenarios (empty, full)
    - Verify accessibility with screen readers
-   - Add automated tests for new routes
+   - Add automated tests for new pages or API routes
 
 5. **Document Your Changes**
    - Update `WEB_INTERFACE.md` if adding new features
@@ -274,7 +331,7 @@ describe('FeatureName', () => {
     expect(result).toBe('expected');
   });
 });
-```
+````
 
 ### Coverage Requirements
 

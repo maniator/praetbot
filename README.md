@@ -1,6 +1,6 @@
-# Praetbot - Discord Bot
+# Praetbot - Discord Bot + Web Interface
 
-A Discord bot with custom commands, cookie tracking, and various utilities.
+A Discord bot with custom commands, cookie tracking, and various utilities, plus a Next.js web interface for managing the bot.
 
 ## Features
 
@@ -10,6 +10,12 @@ A Discord bot with custom commands, cookie tracking, and various utilities.
 - 🎨 **XKCD Comics**: Fetch XKCD comics by ID with `!!xkcd <id>`
 - 📝 **Custom Commands**: Create, list, and remove custom commands dynamically
 - 💬 **Help System**: Get help for any command with `!!help <command>`
+- 🌐 **Web Dashboard**: Next.js-based web interface for monitoring and managing the bot
+
+## Architecture
+
+- **Bot**: Discord bot running in the background (`app.ts`)
+- **Web Interface**: Next.js app in the `web/` directory serving the dashboard and API routes
 
 ## Requirements
 
@@ -21,7 +27,7 @@ A Discord bot with custom commands, cookie tracking, and various utilities.
 ## Installation
 
 ```bash
-# Install dependencies
+# Install dependencies (npm workspaces handles all packages)
 npm install
 
 # Set up environment variables
@@ -33,19 +39,36 @@ cp .env.example .env
 
 ```env
 BOT_API_KEY=your_discord_bot_token
-MONGO_USER=your_mongodb_user
-MONGO_PASSWORD=your_mongodb_password
-MONGO_SERVER=your_mongodb_server:port/database
+# Option 1: Use MongoDB connection string (recommended)
+MONGODB_URI=your_mongodb_connection_string
+
+# Option 2: Use individual credentials (not needed if MONGODB_URI is provided)
+# MONGO_USER=your_mongodb_user
+# MONGO_PASSWORD=your_mongodb_password
+# MONGO_SERVER=your_mongodb_server:port/database
 WEATHER_KEY=your_openweathermap_api_key
 ```
 
 ## Development
 
-```bash
-# Run in development mode with auto-reload
+This project uses **Turborepo** to manage monorepo tasks across all workspaces:
+
+````bash
+# Run all dev servers (bot + web)
 npm run dev
 
-# Run tests
+# Run specific workspace dev server
+npm run dev --filter=@praetbot/bot
+npm run dev --filter=@praetbot/web
+
+# Build all workspaces
+npm run build
+
+# Build specific workspace
+npm run build --filter=@praetbot/bot
+npm run build --filter=@praetbot/web
+
+# Run all tests
 npm test
 
 # Run tests with coverage
@@ -54,54 +77,124 @@ npm run test:coverage
 # Run tests in watch mode
 npm run test:watch
 
-# Lint code
+# Lint all workspaces
 npm run lint
 
 # Fix linting issues
 npm run lint:fix
 
-# Format code
+# Format all code
 npm run format
+Turborepo orchestrates builds across all workspaces with proper dependency order:
 
-# Check formatting
-npm run format:check
-```
+```bash
+# Build all workspaces for production
+npm run build
+
+# Build specific workspace
+npm run build:bot    # Bot Vite build + shared-lib TypeScript compilation
+npm run build:web    # Web Next.js build
+````
+
+**Build Output:**
+
+- `apps/bot/dist/` - Bundled bot application
+- `apps/web/.next/` - Next.js build output
+- `packages/shared-lib/dist/` - Compiled shared library (TypeScript → JavaScript)int and test tasks run in parallel across workspaces
 
 ## Building
 
 ```bash
-# Build for production
+# Build both bot and web interface for production
 npm run build
 
-# The built files will be in the dist/ directory
+# Build just the bot
+npm run build:bot
+
+# Build just the web interface
+npm run build:web
 ```
+
+## Project Structure
+
+Praetbot uses **Turborepo** for monorepo management with three main workspaces:
+
+```
+praetbot/
+├── apps/
+│   ├── bot/                       # Discord bot application
+│   │   ├── app.ts               # Entry point
+│   │   ├── index.ts             # Bot class
+│   │   ├── command.ts           # Command listener
+│   │   ├── commands.ts          # Built-in commands registry
+│   │   ├── commands/            # Individual command modules
+│   │   ├── routes/              # Express API routes
+│   │   ├── tests/               # Bot-specific tests
+│   │   ├── vite.config.ts       # Vite build config
+│   │   ├── vitest.config.ts     # Vitest config
+│   │   ├── tsconfig.json        # TypeScript config
+│   │   └── package.json         # Bot dependencies
+│   │
+│   └── web/                       # Next.js web interface
+│       ├── app/
+│       │   ├── page.tsx         # Home page
+│       │   ├── users/
+│       │   │   └── page.tsx     # Users/cookies page
+│       │   ├── layout.tsx       # Root layout
+│       │   └── globals.css      # Global styles
+│       ├── lib/                 # Re-exports shared utilities
+│       ├── public/              # Static assets
+│       ├── next.config.ts       # Next.js config
+│       ├── tsconfig.json        # TypeScript config
+│       └── package.json         # Web app dependencies
+│
+├── packages/
+│   └── shared-lib/                # Shared library package
+│       ├── cookies.ts           # Cookie operations
+│       ├── dbConnect.ts         # MongoDB connection
+│       ├── cookies.test.ts      # Cookie tests
+│       ├── dbConnect.test.ts    # Connection tests
+│       ├── tsconfig.json        # TypeScript config
+│       ├── vitest.config.ts     # Vitest config
+│       └── package.json         # Library dependencies
+│
+├── docs/                          # Documentation
+├── .github/                       # GitHub configuration
+├── package.json                   # Root monorepo config
+├── turbo.json                    # Turborepo configuration
+├── vercel.json                   # Vercel deployment config
+└── tsconfig.json                 # Root TypeScript config
+```
+
+### Workspace Structure
+
+- **@praetbot/bot** - Discord bot app with Express routes, commands, and tests
+- **@praetbot/web** - Next.js 15 web interface for monitoring
+- **@praetbot/shared-lib** - Shared MongoDB utilities (cookies, database connection)
 
 ## Web Interface
 
-Praetbot includes an Express web interface that runs alongside the Discord bot.
+Praetbot ships with a Next.js web interface (App Router) that runs alongside the Discord bot.
 
 ![Web Interface Preview](docs/screenshots/home-page.png)
-_Web interface coming soon - contributions welcome!_
+_Web interface powered by Next.js_
 
 ### Starting the Web Server
 
 ```bash
-# Start both bot and web interface
-npm start
+# Start both bot and web interface (concurrently)
+npm run dev
 
-# Or start web interface only
+# Start web interface only
 npm run dev:web
-
-# With auto-reload during development
-npm run dev:web:watch
 ```
 
-The web interface will be available at `http://localhost:3000` (or your configured PORT).
+The web interface is available at `http://localhost:3000` during development.
 
-### Available Endpoints
+### Available Pages
 
-- **`GET /`** - Home page with bot information
-- **`GET /users`** - View all users and their cookie counts (JSON)
+- **`GET /`** - Home page with Praetbot welcome information
+- **`GET /users`** - Users and cookie counts rendered as an HTML table
 
 ### Accessing the Web Interface
 
@@ -112,54 +205,33 @@ http://localhost:3000
 ```
 
 **Production:**
-Replace `localhost:3000` with your deployment URL (e.g., `https://your-app.herokuapp.com`)
+Replace `localhost:3000` with your deployment URL (e.g., `https://your-app.vercel.app`)
+
+### Environment Variables
+
+- **`MONGODB_URI`**: Connection string for MongoDB Atlas or server
+- **`MONGODB_DB`**: Optional. Database name to use (defaults to `praetbot`)
 
 ### Example: Viewing Cookie Leaderboard
 
-```bash
-# Get all users and cookies as JSON
-curl http://localhost:3000/users
-
-# Example response:
-[
-  {
-    "id": "123456789",
-    "name": "Alice",
-    "cookies": 42
-  },
-  {
-    "id": "987654321",
-    "name": "Bob",
-    "cookies": 15
-  }
-]
-```
+Open `http://localhost:3000/users` to see a sorted table of users and cookie counts.
 
 ### Customizing the Web Interface
 
-The web interface is built with Express and Handlebars templates:
+The web interface is built with Next.js and React:
 
-- **Templates:** `views/` directory
-- **Routes:** `routes/` directory
-- **Static files:** `public/` directory
-- **Main app:** `eApp.ts`
+- **Pages:** `web/app/` directory with Next.js App Router
+- **Library code:** `lib/` directory (shared with bot)
+- **Static files:** `web/public/` directory
+- **Configuration:** `web/next.config.js`, `web/tsconfig.json`
 
 See [WEB_INTERFACE.md](WEB_INTERFACE.md) for detailed customization guide.
 
-### 🎨 Help Wanted: Improve the Web Interface!
+### 🌐 Modern Next.js Architecture
 
-The current web interface is functional but minimal (Express + Handlebars templates).
+The web interface uses Next.js with App Router for a modern, performant experience with server-side rendering and static generation capabilities.
 
-**We need your input on the frontend stack and design!**
-
-#### What should we use?
-
-- Keep it simple with vanilla HTML/CSS/JS?
-- Modern framework (React, Vue, Svelte)?
-- Static site generator (Next.js, Gatsby, Astro)?
-- Something else?
-
-#### What we want to build:
+**Contributing to the Web Interface:**
 
 - Modern, beautiful UI
 - Visual cookie leaderboard
@@ -225,7 +297,7 @@ docker-compose up -d
 - **Building**: Vite 6.0.3
 - **Linting**: ESLint 9.17.0
 - **Formatting**: Prettier 3.4.2
-- **Web Framework**: Express 4.21.2
+- **Web Framework**: Next.js 15
 
 ## CI/CD
 

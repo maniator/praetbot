@@ -1,27 +1,98 @@
 # Deployment Guide
 
-This guide covers deploying Praetbot to various cloud platforms.
+This guide covers deploying Praetbot (Discord bot + Next.js web interface) to various cloud platforms.
+
+## Overview
+
+Praetbot uses **Turborepo monorepo** with three workspaces:
+
+- **@praetbot/bot** - Discord bot that runs continuously and connects to Discord
+- **@praetbot/web** - Next.js web interface for the dashboard and API routes
+- **@praetbot/shared-lib** - Shared MongoDB utilities used by both
+
+Both components can be deployed together on most platforms, though they can also be deployed separately:
+
+- Bot requires continuous runtime (Node.js server, Docker, etc.)
+- Web interface is optimized for Vercel and serverless platforms
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
-- [Environment Variables](#environment-variables)
-- [AWS Deployment](#aws-deployment)
-  - [AWS Elastic Beanstalk](#aws-elastic-beanstalk)
-  - [AWS EC2](#aws-ec2)
-  - [AWS Lambda with API Gateway](#aws-lambda-with-api-gateway)
-- [Azure Deployment](#azure-deployment)
-  - [Azure App Service](#azure-app-service)
-  - [Azure Container Instances](#azure-container-instances)
-- [Google Cloud Platform](#google-cloud-platform)
-  - [Google Cloud Run](#google-cloud-run)
-  - [Google Compute Engine](#google-compute-engine)
-- [Vercel Deployment](#vercel-deployment)
-- [Heroku Deployment](#heroku-deployment)
-- [Digital Ocean](#digital-ocean)
-- [Railway](#railway)
-- [Render](#render)
-- [Docker Deployment](#docker-deployment)
+- [Deployment Guide](#deployment-guide)
+  - [Overview](#overview)
+  - [Monorepo Build Process](#monorepo-build-process)
+  - [Environment Variables](#environment-variables)
+  - [Vercel Deployment (Recommended for Web)](#vercel-deployment-recommended-for-web)
+  - [Docker Deployment (Best for Bot)](#docker-deployment-best-for-bot)
+  - [AWS Deployment](#aws-deployment)
+  - [Other Platforms](#other-platforms)
+
+## Monorepo Build Process
+
+When deploying, understand the Turborepo build order:
+
+1. **shared-lib** builds first: `tsc` compiles TypeScript → JavaScript
+2. **bot** and **web** build in parallel
+   - Bot: Vite bundles TypeScript → JavaScript (`apps/bot/dist/`)
+   - Web: Next.js builds Next.js application (`apps/web/.next/`)
+
+Build command that handles all three:
+
+```bash
+npm run build
+```
+
+Or build individual workspaces:
+
+```bash
+npm run build:bot    # Builds shared-lib + bot
+npm run build:web    # Builds shared-lib + web
+```
+
+## Table of Contents
+
+- [Deployment Guide](#deployment-guide)
+  - [Overview](#overview)
+  - [Table of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+  - [Environment Variables](#environment-variables)
+  - [AWS Deployment](#aws-deployment)
+    - [AWS Elastic Beanstalk](#aws-elastic-beanstalk)
+    - [AWS EC2](#aws-ec2)
+    - [AWS Lambda with API Gateway](#aws-lambda-with-api-gateway)
+  - [Azure Deployment](#azure-deployment)
+    - [Azure App Service](#azure-app-service)
+    - [Azure Container Instances](#azure-container-instances)
+  - [Google Cloud Platform](#google-cloud-platform)
+    - [Google Cloud Run](#google-cloud-run)
+    - [Google Compute Engine](#google-compute-engine)
+  - [Vercel Deployment](#vercel-deployment)
+  - [Heroku Deployment](#heroku-deployment)
+  - [Digital Ocean](#digital-ocean)
+    - [Using App Platform](#using-app-platform)
+    - [Using Droplet (VPS)](#using-droplet-vps)
+  - [Railway](#railway)
+  - [Render](#render)
+  - [Docker Deployment](#docker-deployment)
+    - [Create Dockerfile](#create-dockerfile)
+    - [Create `.dockerignore`](#create-dockerignore)
+    - [Build and run locally](#build-and-run-locally)
+    - [Docker Compose](#docker-compose)
+  - [MongoDB Setup](#mongodb-setup)
+    - [MongoDB Atlas (Recommended)](#mongodb-atlas-recommended)
+    - [Self-hosted MongoDB](#self-hosted-mongodb)
+  - [Post-Deployment Checklist](#post-deployment-checklist)
+  - [Troubleshooting](#troubleshooting)
+    - [Bot not coming online](#bot-not-coming-online)
+    - [Database connection errors](#database-connection-errors)
+    - [Commands not working](#commands-not-working)
+    - [High memory usage](#high-memory-usage)
+  - [Monitoring and Maintenance](#monitoring-and-maintenance)
+    - [Recommended Tools](#recommended-tools)
+    - [Backup Strategy](#backup-strategy)
+    - [Updates](#updates)
+  - [Support](#support)
+  - [Community](#community)
+  - [License](#license)
 
 ## Prerequisites
 
@@ -47,17 +118,140 @@ All deployments require these environment variables:
 
 ```env
 BOT_API_KEY=your_discord_bot_token
-MONGO_USER=your_mongodb_username
-MONGO_PASSWORD=your_mongodb_password
-MONGO_SERVER=your_mongodb_host:port/database
+MONGODB_URI=your_mongodb_connection_string
+# OR use individual MongoDB credentials (not needed if MONGODB_URI is provided):
+# MONGO_USER=your_mongodb_username
+# MONGO_PASSWORD=your_mongodb_password
+# MONGO_SERVER=your_mongodb_host:port/database
 WEATHER_KEY=your_openweathermap_api_key
 NODE_ENV=production
 PORT=3000
 ```
 
+**Note**: You can either provide `MONGODB_URI` (recommended) OR the individual `MONGO_USER`, `MONGO_PASSWORD`, and `MONGO_SERVER` variables, but not both.
+
+## Vercel Deployment (Recommended for Web)
+
+**Best for**: Next.js web interface with serverless functions and automatic scaling
+
+Vercel is optimized for Next.js and is the easiest deployment option for the web interface. The `vercel.json` configuration is already set up for monorepo deployment.
+
+### Setup
+
+1. **Connect GitHub Repository**
+   - Go to [Vercel](https://vercel.com)
+   - Click "New Project"
+   - Import your GitHub repository
+
+2. **Configure Environment Variables**
+
+   In Vercel project settings → Environment Variables, add:
+
+   ```
+   MONGODB_URI=your_mongodb_connection_string
+   MONGODB_DB=praetbot
+   BOT_API_KEY=your_discord_bot_token
+   WEATHER_KEY=your_openweathermap_key
+   ```
+
+3. **Deploy**
+
+   Vercel automatically detects `vercel.json` and deploys the web interface:
+   - Install root dependencies
+   - Build using `npm run build:web`
+   - Deploy from `apps/web/`
+
+Your web interface will be available at: `https://your-project.vercel.app`
+
+### Vercel Configuration
+
+The `vercel.json` file in the root handles monorepo deployment:
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/web/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "installCommand": "npm install",
+  "buildCommand": "npm run build:web",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/apps/web/$1"
+    }
+  ]
+}
+```
+
+**Important**: This deploys only the web interface. For the Discord bot, see "Docker Deployment" or "Other Platforms" below.
+
+## Docker Deployment (Best for Bot)
+
+**Best for**: Running the Discord bot continuously with guaranteed uptime
+
+The Discord bot requires a persistent connection to Discord and is better suited for traditional server deployment. Docker provides easy deployment to most cloud platforms.
+
+### Create Dockerfile
+
+A Dockerfile already exists in the root. For monorepo, the bot uses it:
+
+```dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy workspace files
+COPY package.json package-lock.json ./
+COPY apps/bot/package.json apps/bot/
+COPY apps/web/package.json apps/web/
+COPY packages/shared-lib/package.json packages/shared-lib/
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build
+RUN npm run build
+
+# Start bot
+EXPOSE 3000
+CMD ["node", "apps/bot/dist/app.js"]
+```
+
+### Build and Run
+
+```bash
+# Build image
+docker build -t praetbot .
+
+# Run container with environment variables
+docker run -e BOT_API_KEY=your_token \
+  -e MONGODB_URI=your_connection_string \
+  -e WEATHER_KEY=your_key \
+  -d praetbot
+```
+
+### Docker Compose
+
+Use `docker-compose.yml` for local development or multi-container setup:
+
+```bash
+docker-compose up -d
+```
+
+Ensure environment variables are set in `.env` or `docker-compose.yml`.
+
 ---
 
 ## AWS Deployment
+
+For AWS deployment of the Discord bot component:
 
 ### AWS Elastic Beanstalk
 
@@ -87,9 +281,7 @@ PORT=3000
 
    ```bash
    eb setenv BOT_API_KEY=your_token \
-     MONGO_USER=user \
-     MONGO_PASSWORD=pass \
-     MONGO_SERVER=host:port/db \
+     MONGODB_URI=your_connection_string \
      WEATHER_KEY=key \
      NODE_ENV=production
    ```
@@ -128,7 +320,7 @@ PORT=3000
    sudo apt-get install -y nodejs
    ```
 
-4. **Clone and setup**
+4. **Clone and setup monorepo**
 
    ```bash
    git clone https://github.com/maniator/praetbot.git
@@ -140,19 +332,29 @@ PORT=3000
 
    ```bash
    nano .env
-   # Add your environment variables
+   # Add your environment variables:
+   # BOT_API_KEY=your_token
+   # MONGODB_URI=your_connection_string
+   # WEATHER_KEY=your_key
+   # NODE_ENV=production
    ```
 
-6. **Install PM2 for process management**
+6. **Build bot for production**
+
+   ```bash
+   npm run build:bot
+   ```
+
+7. **Install PM2 for process management**
 
    ```bash
    sudo npm install -g pm2
-   pm2 start npm --name "praetbot" -- start
+   pm2 start apps/bot/dist/app.js --name "praetbot"
    pm2 save
    pm2 startup
    ```
 
-7. **Setup auto-restart on reboot**
+8. **Setup auto-restart on reboot**
    ```bash
    sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
    ```
@@ -161,52 +363,71 @@ PORT=3000
 
 **Best for**: Serverless, pay-per-use
 
-⚠️ **Note**: Discord bots work best with persistent connections. Lambda is better suited for the web interface part.
+⚠️ **Note**: Discord bots work best with persistent connections. Lambda is better suited for the web interface part. For the bot, use Docker or traditional servers.
 
-1. **Create `lambda.js` wrapper**
+---
 
-   ```javascript
-   import serverless from 'serverless-http';
-   import app from './eApp.js';
+## Other Platforms
 
-   export const handler = serverless(app);
+### Heroku, Railway, Render, DigitalOcean
+
+For deployment to **Heroku**, **Railway**, **Render**, or **DigitalOcean**:
+
+1. **Docker deployment is easiest**:
+   - Create and push Docker image
+   - Set environment variables
+   - Deploy container
+
+2. **Or use native buildpacks**:
+   - Platform automatically detects Node.js
+   - Install root dependencies: `npm install`
+   - Build: `npm run build`
+   - Start: `node apps/bot/dist/app.js`
+
+3. **Key environment variables**:
+   ```
+   BOT_API_KEY=your_token
+   MONGODB_URI=your_connection_string
+   WEATHER_KEY=your_key
+   NODE_ENV=production
    ```
 
-2. **Install serverless framework**
+For **web interface only**, these platforms also support:
 
-   ```bash
-   npm install -g serverless
-   npm install serverless-http
-   ```
+- Vercel (recommended)
+- Netlify (with API routes)
+- GitHub Pages (static only)
 
-3. **Create `serverless.yml`**
+---
 
-   ```yaml
-   service: praetbot
+## Deployment Strategy Summary
 
-   provider:
-     name: aws
-     runtime: nodejs20.x
-     region: us-east-1
-     environment:
-       BOT_API_KEY: ${env:BOT_API_KEY}
-       MONGO_USER: ${env:MONGO_USER}
-       MONGO_PASSWORD: ${env:MONGO_PASSWORD}
-       MONGO_SERVER: ${env:MONGO_SERVER}
-       WEATHER_KEY: ${env:WEATHER_KEY}
+| Component         | Best Platform  | Deployment Type    | Why?                                                |
+| ----------------- | -------------- | ------------------ | --------------------------------------------------- |
+| **Web Interface** | Vercel         | Serverless/Next.js | Optimized for Next.js, automatic scaling, free tier |
+| **Bot**           | Docker-based   | Container/VPS      | Requires persistent connection, easy to scale       |
+| **MongoDB**       | MongoDB Atlas  | Cloud SaaS         | Managed database, free tier available               |
+| **Both Together** | Docker Compose | Self-hosted        | Full control, runs on any server                    |
 
-   functions:
-     api:
-       handler: lambda.handler
-       events:
-         - http: ANY /
-         - http: 'ANY /{proxy+}'
-   ```
+### Recommended Setup
 
-4. **Deploy**
-   ```bash
-   serverless deploy
-   ```
+**Option 1: Separate Deployments (Recommended)**
+
+- Web: Deploy to Vercel (`vercel.json` configured)
+- Bot: Deploy to Docker-based platform (Railway, Render, AWS EC2, etc.)
+- Database: MongoDB Atlas
+
+**Option 2: Combined Docker Deployment**
+
+- Everything in one Docker image
+- Good for self-hosted/VPS
+- Requires more resources but simpler to manage
+
+**Option 3: Development-only**
+
+- Run locally with `npm run dev`
+- Bot and web on same machine
+- MongoDB Atlas for database
 
 ---
 
@@ -266,9 +487,7 @@ PORT=3000
      --name praetbot-app \
      --settings \
        BOT_API_KEY=your_token \
-       MONGO_USER=user \
-       MONGO_PASSWORD=pass \
-       MONGO_SERVER=host:port/db \
+       MONGODB_URI=your_connection_string \
        WEATHER_KEY=key \
        NODE_ENV=production
    ```
@@ -312,9 +531,7 @@ PORT=3000
      --ports 3000 \
      --environment-variables \
        BOT_API_KEY=your_token \
-       MONGO_USER=user \
-       MONGO_PASSWORD=pass \
-       MONGO_SERVER=host:port/db \
+       MONGODB_URI=your_connection_string \
        WEATHER_KEY=key
    ```
 
@@ -352,7 +569,7 @@ PORT=3000
      --platform managed \
      --region us-central1 \
      --allow-unauthenticated \
-     --set-env-vars BOT_API_KEY=your_token,MONGO_USER=user,MONGO_PASSWORD=pass,MONGO_SERVER=host:port/db,WEATHER_KEY=key
+     --set-env-vars BOT_API_KEY=your_token,MONGODB_URI=your_connection_string,WEATHER_KEY=key
    ```
 
 5. **View logs**
@@ -386,60 +603,54 @@ PORT=3000
 
 ## Vercel Deployment
 
-**Best for**: Serverless functions and static sites
+**Best for**: Serverless web interface hosting
 
-⚠️ **Note**: Vercel is designed for serverless functions with short execution times. The Discord bot needs to run continuously, so you'll need to split the deployment:
+⚠️ **Note**: The Discord bot requires continuous runtime. For Vercel deployment:
 
-1. **Deploy web interface to Vercel**
-2. **Deploy bot to another platform** (AWS EC2, Railway, etc.)
+1. **Deploy web interface to Vercel** (Next.js app in `/web` directory)
+2. **Deploy bot separately** to a platform supporting long-running processes (AWS EC2, Railway, Render, etc.)
 
 **Deploying Web Interface:**
 
-1. **Install Vercel CLI**
+1. **Install Vercel CLI** (optional, can use GitHub integration)
 
    ```bash
    npm install -g vercel
    ```
 
-2. **Create `vercel.json`**
+2. **Connect GitHub Repository**
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "Add New..." → "Project"
+   - Select your GitHub repository
+   - Vercel will auto-detect the Next.js app in the `/web` directory
 
-   ```json
-   {
-     "version": 2,
-     "builds": [
-       {
-         "src": "eApp.ts",
-         "use": "@vercel/node"
-       }
-     ],
-     "routes": [
-       {
-         "src": "/(.*)",
-         "dest": "eApp.ts"
-       }
-     ],
-     "env": {
-       "MONGO_USER": "@mongo-user",
-       "MONGO_PASSWORD": "@mongo-password",
-       "MONGO_SERVER": "@mongo-server"
-     }
-   }
+3. **Configure Environment Variables**
+
+   In Vercel Dashboard → Project Settings → Environment Variables, add:
+
    ```
-
-3. **Add secrets**
-
-   ```bash
-   vercel secrets add mongo-user your_username
-   vercel secrets add mongo-password your_password
-   vercel secrets add mongo-server your_server
+   MONGODB_URI=your_connection_string
+   WEATHER_KEY=your_openweathermap_api_key
    ```
 
 4. **Deploy**
+
    ```bash
+   # Via Vercel CLI
    vercel --prod
+
+   # Or automatically when you push to main branch (if GitHub integration enabled)
+   git push origin main
    ```
 
-**Note**: The bot itself (`app.ts`) should be deployed to a platform that supports long-running processes.
+5. **For the Discord Bot**
+
+   Deploy `app.ts` separately to a platform that supports continuous processes:
+   - **Railway**: `npm install -g @railway/cli && railway up`
+   - **Render**: Connect GitHub, set build command to `npm install && npm run build:bot`
+   - **AWS EC2/Heroku**: Follow their respective deployment guides
+
+**Note**: The `vercel.json` in the root is automatically configured to deploy the Next.js app. Environment variables should be set in the Vercel dashboard, not in config files.
 
 ---
 
@@ -467,9 +678,7 @@ PORT=3000
 
    ```bash
    heroku config:set BOT_API_KEY=your_token
-   heroku config:set MONGO_USER=user
-   heroku config:set MONGO_PASSWORD=pass
-   heroku config:set MONGO_SERVER=host:port/db
+   heroku config:set MONGODB_URI=your_connection_string
    heroku config:set WEATHER_KEY=key
    ```
 
@@ -654,12 +863,12 @@ services:
       - '3000:3000'
     environment:
       - BOT_API_KEY=${BOT_API_KEY}
-      - MONGO_USER=${MONGO_USER}
-      - MONGO_PASSWORD=${MONGO_PASSWORD}
-      - MONGO_SERVER=${MONGO_SERVER}
+      - MONGODB_URI=${MONGODB_URI}
       - WEATHER_KEY=${WEATHER_KEY}
       - NODE_ENV=production
     restart: unless-stopped
+    depends_on:
+      - mongodb
 
   mongodb:
     image: mongo:6
@@ -726,27 +935,61 @@ mongodb://localhost:27017/praetbot
 
 ## Post-Deployment Checklist
 
+### Build
+
+- [ ] All workspaces build successfully (`npm run build`)
+- [ ] shared-lib compiles without errors (`npm run build --filter=@praetbot/shared-lib`)
+- [ ] Bot builds with Vite (`npm run build:bot`)
+- [ ] Web builds with Next.js (`npm run build:web`)
+
+### Bot Functionality
+
 - [ ] Bot appears online in Discord server
 - [ ] Test basic commands (`!!help`, `!!listCommands`)
-- [ ] Test cookie system (`@user ++`)
+- [ ] Test cookie system (`@user ++` / `@user --`)
 - [ ] Test custom commands (`!!addCommand test return "Hello"`)
 - [ ] Test weather command (`!!weather London`)
 - [ ] Check MongoDB connection and data persistence
-- [ ] Verify web interface at your deployment URL
-- [ ] Set up monitoring/logging
-- [ ] Configure automatic backups for database
-- [ ] Set up SSL/HTTPS if needed
-- [ ] Monitor resource usage and scale if needed
+- [ ] Verify environment variables are set correctly
+
+### Web Interface
+
+- [ ] Web interface accessible at deployment URL
+- [ ] Home page (`/`) loads
+- [ ] Users/cookies page (`/users`) displays data
+- [ ] Database connection works
+- [ ] No TypeScript errors
+
+### Infrastructure
+
+- [ ] Database backups enabled
+- [ ] Monitoring/logging configured
+- [ ] SSL/HTTPS enabled
+- [ ] Resource usage is acceptable
+- [ ] Auto-restart configured for bot
 
 ---
 
 ## Troubleshooting
 
+### Build Failures
+
+**Error: "Module not found: @praetbot/shared-lib"**
+
+- Ensure npm install completed: `npm install`
+- Build shared-lib first: `npm run build --filter=@praetbot/shared-lib`
+- Check turbo.json task dependencies
+
+**Error: "Cannot find module in vite build"**
+
+- Rebuild: `npm run build` (shared-lib must build first)
+- Check import paths use relative paths for bot: `../../packages/shared-lib/...`
+
 ### Bot not coming online
 
-- Check `BOT_API_KEY` is correct
-- Verify bot has required Discord intents enabled
-- Check logs for connection errors
+- Check `BOT_API_KEY` is correct and Discord bot has required intents
+- Verify bot has "Message Content" intent enabled in Discord Developer Portal
+- Check logs for connection errors: `pm2 logs praetbot`
 
 ### Database connection errors
 
