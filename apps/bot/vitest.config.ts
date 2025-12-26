@@ -1,6 +1,12 @@
 import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@praetbot/shared-lib': path.resolve(__dirname, '../../packages/shared-lib'),
+    },
+  },
   test: {
     globals: true,
     environment: 'node',

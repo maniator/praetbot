@@ -1,4 +1,4 @@
-import { getCookieByUserId, updateCookie, CookieUser } from '../../packages/shared-lib/cookies';
+import { getCookieByUserId, updateCookie, CookieUser } from '@praetbot/shared-lib/cookies';
 import { CommandListener } from './command.js';
 import { Client, GatewayIntentBits, Events, TextChannel, DMChannel } from 'discord.js';
 
