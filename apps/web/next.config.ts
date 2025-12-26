@@ -11,11 +11,9 @@ const nextConfig: NextConfig = {
   //   config.resolve.modules = config.resolve.modules || [];
   //   config.resolve.modules.push(path.join(__dirname, 'node_modules'));
   //   config.resolve.modules.push(path.join(__dirname, '../node_modules'));
-
   //   // Explicitly alias mongodb to web/node_modules version
   //   config.resolve.alias = config.resolve.alias || {};
   //   config.resolve.alias.mongodb = path.join(__dirname, 'node_modules/mongodb');
-
   //   if (isServer) {
   //     config.externals = config.externals || [];
   //     config.externals.push({

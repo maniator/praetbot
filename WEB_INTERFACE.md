@@ -31,6 +31,7 @@ The web interface is available at http://localhost:3000.
 ### Environment Variables
 
 Required for both development and deployment:
+
 - `MONGODB_URI` (required for build and runtime data access)
 - `MONGODB_DB` (optional; defaults to `praetbot`)
 
@@ -52,7 +53,12 @@ The web app depends on `@praetbot/shared-lib` for database operations:
 
 ```typescript
 // apps/web/lib/cookies.ts
-export { updateCookie, getCookies, getCookieByUserId, type CookieUser } from '@praetbot/shared-lib/cookies';
+export {
+  updateCookie,
+  getCookies,
+  getCookieByUserId,
+  type CookieUser,
+} from '@praetbot/shared-lib/cookies';
 
 // apps/web/lib/dbConnect.ts
 export { connect } from '@praetbot/shared-lib/dbConnect';

@@ -11,6 +11,7 @@ Praetbot uses **Turborepo monorepo** with three workspaces:
 - **@praetbot/shared-lib** - Shared MongoDB utilities used by both
 
 Both components can be deployed together on most platforms, though they can also be deployed separately:
+
 - Bot requires continuous runtime (Node.js server, Docker, etc.)
 - Web interface is optimized for Vercel and serverless platforms
 
@@ -35,11 +36,13 @@ When deploying, understand the Turborepo build order:
    - Web: Next.js builds Next.js application (`apps/web/.next/`)
 
 Build command that handles all three:
+
 ```bash
 npm run build
 ```
 
 Or build individual workspaces:
+
 ```bash
 npm run build:bot    # Builds shared-lib + bot
 npm run build:web    # Builds shared-lib + web
@@ -141,8 +144,9 @@ Vercel is optimized for Next.js and is the easiest deployment option for the web
    - Import your GitHub repository
 
 2. **Configure Environment Variables**
-   
+
    In Vercel project settings → Environment Variables, add:
+
    ```
    MONGODB_URI=your_mongodb_connection_string
    MONGODB_DB=praetbot
@@ -151,7 +155,7 @@ Vercel is optimized for Next.js and is the easiest deployment option for the web
    ```
 
 3. **Deploy**
-   
+
    Vercel automatically detects `vercel.json` and deploys the web interface:
    - Install root dependencies
    - Build using `npm run build:web`
@@ -389,6 +393,7 @@ For deployment to **Heroku**, **Railway**, **Render**, or **DigitalOcean**:
    ```
 
 For **web interface only**, these platforms also support:
+
 - Vercel (recommended)
 - Netlify (with API routes)
 - GitHub Pages (static only)
@@ -397,26 +402,29 @@ For **web interface only**, these platforms also support:
 
 ## Deployment Strategy Summary
 
-| Component | Best Platform | Deployment Type | Why? |
-|-----------|---------------|-----------------|------|
-| **Web Interface** | Vercel | Serverless/Next.js | Optimized for Next.js, automatic scaling, free tier |
-| **Bot** | Docker-based | Container/VPS | Requires persistent connection, easy to scale |
-| **MongoDB** | MongoDB Atlas | Cloud SaaS | Managed database, free tier available |
-| **Both Together** | Docker Compose | Self-hosted | Full control, runs on any server |
+| Component         | Best Platform  | Deployment Type    | Why?                                                |
+| ----------------- | -------------- | ------------------ | --------------------------------------------------- |
+| **Web Interface** | Vercel         | Serverless/Next.js | Optimized for Next.js, automatic scaling, free tier |
+| **Bot**           | Docker-based   | Container/VPS      | Requires persistent connection, easy to scale       |
+| **MongoDB**       | MongoDB Atlas  | Cloud SaaS         | Managed database, free tier available               |
+| **Both Together** | Docker Compose | Self-hosted        | Full control, runs on any server                    |
 
 ### Recommended Setup
 
 **Option 1: Separate Deployments (Recommended)**
+
 - Web: Deploy to Vercel (`vercel.json` configured)
 - Bot: Deploy to Docker-based platform (Railway, Render, AWS EC2, etc.)
 - Database: MongoDB Atlas
 
 **Option 2: Combined Docker Deployment**
+
 - Everything in one Docker image
 - Good for self-hosted/VPS
 - Requires more resources but simpler to manage
 
 **Option 3: Development-only**
+
 - Run locally with `npm run dev`
 - Bot and web on same machine
 - MongoDB Atlas for database
@@ -967,11 +975,13 @@ mongodb://localhost:27017/praetbot
 ### Build Failures
 
 **Error: "Module not found: @praetbot/shared-lib"**
+
 - Ensure npm install completed: `npm install`
 - Build shared-lib first: `npm run build --filter=@praetbot/shared-lib`
 - Check turbo.json task dependencies
 
 **Error: "Cannot find module in vite build"**
+
 - Rebuild: `npm run build` (shared-lib must build first)
 - Check import paths use relative paths for bot: `../../packages/shared-lib/...`
 

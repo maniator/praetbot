@@ -53,7 +53,7 @@ WEATHER_KEY=your_openweathermap_api_key
 
 This project uses **Turborepo** to manage monorepo tasks across all workspaces:
 
-```bash
+````bash
 # Run all dev servers (bot + web)
 npm run dev
 
@@ -94,9 +94,10 @@ npm run build
 # Build specific workspace
 npm run build:bot    # Bot Vite build + shared-lib TypeScript compilation
 npm run build:web    # Web Next.js build
-```
+````
 
 **Build Output:**
+
 - `apps/bot/dist/` - Bundled bot application
 - `apps/web/.next/` - Next.js build output
 - `packages/shared-lib/dist/` - Compiled shared library (TypeScript → JavaScript)int and test tasks run in parallel across workspaces
