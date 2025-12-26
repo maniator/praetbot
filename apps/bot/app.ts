@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Bot } from './index.js';
 
 const apiKey: string = process.env.BOT_API_KEY || '';
