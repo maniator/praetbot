@@ -103,7 +103,13 @@ const commands: Command[] = [
       command: string,
       ...args: string[]
     ): Promise<void> {
+
       const value = args.length ? args.join(' ') : '';
+
+      if (!command || command.trim().length === 0) {
+        await channel.send(`<@${user.id}> Command name cannot be empty.`);
+        return;
+      }
 
       if (isCommandConstant(command)) {
         await channel.send(`${command} cannot be changed. Sorry :-(`);
