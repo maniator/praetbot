@@ -60,36 +60,59 @@ Praetbot is a Discord bot built with TypeScript, featuring custom commands, cook
 
 ## File Organization
 
+Praetbot uses **Turborepo** for monorepo management with three main workspaces:
+
 ```
-bot/
-├── index.ts              # Main bot class
-├── command.ts            # Command listener
-├── commands.ts           # Built-in commands registry
-├── commands/             # Individual command modules
-│   ├── roll.ts
-│   ├── weather.ts
-│   └── *.test.ts        # Tests alongside implementation
-├── command-interface.ts  # Type definitions
-├── message.ts           # Message handling
-├── sandbox.ts           # Sandboxed code execution
-└── types.ts             # Shared types
-
-lib/                     # Shared library
-├── dbConnect.ts         # MongoDB connection
-└── cookies.ts           # Cookie operations
-
-web/                     # Next.js web interface
-├── app/
-│   ├── page.tsx         # Home page
-│   ├── users/
-│   │   └── page.tsx     # Users page
-│   ├── layout.tsx       # Root layout
-│   └── globals.css      # Global styles
-├── lib/                 # Re-exports shared lib
-├── public/              # Static files
-└── package.json         # Web dependencies
-
-routes/                  # Legacy API routes (Express - still present in bot app)
+praetbot/
+├── apps/
+│   ├── bot/                       # Discord bot application
+│   │   ├── app.ts               # Entry point
+│   │   ├── index.ts             # Bot class
+│   │   ├── command.ts           # Command listener
+│   │   ├── commands.ts          # Built-in commands registry
+│   │   ├── commands/            # Individual command modules
+│   │   │   ├── roll.ts
+│   │   │   ├── weather.ts
+│   │   │   └── *.test.ts        # Tests alongside implementation
+│   │   ├── command-interface.ts # Type definitions
+│   │   ├── message.ts           # Message handling
+│   │   ├── sandbox.ts           # Sandboxed code execution
+│   │   ├── types.ts             # Shared types
+│   │   ├── routes/              # Legacy API routes (Express)
+│   │   ├── tests/               # Bot-specific tests
+│   │   ├── vite.config.ts       # Vite build config
+│   │   ├── vitest.config.ts     # Vitest config
+│   │   ├── tsconfig.json        # TypeScript config
+│   │   └── package.json         # Bot dependencies
+│   │
+│   └── web/                       # Next.js web interface
+│       ├── app/
+│       │   ├── page.tsx         # Home page
+│       │   ├── users/
+│       │   │   └── page.tsx     # Users/cookies page
+│       │   ├── layout.tsx       # Root layout
+│       │   └── globals.css      # Global styles
+│       ├── lib/                 # Re-exports shared utilities
+│       ├── public/              # Static assets
+│       ├── next.config.ts       # Next.js config
+│       ├── tsconfig.json        # TypeScript config
+│       └── package.json         # Web app dependencies
+│
+├── packages/
+│   └── shared-lib/                # Shared library package
+│       ├── cookies.ts           # Cookie operations
+│       ├── dbConnect.ts         # MongoDB connection
+│       ├── cookies.test.ts      # Cookie tests
+│       ├── dbConnect.test.ts    # Connection tests
+│       ├── tsconfig.json        # TypeScript config
+│       ├── vitest.config.ts     # Vitest config
+│       └── package.json         # Library dependencies
+│
+├── docs/                          # Documentation
+├── .github/                       # GitHub configuration
+├── package.json                   # Root monorepo config
+├── turbo.json                    # Turborepo configuration
+└── tsconfig.json                 # Root TypeScript config
 ```
 
 ## Command Pattern
