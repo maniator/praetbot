@@ -169,19 +169,19 @@ This project follows a simple code of conduct: be respectful, constructive, and 
    - Update CHANGELOG.md with your changes
    - Add JSDoc comments for new functions/classes
 
-3. **Ensure CI Passes**
+2. **Ensure CI Passes**
    - All tests must pass
    - Linting must pass with 0 errors
    - Code must be properly formatted
    - TypeScript compilation must succeed
 
-4. **Submit PR**
+3. **Submit PR**
    - Provide a clear description of changes
    - Reference any related issues
    - Add screenshots for UI changes
    - Request review from maintainers
 
-5. **Address Review Feedback**
+4. **Address Review Feedback**
    - Respond to comments promptly
    - Make requested changes
    - Re-request review after updates
@@ -232,9 +232,10 @@ praetbot/
 │
 ├── turbo.json # Turborepo config
 └── package.json # Root monorepo config
-````
+```
 
 **Key Points:**
+
 - Each workspace has its own `package.json` and `tsconfig.json`
 - Shared code in `packages/shared-lib` is used by both bot and web
 - Build task dependencies ensure shared-lib builds before bot/web
@@ -325,7 +326,7 @@ describe('FeatureName', () => {
     expect(result).toBe('expected');
   });
 });
-````
+```
 
 ### Coverage Requirements
 
