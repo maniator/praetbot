@@ -2,34 +2,41 @@
 
 **Category**: Ideas
 
+**Note: This discussion is now historical - Next.js 15 has been adopted as the web framework.**
+
 ## What frontend framework should we use for the Praetbot web interface?
 
-The current web interface uses Express + Handlebars templates with minimal styling. It's functional but basic, and we want to make it beautiful and modern!
+✅ **Decision Made**: The project has adopted **Next.js 15** with the App Router for the web interface.
 
-We're opening this up to the community to decide the best path forward.
+This discussion remains for historical context and to document the decision-making process.
 
-## Current State
+## Current State (Updated)
 
-- **Backend**: Express.js (TypeScript)
-- **Templating**: Handlebars (`.hbs` files)
-- **Styling**: Minimal/none
-- **Features**: Home page, `/users` JSON endpoint
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: CSS (ready for enhancement)
+- **Features**: Home page, `/users` page with cookie leaderboard
+- **Architecture**: Server-side rendering with React Server Components
 
-## The Question
+## The Original Question (Now Resolved)
 
 **What frontend stack should we use to build a modern web interface?**
 
-Vote and share your thoughts below! 👇
+**Answer**: Next.js 15 with the App Router has been selected and implemented.
+
+The sections below represent the original options that were considered:
 
 ## Options
 
-### Option 1: Keep It Simple ⚡
+### Option 1: Keep It Simple ⚡ (Historical)
 
 **Enhance existing setup with:**
 
 - Bootstrap or Tailwind CSS for styling
 - Vanilla JavaScript for interactivity
 - Server-side rendering with Handlebars
+
+**Note**: This option was not chosen. The project moved to Next.js instead.
 
 **Pros:**
 
@@ -123,7 +130,7 @@ Vote and share your thoughts below! 👇
 
 ---
 
-### Option 5: Next.js 🔺
+### Option 5: Next.js 🔺 ✅ **SELECTED**
 
 **Use Next.js (React framework):**
 
@@ -131,6 +138,8 @@ Vote and share your thoughts below! 👇
 - File-based routing
 - API routes
 - Excellent DX
+
+**Status**: ✅ This option was selected and implemented with Next.js 15 and App Router.
 
 **Pros:**
 
@@ -199,20 +208,16 @@ Regardless of framework:
 - 📱 **Mobile Friendly**: Works great on all devices
 - ♿ **Accessible**: WCAG 2.1 compliant
 
-## How to Contribute
+## How to Contribute to the Next.js Web Interface
 
-1. **Vote** by reacting to the options above
-2. **Comment** with your reasoning
-3. **Share** your experience with these frameworks
-4. **Prototype** (optional): Build a quick demo and share it!
+The web interface is now built with Next.js 15. Contributions are welcome!
 
-## Timeline
+1. **Enhance the design** - Add styling with Tailwind CSS, shadcn/ui, or other libraries
+2. **Add new features** - Cookie leaderboard visualizations, bot statistics, etc.
+3. **Improve UX** - Dark mode, responsive design, accessibility
+4. **Build new pages** - Command browser, user profiles, analytics
 
-- **Week 1-2**: Gather votes and opinions
-- **Week 3**: Tally results and make decision
-- **Week 4+**: Start building!
-
-We may accept multiple implementations and see which one the community prefers!
+See [CONTRIBUTING.md](https://github.com/maniator/praetbot/blob/main/CONTRIBUTING.md) for development guidelines.
 
 ## Questions to Consider
 

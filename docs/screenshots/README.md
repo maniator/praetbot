@@ -38,15 +38,16 @@ To contribute screenshots:
 
 We're actively looking for contributors to improve the web interface!
 
-**Currently:** Basic Express + Handlebars templates (minimal styling)
+**Currently:** Next.js 15 with App Router (minimal styling - ready for enhancement!)
 
-**We'd love your input on what to use:**
+**We'd love your contributions for:**
 
-- Keep it simple with vanilla HTML/CSS/JS?
-- Modern framework like React, Vue, or Svelte?
-- Static site generator like Next.js, Gatsby, or Astro?
-- Full-stack framework like Remix or SvelteKit?
-- Something else entirely?
+- Modern UI components (Tailwind CSS, shadcn/ui, Material UI, etc.)
+- Visual cookie leaderboard with charts
+- Bot statistics dashboard
+- Dark/light mode theming
+- Responsive design improvements
+- Accessibility enhancements
 
 **Share your ideas:**
 

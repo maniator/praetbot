@@ -89,7 +89,7 @@ web/                     # Next.js web interface
 ├── public/              # Static files
 └── package.json         # Web dependencies
 
-routes/                  # Legacy Express routes (for reference)
+routes/                  # Legacy API routes (Express - still present in bot app)
 ```
 
 ## Command Pattern

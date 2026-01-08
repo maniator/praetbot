@@ -214,7 +214,7 @@ praetbot/
 ├── apps/
 │ ├── bot/ # Bot app (@praetbot/bot)
 │ │ ├── commands/ # Command modules
-│ │ ├── routes/ # Express API routes
+│ │ ├── routes/ # Legacy API routes
 │ │ ├── tests/ # Bot-specific tests
 │ │ └── vite.config.ts # Vite build config
 │ │
