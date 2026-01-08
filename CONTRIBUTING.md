@@ -212,26 +212,47 @@ The project uses a **Turborepo monorepo** structure with three workspaces:
 ```
 praetbot/
 ├── apps/
-│ ├── bot/ # Bot app (@praetbot/bot)
-│ │ ├── commands/ # Command modules
-│ │ ├── routes/ # Legacy API routes
-│ │ ├── tests/ # Bot-specific tests
-│ │ └── vite.config.ts # Vite build config
-│ │
-│ └── web/ # Web app (@praetbot/web)
-│ ├── app/ # Next.js app directory
-│ ├── lib/ # Re-exported utilities
-│ └── next.config.ts # Next.js config
+│   ├── bot/                       # Discord bot application
+│   │   ├── app.ts               # Entry point
+│   │   ├── index.ts             # Bot class
+│   │   ├── command.ts           # Command listener
+│   │   ├── commands.ts          # Built-in commands registry
+│   │   ├── commands/            # Individual command modules
+│   │   ├── routes/              # Legacy API routes (Express)
+│   │   ├── tests/               # Bot-specific tests
+│   │   ├── vite.config.ts       # Vite build config
+│   │   ├── vitest.config.ts     # Vitest config
+│   │   ├── tsconfig.json        # TypeScript config
+│   │   └── package.json         # Bot dependencies
+│   │
+│   └── web/                       # Next.js web interface
+│       ├── app/
+│       │   ├── page.tsx         # Home page
+│       │   ├── users/
+│       │   │   └── page.tsx     # Users/cookies page
+│       │   ├── layout.tsx       # Root layout
+│       │   └── globals.css      # Global styles
+│       ├── lib/                 # Re-exports shared utilities
+│       ├── public/              # Static assets
+│       ├── next.config.ts       # Next.js config
+│       ├── tsconfig.json        # TypeScript config
+│       └── package.json         # Web app dependencies
 │
 ├── packages/
-│ └── shared-lib/ # Shared lib (@praetbot/shared-lib)
-│ ├── cookies.ts
-│ ├── dbConnect.ts
-│ ├── cookies.test.ts
-│ └── dbConnect.test.ts
+│   └── shared-lib/                # Shared library package
+│       ├── cookies.ts           # Cookie operations
+│       ├── dbConnect.ts         # MongoDB connection
+│       ├── cookies.test.ts      # Cookie tests
+│       ├── dbConnect.test.ts    # Connection tests
+│       ├── tsconfig.json        # TypeScript config
+│       ├── vitest.config.ts     # Vitest config
+│       └── package.json         # Library dependencies
 │
-├── turbo.json # Turborepo config
-└── package.json # Root monorepo config
+├── docs/                          # Documentation
+├── .github/                       # GitHub configuration
+├── package.json                   # Root monorepo config
+├── turbo.json                    # Turborepo configuration
+└── tsconfig.json                 # Root TypeScript config
 ```
 
 **Key Points:**
