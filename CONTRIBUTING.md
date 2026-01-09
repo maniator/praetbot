@@ -218,7 +218,6 @@ praetbot/
 │   │   ├── command.ts           # Command listener
 │   │   ├── commands.ts          # Built-in commands registry
 │   │   ├── commands/            # Individual command modules
-│   │   ├── tests/               # Bot-specific tests
 │   │   ├── vite.config.ts       # Vite build config
 │   │   ├── vitest.config.ts     # Vitest config
 │   │   ├── tsconfig.json        # TypeScript config

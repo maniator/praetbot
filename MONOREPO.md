@@ -36,7 +36,6 @@ apps/bot/
 ├── command.ts                # Command listener
 ├── commands.ts               # Built-in commands registry
 ├── commands/                 # Individual command modules
-├── tests/                    # Bot-specific tests
 ├── sandbox.ts                # Sandboxed code execution (vm2)
 ├── vite.config.ts            # Vite build configuration
 ├── vitest.config.ts          # Vitest test configuration
