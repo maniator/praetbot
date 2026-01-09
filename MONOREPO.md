@@ -36,8 +36,6 @@ apps/bot/
 ├── command.ts                # Command listener
 ├── commands.ts               # Built-in commands registry
 ├── commands/                 # Individual command modules
-├── routes/                   # Express API routes
-├── tests/                    # Bot-specific tests
 ├── sandbox.ts                # Sandboxed code execution (vm2)
 ├── vite.config.ts            # Vite build configuration
 ├── vitest.config.ts          # Vitest test configuration
@@ -48,7 +46,6 @@ apps/bot/
 **Key Dependencies:**
 
 - discord.js (Discord API)
-- express (legacy HTTP server)
 - mongodb (database client)
 - vm2 (sandboxed code execution)
 - vite (build tool)

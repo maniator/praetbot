@@ -182,8 +182,6 @@ praetbot/
 │   │   ├── command.ts           # Command listener
 │   │   ├── commands.ts          # Built-in commands registry
 │   │   ├── commands/            # Individual command modules
-│   │   ├── routes/              # Express API routes
-│   │   ├── tests/               # Bot-specific tests
 │   │   ├── vite.config.ts       # Vite build config
 │   │   ├── vitest.config.ts     # Vitest config
 │   │   ├── tsconfig.json        # TypeScript config
@@ -222,7 +220,7 @@ praetbot/
 
 ### Workspace Structure
 
-- **@praetbot/bot** - Discord bot app with Express routes, commands, and tests
+- **@praetbot/bot** - Discord bot app with commands and tests
 - **@praetbot/web** - Next.js 15 web interface for monitoring
 - **@praetbot/shared-lib** - Shared MongoDB utilities (cookies, database connection)
 

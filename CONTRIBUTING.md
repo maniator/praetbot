@@ -169,19 +169,19 @@ This project follows a simple code of conduct: be respectful, constructive, and 
    - Update CHANGELOG.md with your changes
    - Add JSDoc comments for new functions/classes
 
-3. **Ensure CI Passes**
+2. **Ensure CI Passes**
    - All tests must pass
    - Linting must pass with 0 errors
    - Code must be properly formatted
    - TypeScript compilation must succeed
 
-4. **Submit PR**
+3. **Submit PR**
    - Provide a clear description of changes
    - Reference any related issues
    - Add screenshots for UI changes
    - Request review from maintainers
 
-5. **Address Review Feedback**
+4. **Address Review Feedback**
    - Respond to comments promptly
    - Make requested changes
    - Re-request review after updates
@@ -212,29 +212,49 @@ The project uses a **Turborepo monorepo** structure with three workspaces:
 ```
 praetbot/
 ├── apps/
-│ ├── bot/ # Bot app (@praetbot/bot)
-│ │ ├── commands/ # Command modules
-│ │ ├── routes/ # Express API routes
-│ │ ├── tests/ # Bot-specific tests
-│ │ └── vite.config.ts # Vite build config
-│ │
-│ └── web/ # Web app (@praetbot/web)
-│ ├── app/ # Next.js app directory
-│ ├── lib/ # Re-exported utilities
-│ └── next.config.ts # Next.js config
+│   ├── bot/                       # Discord bot application
+│   │   ├── app.ts               # Entry point
+│   │   ├── index.ts             # Bot class
+│   │   ├── command.ts           # Command listener
+│   │   ├── commands.ts          # Built-in commands registry
+│   │   ├── commands/            # Individual command modules
+│   │   ├── vite.config.ts       # Vite build config
+│   │   ├── vitest.config.ts     # Vitest config
+│   │   ├── tsconfig.json        # TypeScript config
+│   │   └── package.json         # Bot dependencies
+│   │
+│   └── web/                       # Next.js web interface
+│       ├── app/
+│       │   ├── page.tsx         # Home page
+│       │   ├── users/
+│       │   │   └── page.tsx     # Users/cookies page
+│       │   ├── layout.tsx       # Root layout
+│       │   └── globals.css      # Global styles
+│       ├── lib/                 # Re-exports shared utilities
+│       ├── public/              # Static assets
+│       ├── next.config.ts       # Next.js config
+│       ├── tsconfig.json        # TypeScript config
+│       └── package.json         # Web app dependencies
 │
 ├── packages/
-│ └── shared-lib/ # Shared lib (@praetbot/shared-lib)
-│ ├── cookies.ts
-│ ├── dbConnect.ts
-│ ├── cookies.test.ts
-│ └── dbConnect.test.ts
+│   └── shared-lib/                # Shared library package
+│       ├── cookies.ts           # Cookie operations
+│       ├── dbConnect.ts         # MongoDB connection
+│       ├── cookies.test.ts      # Cookie tests
+│       ├── dbConnect.test.ts    # Connection tests
+│       ├── tsconfig.json        # TypeScript config
+│       ├── vitest.config.ts     # Vitest config
+│       └── package.json         # Library dependencies
 │
-├── turbo.json # Turborepo config
-└── package.json # Root monorepo config
-````
+├── docs/                          # Documentation
+├── .github/                       # GitHub configuration
+├── package.json                   # Root monorepo config
+├── turbo.json                    # Turborepo configuration
+└── tsconfig.json                 # Root TypeScript config
+```
 
 **Key Points:**
+
 - Each workspace has its own `package.json` and `tsconfig.json`
 - Shared code in `packages/shared-lib` is used by both bot and web
 - Build task dependencies ensure shared-lib builds before bot/web
@@ -325,7 +345,7 @@ describe('FeatureName', () => {
     expect(result).toBe('expected');
   });
 });
-````
+```
 
 ### Coverage Requirements
 

@@ -40,64 +40,51 @@ _Adding and using custom commands with `!!addCommand`._
 
 ## 🎨 Help Wanted: Web Interface Design
 
-**The current web interface is functional but minimal (Express + Handlebars). We need your input!**
+**The web interface uses Next.js 15 with minimal styling. We need your design expertise!**
 
 ### Current State
 
-- Basic Express server with Handlebars templates
-- Minimal styling
-- JSON API endpoints (`/users`)
-- Works, but not pretty
+- Next.js 15 with App Router
+- TypeScript and React Server Components
+- Minimal styling (ready for enhancement)
+- Server-side rendering
+- Cookie leaderboard at `/users`
 
-### What Should We Use?
+### What Should We Add?
 
-**We'd love your opinion on the frontend stack:**
+**We'd love design contributions using modern React/Next.js tools:**
 
-#### Option 1: Keep It Simple
+#### Styling Options
 
-- Enhance existing Handlebars templates
-- Add Bootstrap/Tailwind CSS
-- Vanilla JavaScript for interactivity
-- **Pros**: Lightweight, simple, no build step
-- **Cons**: Less modern, harder to maintain complex UIs
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - Beautiful, accessible components
+- **Material UI (MUI)** - Comprehensive component library
+- **Chakra UI** - Simple, modular components
+- **Mantine** - Feature-rich React components
+- **Custom CSS** - Your own design system
 
-#### Option 2: Modern SPA Framework
+#### Component Libraries
 
-- **React** + Vite
-- **Vue.js** + Vite
-- **Svelte** + SvelteKit
-- **Solid.js**
-- **Pros**: Rich ecosystem, great DX, component-based
-- **Cons**: Requires build step, heavier
+- Pre-built UI components for faster development
+- Consistent design language
+- Accessibility built-in
+- Dark mode support
 
-#### Option 3: Static Site Generator
+**Pros:**
 
-- **Next.js** (React)
-- **Gatsby** (React)
-- **Astro** (framework-agnostic)
-- **Nuxt** (Vue)
-- **Pros**: Best performance, SEO-friendly
-- **Cons**: May be overkill for our use case
+- Modern React/Next.js ecosystem
+- Rich component libraries
+- Great developer experience
+- Active community
 
-#### Option 4: Full-Stack Meta Framework
+**Cons:**
 
-- **Remix** (React)
-- **SvelteKit** (Svelte)
-- **SolidStart** (Solid)
-- **Pros**: Server + client in one, great DX
-- **Cons**: More complex setup
+- Need to choose from many options
+- May require learning new libraries
 
-#### Option 5: HTMX/Alpine.js
+### What We're Building
 
-- Keep server-side rendering
-- Add **HTMX** for dynamic content
-- **Alpine.js** for lightweight interactivity
-- **Pros**: Simple, progressive enhancement
-- **Cons**: Less powerful than full frameworks
-
-### What We're Looking For
-
-Regardless of framework choice:
+With Next.js as our foundation, we want to add:
 
 - Modern, responsive design
 - Cookie leaderboard with rankings and stats
@@ -107,21 +94,23 @@ Regardless of framework choice:
 - Mobile-friendly interface
 - Good accessibility (WCAG 2.1)
 
-### How to Contribute Your Opinion
+### How to Contribute Your Design Skills
 
-1. **GitHub Discussions**: Share your thoughts on framework choice
-2. **Submit a Proposal**: Open an issue with your preferred stack and why
-3. **Prototype**: Build a quick demo with your preferred framework
-4. **Vote**: We'll create a poll once we have several options
+1. **GitHub Discussions**: Share your design ideas and proposals
+2. **Submit a PR**: Add styling with your preferred library (Tailwind, shadcn/ui, etc.)
+3. **Prototype**: Build new pages or components
+4. **Design System**: Create mockups and design guidelines
 
-### Design Ideas (Framework-Agnostic)
+### Design Ideas for Next.js
 
 Some suggestions for improvement:
 
-- **UI Components**: Choose a library that fits the framework
-  - React: Chakra UI, shadcn/ui, Material UI
-  - Vue: Vuetify, PrimeVue, Headless UI
-  - Svelte: Skeleton, Flowbite Svelte
+- **UI Components**: Choose a React component library
+  - shadcn/ui (highly recommended for Next.js)
+  - Chakra UI
+  - Material UI
+  - Mantine
+  - Headless UI + Tailwind
 - **Charts**: Cookie distribution, activity over time
 - **Real-time Updates**: Live leaderboard with WebSockets
 - **User Profiles**: Individual pages with stats and history
@@ -147,19 +136,17 @@ If you have design skills (regardless of implementation):
 
 ### Implementation Contributions
 
-Want to build it yourself? We'd love that!
+Want to enhance the Next.js interface? We'd love that!
 
-1. **Choose your framework** (or propose one)
+1. **Choose your styling approach** (Tailwind, component library, custom CSS)
 2. **Fork the repository**
-3. **Build your version** (can live alongside current Express app)
+3. **Build your enhancements** in the `apps/web` directory
 4. **Document your approach**
 5. **Submit a PR** with:
    - Your implementation
    - Screenshots
-   - Setup instructions
-   - Rationale for framework choice
-
-We can maintain multiple frontend options and let the community choose!
+   - Setup instructions (if adding new dependencies)
+   - Rationale for library choices
 
 ---
 
