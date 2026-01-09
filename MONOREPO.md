@@ -36,7 +36,6 @@ apps/bot/
 ├── command.ts                # Command listener
 ├── commands.ts               # Built-in commands registry
 ├── commands/                 # Individual command modules
-├── routes/                   # Legacy API routes (Express)
 ├── tests/                    # Bot-specific tests
 ├── sandbox.ts                # Sandboxed code execution (vm2)
 ├── vite.config.ts            # Vite build configuration
@@ -52,7 +51,6 @@ apps/bot/
 - vm2 (sandboxed code execution)
 - vite (build tool)
 - vitest (test framework)
-- express (legacy HTTP server - still present for `/users` API route)
 
 **Build Output:**
 

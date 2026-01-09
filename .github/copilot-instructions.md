@@ -78,7 +78,6 @@ praetbot/
 │   │   ├── message.ts           # Message handling
 │   │   ├── sandbox.ts           # Sandboxed code execution
 │   │   ├── types.ts             # Shared types
-│   │   ├── routes/              # Legacy API routes (Express)
 │   │   ├── tests/               # Bot-specific tests
 │   │   ├── vite.config.ts       # Vite build config
 │   │   ├── vitest.config.ts     # Vitest config
