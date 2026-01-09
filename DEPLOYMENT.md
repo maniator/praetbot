@@ -682,19 +682,15 @@ For **web interface only**, these platforms also support:
    heroku config:set WEATHER_KEY=key
    ```
 
-4. **Ensure Procfile exists** (already included in repo)
-
-   ```
-   web: npm start
-   ```
-
-5. **Deploy**
+4. **Deploy**
 
    ```bash
    git push heroku main
    ```
 
-6. **View logs**
+   **Note**: Heroku will automatically detect the Node.js app and run `npm start` from package.json.
+
+5. **View logs**
    ```bash
    heroku logs --tail
    ```

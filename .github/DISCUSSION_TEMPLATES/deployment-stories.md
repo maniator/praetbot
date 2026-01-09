@@ -133,7 +133,7 @@ Tell us about your deployment by answering these questions:
 
 1. Use UptimeRobot to ping your app and keep it awake
 2. Set up MongoDB Atlas (also free) for database
-3. Read the Procfile carefully
+3. Check the DEPLOYMENT.md guide for detailed setup instructions
 
 ---
 
