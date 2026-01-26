@@ -21,7 +21,7 @@
     "dotenv": "^17.2.3",
     "mongodb": "^6.11.0",
     "tsx": "^4.19.2",
-    "vm2": "^3.9.19"
+    "vm2": "^3.10.2"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
